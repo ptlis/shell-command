@@ -47,6 +47,13 @@ interface ShellCommandBuilderInterface
     public function addParameter($parameter);
 
     /**
+     * Add an ad-hoc argument, useful for non-standard and old commands.
+     *
+     * @param string $argument
+     */
+    public function addAdHoc($argument);
+
+    /**
      * Gets the built command & resets the builder.
      *
      * @return ShellCommandInterface
