@@ -28,19 +28,19 @@ class ShellCommand implements ShellCommandInterface
     /**
      * @var ArgumentInterface[] Array of arguments to pass with the command.
      */
-    private $arguments;
+    private $argumentList;
 
 
     /**
      * Constructor
      *
      * @param BinaryInterface $binary
-     * @param ArgumentInterface[] $arguments
+     * @param ArgumentInterface[] $argumentList
      */
-    public function __construct(BinaryInterface $binary, array $arguments)
+    public function __construct(BinaryInterface $binary, array $argumentList)
     {
         $this->binary = $binary;
-        $this->arguments = $arguments;
+        $this->argumentList = $argumentList;
     }
 
     /**
@@ -63,7 +63,7 @@ class ShellCommand implements ShellCommandInterface
     public function __toString()
     {
         return array_reduce(
-            $this->arguments,
+            $this->argumentList,
             function ($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
