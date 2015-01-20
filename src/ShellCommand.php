@@ -67,7 +67,7 @@ class ShellCommand implements ShellCommandInterface
             function($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
-            $this->binary
+            $this->binary->__toString()
         );
     }
 }

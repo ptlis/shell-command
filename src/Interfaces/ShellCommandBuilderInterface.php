@@ -19,6 +19,8 @@ interface ShellCommandBuilderInterface
      * Set the binary to execute.
      *
      * @param $binary
+     *
+     * @return $this
      */
     public function setBinary($binary);
 
@@ -28,6 +30,8 @@ interface ShellCommandBuilderInterface
      * @param string $argument
      * @param string $value
      * @param string $separator
+     *
+     * @return $this
      */
     public function addArgument($argument, $value = '', $separator = ArgumentInterface::SEPARATOR_SPACE);
 
@@ -36,6 +40,8 @@ interface ShellCommandBuilderInterface
      *
      * @param string $flag
      * @param string $value
+     *
+     * @return $this
      */
     public function addFlag($flag, $value = '');
 
@@ -43,6 +49,8 @@ interface ShellCommandBuilderInterface
      * Add a parameter to the command.
      *
      * @param string $parameter
+     *
+     * @return $this
      */
     public function addParameter($parameter);
 
@@ -50,6 +58,8 @@ interface ShellCommandBuilderInterface
      * Add an ad-hoc argument, useful for non-standard and old commands.
      *
      * @param string $argument
+     *
+     * @return $this
      */
     public function addAdHoc($argument);
 

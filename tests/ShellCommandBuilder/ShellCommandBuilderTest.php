@@ -10,94 +10,24 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Argument\Argument;
-use ptlis\ShellCommand\Argument\Flag;
-use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Argument\Parameter;
-use ptlis\ShellCommand\ShellCommand;
+use ptlis\ShellCommand\ShellCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixBinary;
 
-class ShellCommandTest extends \PHPUnit_Framework_TestCase
+class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWithFlag()
+    public function testBasic()
     {
         $path = './tests/data/empty_binary';
+        $builder = new ShellCommandBuilder();
 
-        $command = new ShellCommand(
-            new UnixBinary($path),
-            array(
-                new Flag('s', 'bar')
-            )
-        );
+        $command = $builder
+            ->setBinary(new UnixBinary($path))
+            ->getCommand();
 
-        $this->assertSame(
-            realpath($path) . ' \'-s bar\'',
+        $this->assertEquals(
+            realpath($path),
             $command->__toString()
-        );
-    }
-
-    public function testWithArgument()
-    {
-        $path = './tests/data/empty_binary';
-
-        $command = new ShellCommand(
-            new UnixBinary($path),
-            array(
-                new Argument('filter', 'hide-empty', ArgumentInterface::SEPARATOR_EQUALS)
-            )
-        );
-
-        $this->assertSame(
-            realpath($path) . ' \'--filter=hide-empty\'',
-            $command->__toString()
-        );
-    }
-
-    public function testWithParameter()
-    {
-        $path = './tests/data/empty_binary';
-
-        $command = new ShellCommand(
-            new UnixBinary($path),
-            array(
-                new Parameter('my_files/')
-            )
-        );
-
-        $this->assertSame(
-            realpath($path) . ' \'my_files/\'',
-            $command->__toString()
-        );
-    }
-
-    public function testWithAdHoc()
-    {
-        $path = './tests/data/empty_binary';
-
-        $command = new ShellCommand(
-            new UnixBinary($path),
-            array(
-                new AdHoc('if=/dev/sha1 of=/dev/sdb2')
-            )
-        );
-
-        $this->assertSame(
-            realpath($path) . ' \'if=/dev/sha1 of=/dev/sdb2\'',
-            $command->__toString()
-        );
-    }
-
-    public function testRun()
-    {
-        $path = './tests/data/empty_binary';
-
-        $command = new ShellCommand(
-            new UnixBinary($path),
-            array(
-                new AdHoc('if=/dev/sha1 of=/dev/sdb2')
-            )
         );
 
         $this->assertEquals(
@@ -105,10 +35,129 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
                 0,
                 array(
                     'Test command',
-                    'if=/dev/sha1 of=/dev/sdb2'
+                    ''
                 )
             ),
             $command->run()
         );
+    }
+
+    public function testArgument()
+    {
+        $path = './tests/data/empty_binary';
+        $builder = new ShellCommandBuilder();
+
+        $command = $builder
+            ->setBinary(new UnixBinary($path))
+            ->addArgument('foo', 'bar')
+            ->getCommand();
+
+        $this->assertEquals(
+            realpath($path) . ' \'--foo bar\'',
+            $command->__toString()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                array(
+                    'Test command',
+                    '--foo bar'
+                )
+            ),
+            $command->run()
+        );
+    }
+
+    public function testFlag()
+    {
+        $path = './tests/data/empty_binary';
+        $builder = new ShellCommandBuilder();
+
+        $command = $builder
+            ->setBinary(new UnixBinary($path))
+            ->addFlag('foo')
+            ->getCommand();
+
+        $this->assertEquals(
+            realpath($path) . ' \'-foo\'',
+            $command->__toString()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                array(
+                    'Test command',
+                    '-foo'
+                )
+            ),
+            $command->run()
+        );
+    }
+
+    public function testParameter()
+    {
+        $path = './tests/data/empty_binary';
+        $builder = new ShellCommandBuilder();
+
+        $command = $builder
+            ->setBinary(new UnixBinary($path))
+            ->addParameter('wibble')
+            ->getCommand();
+
+        $this->assertEquals(
+            realpath($path) . ' \'wibble\'',
+            $command->__toString()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                array(
+                    'Test command',
+                    'wibble'
+                )
+            ),
+            $command->run()
+        );
+    }
+
+    public function testAdHoc()
+    {
+        $path = './tests/data/empty_binary';
+        $builder = new ShellCommandBuilder();
+
+        $command = $builder
+            ->setBinary(new UnixBinary($path))
+            ->addAdHoc('if=/dev/sda1 of=/dev/sdb')
+            ->getCommand();
+
+        $this->assertEquals(
+            realpath($path) . ' \'if=/dev/sda1 of=/dev/sdb\'',
+            $command->__toString()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                array(
+                    'Test command',
+                    'if=/dev/sda1 of=/dev/sdb'
+                )
+            ),
+            $command->run()
+        );
+    }
+
+    public function testInvalidBinary()
+    {
+        $this->setExpectedException(
+            '\RuntimeException',
+            'No binary was provided to "ptlis\ShellCommand\ShellCommandBuilder", unable to build command.'
+        );
+        $builder = new ShellCommandBuilder();
+
+        $builder->getCommand();
     }
 }
