@@ -10,7 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\Arguments;
 
-use ptlis\ShellCommand\Flag;
+use ptlis\ShellCommand\Argument\Flag;
 
 class FlagTest extends \PHPUnit_Framework_TestCase
 {

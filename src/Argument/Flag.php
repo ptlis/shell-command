@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand;
+namespace ptlis\ShellCommand\Argument;
 
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 

@@ -10,21 +10,14 @@
 
 namespace ptlis\ShellCommand\Test\Arguments;
 
-use ptlis\ShellCommand\Flag;
+use ptlis\ShellCommand\Argument\AdHoc;
 
 class AdHocTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFlagOnly()
+    public function testAdHoc()
     {
-        $flag = new Flag('v');
+        $adHoc = new AdHoc('foo=bar');
 
-        $this->assertEquals('-v', $flag->__toString());
-    }
-
-    public function testFlagAndValue()
-    {
-        $flag = new Flag('c', '/etc/foo.ini');
-
-        $this->assertEquals('-c /etc/foo.ini', $flag->__toString());
+        $this->assertEquals('foo=bar', $adHoc->__toString());
     }
 }

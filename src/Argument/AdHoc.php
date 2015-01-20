@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand;
+namespace ptlis\ShellCommand\Argument;
 
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 
@@ -16,7 +16,7 @@ use ptlis\ShellCommand\Interfaces\ArgumentInterface;
  * Ad-hoc argument, useful for situations where the command is very old and/or behaves oddly (eg dd).
  *
  */
-class AdHocArgument implements ArgumentInterface
+class AdHoc implements ArgumentInterface
 {
     /**
      * @var string Ad-hoc argument to pass to a command.

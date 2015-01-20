@@ -10,7 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\Arguments;
 
-use ptlis\ShellCommand\Parameter;
+use ptlis\ShellCommand\Argument\Parameter;
 
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {

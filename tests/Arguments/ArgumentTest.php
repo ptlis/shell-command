@@ -10,7 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\Arguments;
 
-use ptlis\ShellCommand\Argument;
+use ptlis\ShellCommand\Argument\Argument;
 
 class ArgumentTest extends \PHPUnit_Framework_TestCase
 {
