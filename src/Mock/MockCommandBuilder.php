@@ -49,7 +49,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Set the binary to execute.
      *
-     * @param $binary
+     * @param string $binary
      *
      * @return $this
      */
