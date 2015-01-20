@@ -52,7 +52,7 @@ class ShellCommand implements ShellCommandInterface
     {
         exec($this, $outputLines, $exitCode);
 
-        return new ShellResult($exitCode, $outputLines);
+        return new ShellResult($exitCode, (array)$outputLines);
     }
 
     /**
@@ -64,7 +64,7 @@ class ShellCommand implements ShellCommandInterface
     {
         return array_reduce(
             $this->arguments,
-            function($string, $argument) {
+            function ($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
             $this->binary->__toString()
