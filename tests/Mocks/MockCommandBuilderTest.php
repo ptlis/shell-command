@@ -22,7 +22,7 @@ use ptlis\ShellCommand\ShellResult;
 
 class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMockCommandBuilder()
+    public function testMockCommandBuilderOne()
     {
         $builder = new MockCommandBuilder();
 
@@ -54,6 +54,33 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellResult(0, array('hello world')),
+            $builtCommand->run()
+        );
+    }
+
+    public function testMockCommandBuilderTwo()
+    {
+        $builder = new MockCommandBuilder();
+
+        $builder
+            ->setBinary('bar')
+            ->setExitCode(1)
+            ->setOutput(array('hurray!'));
+
+        $builtCommand = $builder->getCommand();
+
+        $this->assertEquals(
+            new MockCommand(
+                new MockBinary('bar'),
+                array(),
+                array('hurray!'),
+                1
+            ),
+            $builtCommand
+        );
+
+        $this->assertEquals(
+            new ShellResult(1, array('hurray!')),
             $builtCommand->run()
         );
     }

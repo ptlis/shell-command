@@ -141,7 +141,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      */
     public function setExitCode($exitCode)
     {
-        $this->exitCode = 0;
+        $this->exitCode = $exitCode;
 
         return $this;
     }
