@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test;
+namespace ptlis\ShellCommand\Test\Binary;
 
 use ptlis\ShellCommand\UnixBinary;
 

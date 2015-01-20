@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Arguments;
+namespace ptlis\ShellCommand\Test\Arguments;
 
 use ptlis\ShellCommand\Parameter;
 
