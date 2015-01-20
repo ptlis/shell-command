@@ -18,6 +18,7 @@ use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\ShellResult;
 
 /**
  * Mock implementation of the command builder interface.
@@ -35,14 +36,14 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $argumentList = array();
 
     /**
-     * @var string[] The output for the mocked command.
+     * @var ShellResult[] Pre-populated list of results to return.
      */
-    private $output = array();
+    private $mockResultList = array();
 
     /**
-     * @var int The exit code for the mocked command.
+     * @var MockCommand[] Array of commands built with this builder.
      */
-    private $exitCode = 0;
+    private $builtCommandList = array();
 
 
     /**
@@ -119,31 +120,28 @@ class MockCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Set the mock output.
+     * Add a mock result (to be returned in order of execution).
      *
-     * @param string[] $output
+     * @param $exitCode
+     * @param array $output
      *
      * @return $this
      */
-    public function setOutput(array $output)
+    public function addMockResult($exitCode, array $output)
     {
-        $this->output = $output;
+        $this->mockResultList[] = new ShellResult($exitCode, $output);
 
         return $this;
     }
 
     /**
-     * Set the mock exit code.
+     * Get all commands built by this builder instance.
      *
-     * @param int $exitCode
-     *
-     * @return $this
+     * @return MockCommand[]
      */
-    public function setExitCode($exitCode)
+    public function getBuiltCommands()
     {
-        $this->exitCode = $exitCode;
-
-        return $this;
+        return $this->builtCommandList;
     }
 
     /**
@@ -157,12 +155,15 @@ class MockCommandBuilder implements CommandBuilderInterface
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
+        $result = array_shift($this->mockResultList);
+
         $command = new MockCommand(
             $this->binary,
             $this->argumentList,
-            $this->output,
-            $this->exitCode
+            $result->getOutput(),
+            $result->getExitCode()
         );
+        $this->builtCommandList[] = $command;
 
         $this->binary = null;
         $this->argumentList = array();

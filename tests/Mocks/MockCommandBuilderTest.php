@@ -28,8 +28,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder
             ->setBinary('foo')
-            ->setExitCode(0)
-            ->setOutput(array('hello world'))
+            ->addMockResult(0, array('hello world'))
             ->addArgument('foo', 'bar')
             ->addFlag('d', 10)
             ->addAdHoc('if=/bar')
@@ -37,19 +36,26 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand = $builder->getCommand();
 
-        $this->assertEquals(
-            new MockCommand(
-                new MockBinary('foo'),
-                array(
-                    new Argument('foo', 'bar'),
-                    new Flag('d', 10),
-                    new AdHoc('if=/bar'),
-                    new Parameter('wop')
-                ),
-                array('hello world'),
-                0
+        $expectCommand = new MockCommand(
+            new MockBinary('foo'),
+            array(
+                new Argument('foo', 'bar'),
+                new Flag('d', 10),
+                new AdHoc('if=/bar'),
+                new Parameter('wop')
             ),
+            array('hello world'),
+            0
+        );
+
+        $this->assertEquals(
+            $expectCommand,
             $builtCommand
+        );
+
+        $this->assertEquals(
+            array($expectCommand),
+            $builder->getBuiltCommands()
         );
 
         $this->assertEquals(
@@ -64,24 +70,81 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder
             ->setBinary('bar')
-            ->setExitCode(1)
-            ->setOutput(array('hurray!'));
+            ->addMockResult(1, array('hurray!'));
 
         $builtCommand = $builder->getCommand();
 
+        $expectCommand = new MockCommand(
+            new MockBinary('bar'),
+            array(),
+            array('hurray!'),
+            1
+        );
+
         $this->assertEquals(
-            new MockCommand(
-                new MockBinary('bar'),
-                array(),
-                array('hurray!'),
-                1
-            ),
+            $expectCommand,
             $builtCommand
+        );
+
+        $this->assertEquals(
+            array($expectCommand),
+            $builder->getBuiltCommands()
         );
 
         $this->assertEquals(
             new ShellResult(1, array('hurray!')),
             $builtCommand->run()
+        );
+    }
+
+    public function testMockCommandMultiUse()
+    {
+        $builder = new MockCommandBuilder();
+
+        $builder
+            ->addMockResult(1, array('hurray!'))
+            ->addMockResult(0, array('success'));
+
+        // First
+        $builder
+            ->setBinary('bar');
+
+        $builtCommand1 = $builder->getCommand();
+
+        $expectResult1 = new ShellResult(1, array('hurray!'));
+        $expectCommand1 = new MockCommand(
+            new MockBinary('bar'),
+            array(),
+            array('hurray!'),
+            1
+        );
+
+        $this->assertEquals(
+            $expectResult1,
+            $builtCommand1->run()
+        );
+
+        $builder
+            ->setBinary('baz');
+
+        $builtCommand2 = $builder->getCommand();
+
+        $expectResult2 = new ShellResult(0, array('success'));
+        $expectCommand2 = new MockCommand(
+            new MockBinary('baz'),
+            array(),
+            array('success'),
+            0
+        );
+
+        $this->assertEquals(
+            $expectResult2,
+            $builtCommand2->run()
+        );
+
+        $this->assertEquals(
+            array($expectCommand1, $expectCommand2),
+            $builder->getBuiltCommands()
         );
     }
 
