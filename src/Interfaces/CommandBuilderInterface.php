@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Interfaces;
 /**
  * Builder to create a command ready to execute.
  */
-interface ShellCommandBuilderInterface
+interface CommandBuilderInterface
 {
     /**
      * Set the binary to execute.
@@ -66,7 +66,7 @@ interface ShellCommandBuilderInterface
     /**
      * Gets the built command & resets the builder.
      *
-     * @return ShellCommandInterface
+     * @return CommandInterface
      */
     public function getCommand();
 }

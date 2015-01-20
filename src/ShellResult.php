@@ -10,12 +10,12 @@
 
 namespace ptlis\ShellCommand;
 
-use ptlis\ShellCommand\Interfaces\ShellResultInterface;
+use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
 /**
  * Class that stores the result of executing a shell command.
  */
-class ShellResult implements ShellResultInterface
+class ShellResult implements CommandResultInterface
 {
     /**
      * @var int The exit code emitted by the command.

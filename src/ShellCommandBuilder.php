@@ -17,13 +17,13 @@ use ptlis\ShellCommand\Argument\Parameter;
 use ptlis\ShellCommand\Exceptions\InvalidBinaryException;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
-use ptlis\ShellCommand\Interfaces\ShellCommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\ShellCommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
 
 /**
  * Implementation  of shell command builder interface.
  */
-class ShellCommandBuilder implements ShellCommandBuilderInterface
+class ShellCommandBuilder implements CommandBuilderInterface
 {
     /**
      * @var BinaryInterface The binary to execute.
@@ -114,7 +114,7 @@ class ShellCommandBuilder implements ShellCommandBuilderInterface
     /**
      * Gets the built command & resets the builder.
      *
-     * @return ShellCommandInterface
+     * @return CommandInterface
      */
     public function getCommand()
     {

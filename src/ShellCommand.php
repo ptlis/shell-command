@@ -12,13 +12,13 @@ namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
-use ptlis\ShellCommand\Interfaces\ShellCommandInterface;
-use ptlis\ShellCommand\Interfaces\ShellResultInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
  */
-class ShellCommand implements ShellCommandInterface
+class ShellCommand implements CommandInterface
 {
     /**
      * @var BinaryInterface The binary to execute.
@@ -46,7 +46,7 @@ class ShellCommand implements ShellCommandInterface
     /**
      * Execute the command and return its result.
      *
-     * @return ShellResultInterface
+     * @return CommandResultInterface
      */
     public function run()
     {

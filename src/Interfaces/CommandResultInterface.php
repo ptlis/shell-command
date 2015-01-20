@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Interfaces;
 /**
  * Interface class that command results must implement.
  */
-interface ShellResultInterface
+interface CommandResultInterface
 {
     /**
      * Get the lines output by the executed command.

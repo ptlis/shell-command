@@ -13,12 +13,12 @@ namespace ptlis\ShellCommand\Interfaces;
 /**
  * Interface class that shell commands must implement.
  */
-interface ShellCommandInterface
+interface CommandInterface
 {
     /**
      * Execute the command and return its result.
      *
-     * @return ShellResultInterface
+     * @return CommandResultInterface
      */
     public function run();
 
