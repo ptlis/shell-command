@@ -189,4 +189,18 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             $command->__toString()
         );
     }
+
+    public function testTooFewReturns()
+    {
+        $this->setExpectedException(
+            '\RuntimeException',
+            'No result was provided for use when mocking execution of the command.'
+        );
+
+        $builder = new MockCommandBuilder();
+
+        $builder->setBinary('foo');
+        $builder->addParameter('test');
+        $builder->getCommand();
+    }
 }

@@ -155,6 +155,10 @@ class MockCommandBuilder implements CommandBuilderInterface
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
+        if (!count($this->mockResultList)) {
+            throw new \RuntimeException('No result was provided for use when mocking execution of the command.');
+        }
+
         $result = array_shift($this->mockResultList);
 
         $command = new MockCommand(
