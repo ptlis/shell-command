@@ -127,9 +127,17 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList
         );
 
-        $this->binary = null;
-        $this->argumentList = array();
+        $this->clear();
 
         return $command;
+    }
+
+    /**
+     * Clear & reset the builder to default state.
+     */
+    public function clear()
+    {
+        $this->binary = null;
+        $this->argumentList = array();
     }
 }

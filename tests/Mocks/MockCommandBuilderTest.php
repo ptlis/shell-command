@@ -158,4 +158,35 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->getCommand();
     }
+
+    public function testClearOne()
+    {
+        $this->setExpectedException(
+            '\RuntimeException',
+            'No binary was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
+        );
+        $builder = new MockCommandBuilder();
+        $builder->setBinary('foo');
+        $builder->clear();
+
+        $builder->getCommand();
+    }
+
+    public function testClearTwo()
+    {
+        $builder = new MockCommandBuilder();
+
+        $builder->addParameter('test');
+
+        $builder->clear();
+        $builder->setBinary('foo');
+        $builder->addMockResult(0, array('bar'));
+
+        $command = $builder->getCommand();
+
+        $this->assertEquals(
+            'foo',
+            $command->__toString()
+        );
+    }
 }

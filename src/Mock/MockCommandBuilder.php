@@ -160,16 +160,21 @@ class MockCommandBuilder implements CommandBuilderInterface
         $command = new MockCommand(
             $this->binary,
             $this->argumentList,
-            $result->getOutput(),
-            $result->getExitCode()
+            $result
         );
         $this->builtCommandList[] = $command;
 
-        $this->binary = null;
-        $this->argumentList = array();
-        $this->output = array();
-        $this->exitCode = 0;
+        $this->clear();
 
         return $command;
+    }
+
+    /**
+     * Clear & reset the builder to default state.
+     */
+    public function clear()
+    {
+        $this->binary = null;
+        $this->argumentList = array();
     }
 }

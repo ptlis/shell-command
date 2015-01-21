@@ -69,4 +69,9 @@ interface CommandBuilderInterface
      * @return CommandInterface
      */
     public function getCommand();
+
+    /**
+     * Clear & reset the builder to default state.
+     */
+    public function clear();
 }

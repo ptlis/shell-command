@@ -160,4 +160,34 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->getCommand();
     }
+
+    public function testClearOne()
+    {
+        $this->setExpectedException(
+            'ptlis\ShellCommand\Exceptions\InvalidBinaryException',
+            'Binary file "foo" not found or not executable.'
+        );
+        $builder = new ShellCommandBuilder();
+        $builder->setBinary('foo');
+        $builder->clear();
+
+        $builder->getCommand();
+    }
+
+    public function testClearTwo()
+    {
+        $builder = new ShellCommandBuilder();
+
+        $builder->addParameter('test');
+
+        $builder->clear();
+        $builder->setBinary('./tests/data/empty_binary');
+
+        $command = $builder->getCommand();
+
+        $this->assertEquals(
+            getcwd() . '/tests/data/empty_binary',
+            $command->__toString()
+        );
+    }
 }
