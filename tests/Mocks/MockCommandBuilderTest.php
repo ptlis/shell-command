@@ -44,8 +44,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
                 new AdHoc('if=/bar'),
                 new Parameter('wop')
             ),
-            array('hello world'),
-            0
+            new ShellResult(0, array('hello world'))
         );
 
         $this->assertEquals(
@@ -77,8 +76,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $expectCommand = new MockCommand(
             new MockBinary('bar'),
             array(),
-            array('hurray!'),
-            1
+            new ShellResult(1, array('hurray!'))
         );
 
         $this->assertEquals(
@@ -115,8 +113,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $expectCommand1 = new MockCommand(
             new MockBinary('bar'),
             array(),
-            array('hurray!'),
-            1
+            new ShellResult(1, array('hurray!'))
         );
 
         $this->assertEquals(
@@ -133,8 +130,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $expectCommand2 = new MockCommand(
             new MockBinary('baz'),
             array(),
-            array('success'),
-            0
+            new ShellResult(0, array('success'))
         );
 
         $this->assertEquals(

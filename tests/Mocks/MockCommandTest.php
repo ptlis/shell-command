@@ -24,8 +24,7 @@ class MockCommandTest extends \PHPUnit_Framework_TestCase
         $command = new MockCommand(
             new MockBinary($path),
             array(new AdHoc('foo')),
-            array('hello world'),
-            0
+            new ShellResult(0, array('hello world'))
         );
 
         $this->assertEquals($path . ' \'foo\'', $command->__toString());

@@ -32,14 +32,9 @@ class MockCommand implements CommandInterface
     private $argumentList = array();
 
     /**
-     * @var string[] The output for the mocked command.
+     * @var ShellResult The mocked result of this operation.
      */
-    private $output = array();
-
-    /**
-     * @var int The exit code for the mocked command.
-     */
-    private $exitCode = 0;
+    private $result;
 
 
     /**
@@ -47,19 +42,16 @@ class MockCommand implements CommandInterface
      *
      * @param BinaryInterface $binary
      * @param ArgumentInterface[] $argumentList
-     * @param string[] $output
-     * @param int $exitCode
+     * @param ShellResult $result
      */
     public function __construct(
         BinaryInterface $binary,
         array $argumentList,
-        array $output,
-        $exitCode
+        ShellResult $result
     ) {
         $this->binary = $binary;
         $this->argumentList = $argumentList;
-        $this->output = $output;
-        $this->exitCode = $exitCode;
+        $this->result = $result;
     }
 
     /**
@@ -69,10 +61,7 @@ class MockCommand implements CommandInterface
      */
     public function run()
     {
-        return new ShellResult(
-            $this->exitCode,
-            $this->output
-        );
+        return $this->result;
     }
 
     /**
