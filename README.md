@@ -7,6 +7,34 @@ A basic wrapper around execution of shell commands.
 
 
 
+## Install
+
+Either from the console:
+
+```shell
+    $ composer require ptlis/shell-command:"~0.2"
+```
+
+Or by Editing composer.json:
+
+```javascript
+    {
+        "require": {
+            ...
+            "ptlis/shell-command": "~0.2",
+            ...
+        }
+    }
+```
+
+Followed by a composer update:
+
+```shell
+    $ composer update
+```
+
+
+
 ## Known limitations
 
 * Currently supports UNIX environments only, pull requests welcomed for other platforms.
