@@ -16,7 +16,7 @@ class UnixBinaryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFullyQualified()
     {
-        $path = __DIR__ . '/../data/empty_binary';
+        $path = __DIR__ . '/../data/test_binary';
 
         $binary = new UnixBinary($path);
 
@@ -31,16 +31,16 @@ class UnixBinaryTest extends \PHPUnit_Framework_TestCase
 
         putenv('PATH=/foo/bar:/baz/bat:' . $pathToBinary);
 
-        $binary = new UnixBinary('empty_binary');
+        $binary = new UnixBinary('test_binary');
 
-        $this->assertSame(realpath($pathToBinary . '/empty_binary'), $binary->__toString());
+        $this->assertSame(realpath($pathToBinary . '/test_binary'), $binary->__toString());
 
         putenv('PATH=' . $oldBinaryPath);
     }
 
     public function testRelative()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $binary = new UnixBinary($path);
 

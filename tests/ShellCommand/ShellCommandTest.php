@@ -23,7 +23,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithFlag()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
             new UnixBinary($path),
@@ -40,7 +40,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testWithArgument()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
             new UnixBinary($path),
@@ -57,7 +57,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testWithParameter()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
             new UnixBinary($path),
@@ -74,7 +74,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testWithAdHoc()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
             new UnixBinary($path),
@@ -91,7 +91,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
             new UnixBinary($path),

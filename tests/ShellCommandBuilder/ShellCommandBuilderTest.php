@@ -18,7 +18,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testBasic()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder();
 
         $command = $builder
@@ -42,7 +42,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testArgument()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder();
 
         $command = $builder
@@ -67,7 +67,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testFlag()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder();
 
         $command = $builder
@@ -92,7 +92,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testParameter()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder();
 
         $command = $builder
@@ -117,7 +117,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAdHoc()
     {
-        $path = './tests/data/empty_binary';
+        $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder();
 
         $command = $builder
@@ -171,12 +171,12 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addParameter('test');
 
         $builder->clear();
-        $builder->setBinary('./tests/data/empty_binary');
+        $builder->setBinary('./tests/data/test_binary');
 
         $command = $builder->getSynchronousCommand();
 
         $this->assertEquals(
-            getcwd() . '/tests/data/empty_binary',
+            getcwd() . '/tests/data/test_binary',
             $command->__toString()
         );
     }
