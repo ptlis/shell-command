@@ -58,6 +58,17 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
+     * Get the array representation of the contents of stdout when the command was executed (each element of the array
+     * contains one line from the output)..
+     *
+     * @return string[]
+     */
+    public function getStdOutLines()
+    {
+        return $this->stringToArray($this->stdOut);
+    }
+
+    /**
      * Get the contents of stderr when executing the command.
      *
      * @return string
@@ -68,6 +79,17 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
+     * Get the array representation of the contents of stderr when the command was executed (each element of the array
+     * contains one line from the output)..
+     *
+     * @return string[]
+     */
+    public function getStdErrLines()
+    {
+        return $this->stringToArray($this->stdErr);
+    }
+
+    /**
      * Get the exit code from the executed command.
      *
      * @return int
@@ -75,5 +97,21 @@ class ShellResult implements CommandResultInterface
     public function getExitCode()
     {
         return $this->exitCode;
+    }
+
+    /**
+     * Accepts console output as a string and returns an array of it split by newlines.
+     *
+     * @param string $string
+     * @return string[]
+     */
+    private function stringToArray($string)
+    {
+        $lines = preg_split('/\R/', $string);
+        if (1 === count($lines) && '' === $lines[0]) {
+            $lines = array();
+        }
+
+        return $lines;
     }
 }

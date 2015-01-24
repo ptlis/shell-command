@@ -16,18 +16,34 @@ namespace ptlis\ShellCommand\Interfaces;
 interface CommandResultInterface
 {
     /**
-     * Get the contents of stdout when the command was executed.
+     * Get the string representation of the contents of stdout when the command was executed.
      *
      * @return string
      */
     public function getStdOut();
 
     /**
-     * Get the contents of stderr when the command was executed.
+     * Get the array representation of the contents of stdout when the command was executed (each element of the array
+     * contains one line from the output)..
+     *
+     * @return string[]
+     */
+    public function getStdOutLines();
+
+    /**
+     * Get the string representation of the contents of stderr when the command was executed.
      *
      * @return string
      */
     public function getStdErr();
+
+    /**
+     * Get the array representation of the contents of stderr when the command was executed (each element of the array
+     * contains one line from the output)..
+     *
+     * @return string[]
+     */
+    public function getStdErrLines();
 
     /**
      * Get the exit code from the executed command.
