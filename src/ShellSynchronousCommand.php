@@ -17,7 +17,7 @@ use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
 /**
- * Shell Command, encapsulates the data required to execute a shell command.
+ * Shell Command, encapsulates the data required to execute a synchronous shell command.
  */
 class ShellSynchronousCommand implements SynchronousCommandInterface
 {
@@ -74,6 +74,13 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
 
         if (!is_resource($process)) {
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
+        }
+
+        // Wait for the process to complete.
+        $status = proc_get_status($process);
+        while ($status['running']) {
+            usleep(100000); // Wait for 1/10 second before checking again (todo: Make configurable)
+            $status = proc_get_status($process);
         }
 
         $stdOut = stream_get_contents($pipes[self::STDOUT_INDEX]);

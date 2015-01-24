@@ -115,4 +115,23 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $command->run()
         );
     }
+
+    public function testRunWithSleep()
+    {
+        $path = './tests/data/sleep_binary';
+
+        $command = new ShellSynchronousCommand(
+            new UnixBinary($path),
+            array()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                '',
+                ''
+            ),
+            $command->run()
+        );
+    }
 }
