@@ -23,7 +23,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $command = $builder
             ->setBinary(new UnixBinary($path))
-            ->getCommand();
+            ->getSynchronousCommand();
 
         $this->assertEquals(
             realpath($path),
@@ -48,7 +48,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setBinary(new UnixBinary($path))
             ->addArgument('foo', 'bar')
-            ->getCommand();
+            ->getSynchronousCommand();
 
         $this->assertEquals(
             realpath($path) . ' \'--foo bar\'',
@@ -73,7 +73,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setBinary(new UnixBinary($path))
             ->addFlag('foo')
-            ->getCommand();
+            ->getSynchronousCommand();
 
         $this->assertEquals(
             realpath($path) . ' \'-foo\'',
@@ -98,7 +98,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setBinary(new UnixBinary($path))
             ->addParameter('wibble')
-            ->getCommand();
+            ->getSynchronousCommand();
 
         $this->assertEquals(
             realpath($path) . ' \'wibble\'',
@@ -123,7 +123,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setBinary(new UnixBinary($path))
             ->addAdHoc('if=/dev/sda1 of=/dev/sdb')
-            ->getCommand();
+            ->getSynchronousCommand();
 
         $this->assertEquals(
             realpath($path) . ' \'if=/dev/sda1 of=/dev/sdb\'',
@@ -148,7 +148,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $builder = new ShellCommandBuilder();
 
-        $builder->getCommand();
+        $builder->getSynchronousCommand();
     }
 
     public function testClearOne()
@@ -161,7 +161,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->setBinary('foo');
         $builder->clear();
 
-        $builder->getCommand();
+        $builder->getSynchronousCommand();
     }
 
     public function testClearTwo()
@@ -173,7 +173,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->clear();
         $builder->setBinary('./tests/data/empty_binary');
 
-        $command = $builder->getCommand();
+        $command = $builder->getSynchronousCommand();
 
         $this->assertEquals(
             getcwd() . '/tests/data/empty_binary',

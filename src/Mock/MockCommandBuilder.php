@@ -150,7 +150,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      *
      * @return SynchronousCommandInterface
      */
-    public function getCommand()
+    public function getSynchronousCommand()
     {
         if (!$this->binary) {
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');

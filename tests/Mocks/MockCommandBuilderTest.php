@@ -34,7 +34,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addAdHoc('if=/bar')
             ->addParameter('wop');
 
-        $builtCommand = $builder->getCommand();
+        $builtCommand = $builder->getSynchronousCommand();
 
         $expectCommand = new MockSynchronousCommand(
             new MockBinary('foo'),
@@ -71,7 +71,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->setBinary('bar')
             ->addMockResult(1, 'hurray!', '');
 
-        $builtCommand = $builder->getCommand();
+        $builtCommand = $builder->getSynchronousCommand();
 
         $expectCommand = new MockSynchronousCommand(
             new MockBinary('bar'),
@@ -107,7 +107,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder
             ->setBinary('bar');
 
-        $builtCommand1 = $builder->getCommand();
+        $builtCommand1 = $builder->getSynchronousCommand();
 
         $expectResult1 = new ShellResult(1, 'hurray!', '');
         $expectCommand1 = new MockSynchronousCommand(
@@ -124,7 +124,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder
             ->setBinary('baz');
 
-        $builtCommand2 = $builder->getCommand();
+        $builtCommand2 = $builder->getSynchronousCommand();
 
         $expectResult2 = new ShellResult(0, 'success', '');
         $expectCommand2 = new MockSynchronousCommand(
@@ -152,7 +152,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $builder = new MockCommandBuilder();
 
-        $builder->getCommand();
+        $builder->getSynchronousCommand();
     }
 
     public function testClearOne()
@@ -165,7 +165,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->setBinary('foo');
         $builder->clear();
 
-        $builder->getCommand();
+        $builder->getSynchronousCommand();
     }
 
     public function testClearTwo()
@@ -178,7 +178,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->setBinary('foo');
         $builder->addMockResult(0, array('bar'), array());
 
-        $command = $builder->getCommand();
+        $command = $builder->getSynchronousCommand();
 
         $this->assertEquals(
             'foo',
@@ -197,6 +197,6 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->setBinary('foo');
         $builder->addParameter('test');
-        $builder->getCommand();
+        $builder->getSynchronousCommand();
     }
 }

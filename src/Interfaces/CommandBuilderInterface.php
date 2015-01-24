@@ -68,7 +68,7 @@ interface CommandBuilderInterface
      *
      * @return SynchronousCommandInterface
      */
-    public function getCommand();
+    public function getSynchronousCommand();
 
     /**
      * Clear & reset the builder to default state.
