@@ -12,14 +12,14 @@ namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 use ptlis\ShellCommand\ShellResult;
 
 /**
  * Mock implementation of the command interface.
  */
-class MockCommand implements CommandInterface
+class MockSynchronousCommand implements SynchronousCommandInterface
 {
     /**
      * @var BinaryInterface The binary to execute.

@@ -11,9 +11,9 @@
 namespace ptlis\ShellCommand\Interfaces;
 
 /**
- * Interface class that shell commands must implement.
+ * Interface class that synchronously executed shell commands must implement.
  */
-interface CommandInterface
+interface SynchronousCommandInterface
 {
     /**
      * Execute the command and return its result.
@@ -23,7 +23,7 @@ interface CommandInterface
     public function run();
 
     /**
-     * Gets the string representation of the command, ready to execute.
+     * Gets the string representation of the command.
      *
      * @return string
      */

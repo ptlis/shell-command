@@ -15,7 +15,7 @@ use ptlis\ShellCommand\Argument\Argument;
 use ptlis\ShellCommand\Argument\Flag;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Argument\Parameter;
-use ptlis\ShellCommand\ShellCommand;
+use ptlis\ShellCommand\ShellSynchronousCommand;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixBinary;
 
@@ -25,7 +25,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/empty_binary';
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             new UnixBinary($path),
             array(
                 new Flag('s', 'bar')
@@ -42,7 +42,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/empty_binary';
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             new UnixBinary($path),
             array(
                 new Argument('filter', 'hide-empty', ArgumentInterface::SEPARATOR_EQUALS)
@@ -59,7 +59,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/empty_binary';
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             new UnixBinary($path),
             array(
                 new Parameter('my_files/')
@@ -76,7 +76,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/empty_binary';
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             new UnixBinary($path),
             array(
                 new AdHoc('if=/dev/sha1 of=/dev/sdb2')
@@ -93,7 +93,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/empty_binary';
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             new UnixBinary($path),
             array(
                 new AdHoc('if=/dev/sha1 of=/dev/sdb2')

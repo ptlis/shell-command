@@ -18,7 +18,7 @@ use ptlis\ShellCommand\Exceptions\InvalidBinaryException;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 
 /**
  * Implementation  of shell command builder interface.
@@ -114,7 +114,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     /**
      * Gets the built command & resets the builder.
      *
-     * @return CommandInterface
+     * @return SynchronousCommandInterface
      */
     public function getCommand()
     {
@@ -122,7 +122,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
-        $command = new ShellCommand(
+        $command = new ShellSynchronousCommand(
             $this->binary,
             $this->argumentList
         );

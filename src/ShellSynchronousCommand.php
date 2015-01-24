@@ -13,13 +13,13 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
  */
-class ShellCommand implements CommandInterface
+class ShellSynchronousCommand implements SynchronousCommandInterface
 {
     const STDIN_INDEX = 0;
     const STDOUT_INDEX = 1;

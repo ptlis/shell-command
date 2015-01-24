@@ -16,7 +16,7 @@ use ptlis\ShellCommand\Argument\Argument;
 use ptlis\ShellCommand\Argument\Flag;
 use ptlis\ShellCommand\Argument\Parameter;
 use ptlis\ShellCommand\Mock\MockBinary;
-use ptlis\ShellCommand\Mock\MockCommand;
+use ptlis\ShellCommand\Mock\MockSynchronousCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
 
@@ -36,7 +36,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand = $builder->getCommand();
 
-        $expectCommand = new MockCommand(
+        $expectCommand = new MockSynchronousCommand(
             new MockBinary('foo'),
             array(
                 new Argument('foo', 'bar'),
@@ -73,7 +73,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand = $builder->getCommand();
 
-        $expectCommand = new MockCommand(
+        $expectCommand = new MockSynchronousCommand(
             new MockBinary('bar'),
             array(),
             new ShellResult(1, 'hurray!', '')
@@ -110,7 +110,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builtCommand1 = $builder->getCommand();
 
         $expectResult1 = new ShellResult(1, 'hurray!', '');
-        $expectCommand1 = new MockCommand(
+        $expectCommand1 = new MockSynchronousCommand(
             new MockBinary('bar'),
             array(),
             new ShellResult(1, 'hurray!', '')
@@ -127,7 +127,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builtCommand2 = $builder->getCommand();
 
         $expectResult2 = new ShellResult(0, 'success', '');
-        $expectCommand2 = new MockCommand(
+        $expectCommand2 = new MockSynchronousCommand(
             new MockBinary('baz'),
             array(),
             new ShellResult(0, 'success', '')

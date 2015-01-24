@@ -66,7 +66,7 @@ interface CommandBuilderInterface
     /**
      * Gets the built command & resets the builder.
      *
-     * @return CommandInterface
+     * @return SynchronousCommandInterface
      */
     public function getCommand();
 

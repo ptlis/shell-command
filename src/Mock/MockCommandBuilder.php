@@ -17,7 +17,7 @@ use ptlis\ShellCommand\Argument\Parameter;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\ShellResult;
 
 /**
@@ -41,7 +41,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $mockResultList = array();
 
     /**
-     * @var MockCommand[] Array of commands built with this builder.
+     * @var MockSynchronousCommand[] Array of commands built with this builder.
      */
     private $builtCommandList = array();
 
@@ -138,7 +138,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Get all commands built by this builder instance.
      *
-     * @return MockCommand[]
+     * @return MockSynchronousCommand[]
      */
     public function getBuiltCommands()
     {
@@ -148,7 +148,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Gets the built command & resets the builder.
      *
-     * @return CommandInterface
+     * @return SynchronousCommandInterface
      */
     public function getCommand()
     {
@@ -162,7 +162,7 @@ class MockCommandBuilder implements CommandBuilderInterface
 
         $result = array_shift($this->mockResultList);
 
-        $command = new MockCommand(
+        $command = new MockSynchronousCommand(
             $this->binary,
             $this->argumentList,
             $result
