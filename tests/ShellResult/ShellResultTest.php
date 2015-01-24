@@ -20,7 +20,8 @@ class ShellResultTest extends \PHPUnit_Framework_TestCase
             0,
             array(
                 'great success!'
-            )
+            ),
+            ''
         );
 
         $this->assertSame(
@@ -32,7 +33,7 @@ class ShellResultTest extends \PHPUnit_Framework_TestCase
             array(
                 'great success!'
             ),
-            $shellResult->getOutput()
+            $shellResult->getStdOut()
         );
     }
 }

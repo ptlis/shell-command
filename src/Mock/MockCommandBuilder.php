@@ -122,14 +122,15 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Add a mock result (to be returned in order of execution).
      *
-     * @param $exitCode
-     * @param array $output
+     * @param int $exitCode
+     * @param string $stdOut
+     * @param string $stdErr
      *
      * @return $this
      */
-    public function addMockResult($exitCode, array $output)
+    public function addMockResult($exitCode, $stdOut, $stdErr)
     {
-        $this->mockResultList[] = new ShellResult($exitCode, $output);
+        $this->mockResultList[] = new ShellResult($exitCode, $stdOut, $stdErr);
 
         return $this;
     }

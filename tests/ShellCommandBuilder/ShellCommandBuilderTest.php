@@ -33,10 +33,8 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    ''
-                )
+                'Test command',
+                ''
             ),
             $command->run()
         );
@@ -60,10 +58,8 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    '--foo bar'
-                )
+                'Test command' . PHP_EOL . '--foo bar',
+                ''
             ),
             $command->run()
         );
@@ -87,10 +83,8 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    '-foo'
-                )
+                'Test command' . PHP_EOL . '-foo',
+                ''
             ),
             $command->run()
         );
@@ -114,10 +108,8 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    'wibble'
-                )
+                'Test command' . PHP_EOL . 'wibble',
+                ''
             ),
             $command->run()
         );
@@ -141,10 +133,8 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    'if=/dev/sda1 of=/dev/sdb'
-                )
+                'Test command' . PHP_EOL . 'if=/dev/sda1 of=/dev/sdb',
+                ''
             ),
             $command->run()
         );

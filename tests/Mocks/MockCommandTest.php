@@ -24,13 +24,13 @@ class MockCommandTest extends \PHPUnit_Framework_TestCase
         $command = new MockCommand(
             new MockBinary($path),
             array(new AdHoc('foo')),
-            new ShellResult(0, array('hello world'))
+            new ShellResult(0, array('hello world'), '')
         );
 
         $this->assertEquals($path . ' \'foo\'', $command->__toString());
 
         $this->assertEquals(
-            new ShellResult(0, array('hello world')),
+            new ShellResult(0, array('hello world'), ''),
             $command->run()
         );
     }

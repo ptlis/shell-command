@@ -28,7 +28,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder
             ->setBinary('foo')
-            ->addMockResult(0, array('hello world'))
+            ->addMockResult(0, 'hello world', '')
             ->addArgument('foo', 'bar')
             ->addFlag('d', 10)
             ->addAdHoc('if=/bar')
@@ -44,7 +44,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
                 new AdHoc('if=/bar'),
                 new Parameter('wop')
             ),
-            new ShellResult(0, array('hello world'))
+            new ShellResult(0, 'hello world', '')
         );
 
         $this->assertEquals(
@@ -58,7 +58,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            new ShellResult(0, array('hello world')),
+            new ShellResult(0, 'hello world', ''),
             $builtCommand->run()
         );
     }
@@ -69,14 +69,14 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder
             ->setBinary('bar')
-            ->addMockResult(1, array('hurray!'));
+            ->addMockResult(1, 'hurray!', '');
 
         $builtCommand = $builder->getCommand();
 
         $expectCommand = new MockCommand(
             new MockBinary('bar'),
             array(),
-            new ShellResult(1, array('hurray!'))
+            new ShellResult(1, 'hurray!', '')
         );
 
         $this->assertEquals(
@@ -90,7 +90,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            new ShellResult(1, array('hurray!')),
+            new ShellResult(1, 'hurray!', ''),
             $builtCommand->run()
         );
     }
@@ -100,8 +100,8 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new MockCommandBuilder();
 
         $builder
-            ->addMockResult(1, array('hurray!'))
-            ->addMockResult(0, array('success'));
+            ->addMockResult(1, 'hurray!', '')
+            ->addMockResult(0, 'success', '');
 
         // First
         $builder
@@ -109,11 +109,11 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand1 = $builder->getCommand();
 
-        $expectResult1 = new ShellResult(1, array('hurray!'));
+        $expectResult1 = new ShellResult(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
             new MockBinary('bar'),
             array(),
-            new ShellResult(1, array('hurray!'))
+            new ShellResult(1, 'hurray!', '')
         );
 
         $this->assertEquals(
@@ -126,11 +126,11 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand2 = $builder->getCommand();
 
-        $expectResult2 = new ShellResult(0, array('success'));
+        $expectResult2 = new ShellResult(0, 'success', '');
         $expectCommand2 = new MockCommand(
             new MockBinary('baz'),
             array(),
-            new ShellResult(0, array('success'))
+            new ShellResult(0, 'success', '')
         );
 
         $this->assertEquals(
@@ -176,7 +176,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->clear();
         $builder->setBinary('foo');
-        $builder->addMockResult(0, array('bar'));
+        $builder->addMockResult(0, array('bar'), array());
 
         $command = $builder->getCommand();
 

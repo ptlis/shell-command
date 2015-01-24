@@ -23,31 +23,48 @@ class ShellResult implements CommandResultInterface
     private $exitCode;
 
     /**
-     * @var string[] The output of the command.
+     * @var string The contents of stdout when executing the command.
      */
-    private $outputLines;
+    private $stdOut;
+
+    /**
+     * @var string The contents of stderr when executing the command.
+     */
+    private $stdErr;
 
 
     /**
      * Constructor.
      *
      * @param int $exitCode
-     * @param string[] $outputLines
+     * @param string $stdOut
+     * @param string $stdErr
      */
-    public function __construct($exitCode, array $outputLines)
+    public function __construct($exitCode, $stdOut, $stdErr)
     {
         $this->exitCode = $exitCode;
-        $this->outputLines = $outputLines;
+        $this->stdOut = $stdOut;
+        $this->stdErr = $stdErr;
     }
 
     /**
-     * Get the lines output by the executed command.
+     * Get the contents of stdout when executing the command.
      *
-     * @return string[]
+     * @return string
      */
-    public function getOutput()
+    public function getStdOut()
     {
-        return $this->outputLines;
+        return $this->stdOut;
+    }
+
+    /**
+     * Get the contents of stderr when executing the command.
+     *
+     * @return string
+     */
+    public function getStdErr()
+    {
+        return $this->stdErr;
     }
 
     /**

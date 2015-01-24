@@ -103,10 +103,14 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                array(
-                    'Test command',
-                    'if=/dev/sha1 of=/dev/sdb2'
-                )
+                implode(
+                    PHP_EOL,
+                    array(
+                        'Test command',
+                        'if=/dev/sha1 of=/dev/sdb2'
+                    )
+                ),
+                ''
             ),
             $command->run()
         );
