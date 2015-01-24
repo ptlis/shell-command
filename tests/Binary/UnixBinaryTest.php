@@ -35,7 +35,7 @@ class UnixBinaryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(realpath($pathToBinary . '/empty_binary'), $binary->__toString());
 
-        putenv($oldBinaryPath);
+        putenv('PATH=' . $oldBinaryPath);
     }
 
     public function testRelative()
