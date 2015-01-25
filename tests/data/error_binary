@@ -1,0 +1,5 @@
+#!/bin/sh
+
+>&2 echo "Fatal Error"
+
+exit 5

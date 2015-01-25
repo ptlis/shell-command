@@ -134,4 +134,23 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $command->run()
         );
     }
+
+    public function testRunWithError()
+    {
+        $path = './tests/data/error_binary';
+
+        $command = new ShellSynchronousCommand(
+            new UnixBinary($path),
+            array()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                5,
+                '',
+                'Fatal Error'
+            ),
+            $command->run()
+        );
+    }
 }
