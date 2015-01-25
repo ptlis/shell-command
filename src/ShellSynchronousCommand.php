@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
 use ptlis\ShellCommand\Interfaces\BinaryInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
@@ -25,6 +26,11 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
     const STDOUT_INDEX = 1;
     const STDERR_INDEX = 2;
     const EXITCODE_INDEX = 3;
+
+    /**
+     * @var ProcessInterface Object through which the command is executed.
+     */
+    private $process;
 
     /**
      * @var BinaryInterface The binary to execute.
@@ -40,11 +46,16 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
     /**
      * Constructor
      *
+     * @param ProcessInterface $process
      * @param BinaryInterface $binary
      * @param ArgumentInterface[] $argumentList
      */
-    public function __construct(BinaryInterface $binary, array $argumentList)
-    {
+    public function __construct(
+        ProcessInterface $process,
+        BinaryInterface $binary,
+        array $argumentList
+    ) {
+        $this->process = $process;
         $this->binary = $binary;
         $this->argumentList = $argumentList;
     }
@@ -52,49 +63,13 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
     /**
      * Execute the command and return its result.
      *
-     * Note: We use a hack to ensure we get the correct status code - it seems like there is a long-standing issue with
-     * the one provided by proc_close on some systems, see this php.net comment for more details:
-     *    http://php.net/manual/en/function.proc-close.php#56798
-     *
      * @throws CommandExecutionException
      *
      * @return CommandResultInterface
      */
     public function run()
     {
-        $process = proc_open(
-            $this . '; echo $? >&3',
-            array(
-                self::STDOUT_INDEX => array('pipe', 'w'),
-                self::STDERR_INDEX => array('pipe', 'w'),
-                self::EXITCODE_INDEX => array('pipe', 'w')
-            ),
-            $pipes
-        );
-
-        if (!is_resource($process)) {
-            throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
-        }
-
-        // Wait for the process to complete.
-        $status = proc_get_status($process);
-        while ($status['running']) {
-            usleep(100000); // Wait for 1/10 second before checking again (todo: Make configurable)
-            $status = proc_get_status($process);
-        }
-
-        $stdOut = stream_get_contents($pipes[self::STDOUT_INDEX]);
-        $stdErr = stream_get_contents($pipes[self::STDERR_INDEX]);
-        $exitCode = trim(stream_get_contents($pipes[self::EXITCODE_INDEX]));
-
-        proc_close($process);
-
-        $trimChars = "\n\r";
-        return new ShellResult(
-            intval($exitCode),
-            trim($stdOut, $trimChars),
-            trim($stdErr, $trimChars)
-        );
+        return $this->process->runSynchronous(strval($this));
     }
 
     /**

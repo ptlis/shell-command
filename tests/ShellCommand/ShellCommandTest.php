@@ -18,6 +18,7 @@ use ptlis\ShellCommand\Argument\Parameter;
 use ptlis\ShellCommand\ShellSynchronousCommand;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixBinary;
+use ptlis\ShellCommand\UnixProcess;
 
 class ShellCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,6 +27,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array(
                 new Flag('s', 'bar')
@@ -43,6 +45,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array(
                 new Argument('filter', 'hide-empty', ArgumentInterface::SEPARATOR_EQUALS)
@@ -60,6 +63,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array(
                 new Parameter('my_files/')
@@ -77,6 +81,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array(
                 new AdHoc('if=/dev/sha1 of=/dev/sdb2')
@@ -94,6 +99,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array(
                 new AdHoc('if=/dev/sha1 of=/dev/sdb2')
@@ -121,6 +127,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/sleep_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array()
         );
@@ -140,6 +147,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/error_binary';
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             new UnixBinary($path),
             array()
         );

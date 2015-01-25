@@ -123,6 +123,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         }
 
         $command = new ShellSynchronousCommand(
+            new UnixProcess(),
             $this->binary,
             $this->argumentList
         );
