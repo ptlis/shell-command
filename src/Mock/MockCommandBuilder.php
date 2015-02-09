@@ -10,14 +10,9 @@
 
 namespace ptlis\ShellCommand\Mock;
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Argument\Argument;
-use ptlis\ShellCommand\Argument\Flag;
-use ptlis\ShellCommand\Argument\Parameter;
-use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 use ptlis\ShellCommand\ShellResult;
 
 /**
@@ -26,14 +21,19 @@ use ptlis\ShellCommand\ShellResult;
 class MockCommandBuilder implements CommandBuilderInterface
 {
     /**
-     * @var BinaryInterface The binary to execute.
+     * @var string The command to execute.
      */
-    private $binary;
+    private $command;
 
     /**
-     * @var ArgumentInterface[] Array of arguments to pass to the binary.
+     * @var string[] Array of arguments to pass to the command.
      */
     private $argumentList = array();
+
+    /**
+     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
+     */
+    private $timeout;
 
     /**
      * @var ShellResult[] Pre-populated list of results to return.
@@ -47,76 +47,104 @@ class MockCommandBuilder implements CommandBuilderInterface
 
 
     /**
+     * Constructor.
+     *
+     * @param string $command
+     * @param string[] $argumentsList
+     * @param int $timeout
+     * @param CommandResultInterface[] $mockResultList
+     * @param CommandInterface[] &$builtCommandList
+     */
+    public function __construct(
+        $command = '',
+        array $argumentsList = array(),
+        $timeout = -1,
+        array $mockResultList = array(),
+        array &$builtCommandList = array()
+    ) {
+        $this->command = $command;
+        $this->argumentList = $argumentsList;
+        $this->timeout = $timeout;
+        $this->mockResultList = $mockResultList;
+        $this->builtCommandList = &$builtCommandList;
+    }
+
+
+    /**
      * Set the binary to execute.
      *
-     * @param string $binary
+     * @param string $command
      *
      * @return $this
      */
-    public function setBinary($binary)
+    public function setCommand($command)
     {
-        $this->binary = new MockBinary($binary);
-
-        return $this;
+        return new MockCommandBuilder(
+            $command,
+            $this->argumentList,
+            $this->timeout,
+            $this->mockResultList,
+            $this->builtCommandList
+        );
     }
 
     /**
      * Add an argument to the command.
      *
      * @param string $argument
-     * @param string $value
-     * @param string $separator
      *
      * @return $this
      */
-    public function addArgument($argument, $value = '', $separator = ArgumentInterface::SEPARATOR_SPACE)
+    public function addArgument($argument)
     {
-        $this->argumentList[] = new Argument($argument, $value, $separator);
+        $argumentList = $this->argumentList;
+        $argumentList[] = $argument;
 
-        return $this;
+        return new MockCommandBuilder(
+            $this->command,
+            $argumentList,
+            $this->timeout,
+            $this->mockResultList,
+            $this->builtCommandList
+        );
     }
 
     /**
-     * Add a flag to the command.
+     * Add one or more arguments to the command.
      *
-     * @param string $flag
-     * @param string $value
+     * @param string[] $argumentList
      *
      * @return $this
      */
-    public function addFlag($flag, $value = '')
+    public function addArguments(array $argumentList)
     {
-        $this->argumentList[] = new Flag($flag, $value);
+        $argumentList = array_merge($this->argumentList, $argumentList);
 
-        return $this;
+        return new MockCommandBuilder(
+            $this->command,
+            $argumentList,
+            $this->timeout,
+            $this->mockResultList,
+            $this->builtCommandList
+        );
     }
 
     /**
-     * Add a parameter to the command.
+     * Set the timeout
      *
-     * @param string $parameter
-     *
-     * @return $this
-     */
-    public function addParameter($parameter)
-    {
-        $this->argumentList[] = new Parameter($parameter);
-
-        return $this;
-    }
-
-    /**
-     * Add an ad-hoc argument, useful for non-standard and old commands.
-     *
-     * @param string $argument
+     * @param int $timeout (microseconds) How long to wait for a command to finish executing.
      *
      * @return $this
      */
-    public function addAdHoc($argument)
+    public function setTimeout($timeout)
     {
-        $this->argumentList[] = new AdHoc($argument);
-
-        return $this;
+        return new MockCommandBuilder(
+            $this->command,
+            $this->argumentList,
+            $timeout,
+            $this->mockResultList,
+            $this->builtCommandList
+        );
     }
 
     /**
@@ -130,9 +158,16 @@ class MockCommandBuilder implements CommandBuilderInterface
      */
     public function addMockResult($exitCode, $stdOut, $stdErr)
     {
-        $this->mockResultList[] = new ShellResult($exitCode, $stdOut, $stdErr);
+        $mockResultList = $this->mockResultList;
+        $mockResultList[] = new ShellResult($exitCode, $stdOut, $stdErr);
 
-        return $this;
+        return new MockCommandBuilder(
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $mockResultList,
+            $this->builtCommandList
+        );
     }
 
     /**
@@ -146,13 +181,13 @@ class MockCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Gets the built command & resets the builder.
+     * Get the build command.
      *
-     * @return SynchronousCommandInterface
+     * @return CommandInterface
      */
-    public function getSynchronousCommand()
+    public function getCommand()
     {
-        if (!$this->binary) {
+        if (!$this->command) {
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
@@ -163,23 +198,12 @@ class MockCommandBuilder implements CommandBuilderInterface
         $result = array_shift($this->mockResultList);
 
         $command = new MockSynchronousCommand(
-            $this->binary,
+            $this->command,
             $this->argumentList,
             $result
         );
         $this->builtCommandList[] = $command;
 
-        $this->clear();
-
         return $command;
-    }
-
-    /**
-     * Clear & reset the builder to default state.
-     */
-    public function clear()
-    {
-        $this->binary = null;
-        $this->argumentList = array();
     }
 }

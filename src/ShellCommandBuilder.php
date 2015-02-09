@@ -10,135 +10,144 @@
 
 namespace ptlis\ShellCommand;
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Argument\Argument;
-use ptlis\ShellCommand\Argument\Flag;
-use ptlis\ShellCommand\Argument\Parameter;
-use ptlis\ShellCommand\Exceptions\InvalidBinaryException;
-use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 
 /**
- * Implementation  of shell command builder interface.
+ * Immutable builder, used to create ShellCommands.
  */
 class ShellCommandBuilder implements CommandBuilderInterface
 {
     /**
-     * @var BinaryInterface The binary to execute.
+     * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
      */
-    private $binary;
+    private $environment;
 
     /**
-     * @var ArgumentInterface[] Array of arguments to pass to the binary.
+     * @var string The command to execute.
+     */
+    private $command;
+
+    /**
+     * @var string[] Array of arguments to pass to the command.
      */
     private $argumentList = array();
 
+    /**
+     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
+     */
+    private $timeout;
+
 
     /**
-     * Set the binary to execute.
+     * Constructor.
      *
-     * @throws InvalidBinaryException
+     * @param EnvironmentInterface $environment
+     * @param string $command
+     * @param array $argumentsList
+     * @param int $timeout
+     */
+    public function __construct(
+        EnvironmentInterface $environment,
+        $command = '',
+        array $argumentsList = array(),
+        $timeout = -1
+    ) {
+        $this->environment = $environment;
+        $this->command = $command;
+        $this->argumentList = $argumentsList;
+        $this->timeout = $timeout;
+    }
+
+    /**
+     * Set the command to execute.
      *
-     * @param $binary
+     * @param $command
      *
      * @return $this
      */
-    public function setBinary($binary)
+    public function setCommand($command)
     {
-        $this->binary = new UnixBinary($binary);
-
-        return $this;
+        return new ShellCommandBuilder(
+            $this->environment,
+            $command,
+            $this->argumentList,
+            $this->timeout
+        );
     }
 
     /**
      * Add an argument to the command.
      *
      * @param string $argument
-     * @param string $value
-     * @param string $separator
      *
      * @return $this
      */
-    public function addArgument($argument, $value = '', $separator = ArgumentInterface::SEPARATOR_SPACE)
+    public function addArgument($argument)
     {
-        $this->argumentList[] = new Argument($argument, $value, $separator);
+        $argumentList = $this->argumentList;
+        $argumentList[] = $argument;
 
-        return $this;
+        return new ShellCommandBuilder(
+            $this->environment,
+            $this->command,
+            $argumentList,
+            $this->timeout
+        );
     }
 
     /**
-     * Add a flag to the command.
+     * Add one or more arguments to the command.
      *
-     * @param string $flag
-     * @param string $value
+     * @param string[] $argumentList
      *
      * @return $this
      */
-    public function addFlag($flag, $value = '')
+    public function addArguments(array $argumentList)
     {
-        $this->argumentList[] = new Flag($flag, $value);
+        $argumentList = array_merge($this->argumentList, $argumentList);
 
-        return $this;
+        return new ShellCommandBuilder(
+            $this->environment,
+            $this->command,
+            $argumentList,
+            $this->timeout
+        );
     }
 
     /**
-     * Add a parameter to the command.
+     * Set the timeout
      *
-     * @param string $parameter
+     * @param int $timeout (microseconds) How long to wait for a command to finish executing.
      *
      * @return $this
      */
-    public function addParameter($parameter)
+    public function setTimeout($timeout)
     {
-        $this->argumentList[] = new Parameter($parameter);
-
-        return $this;
+        return new ShellCommandBuilder(
+            $this->environment,
+            $this->command,
+            $this->argumentList,
+            $timeout
+        );
     }
 
     /**
-     * Add an ad-hoc argument, useful for non-standard and old commands.
+     * Get the build command
      *
-     * @param string $argument
-     *
-     * @return $this
+     * @return CommandInterface
      */
-    public function addAdHoc($argument)
+    public function getCommand()
     {
-        $this->argumentList[] = new AdHoc($argument);
-
-        return $this;
-    }
-
-    /**
-     * Gets the built command & resets the builder.
-     *
-     * @return SynchronousCommandInterface
-     */
-    public function getSynchronousCommand()
-    {
-        if (!$this->binary) {
-            throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
+        if (!$this->environment->validateCommand($this->command)) {
+            throw new \RuntimeException('Invalid command "' . $this->command . '" provided.');
         }
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
-            $this->binary,
+        return new ShellSynchronousCommand(
+            new UnixProcess(100),   // TODO: From config!
+            $this->command,
             $this->argumentList
         );
-
-        $this->clear();
-
-        return $command;
-    }
-
-    /**
-     * Clear & reset the builder to default state.
-     */
-    public function clear()
-    {
-        $this->binary = null;
-        $this->argumentList = array();
     }
 }

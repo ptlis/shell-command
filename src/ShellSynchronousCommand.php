@@ -11,8 +11,6 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
-use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
@@ -33,12 +31,12 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
     private $process;
 
     /**
-     * @var BinaryInterface The binary to execute.
+     * @var string The command to execute.
      */
     private $binary;
 
     /**
-     * @var ArgumentInterface[] Array of arguments to pass with the command.
+     * @var string[] Array of arguments to pass with the command.
      */
     private $argumentList;
 
@@ -47,12 +45,12 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
      * Constructor
      *
      * @param ProcessInterface $process
-     * @param BinaryInterface $binary
-     * @param ArgumentInterface[] $argumentList
+     * @param string $binary
+     * @param string[] $argumentList
      */
     public function __construct(
         ProcessInterface $process,
-        BinaryInterface $binary,
+        $binary,
         array $argumentList
     ) {
         $this->process = $process;
@@ -84,7 +82,7 @@ class ShellSynchronousCommand implements SynchronousCommandInterface
             function ($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
-            $this->binary->__toString()
+            $this->binary
         );
     }
 }

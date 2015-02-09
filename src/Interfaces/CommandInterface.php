@@ -11,14 +11,14 @@
 namespace ptlis\ShellCommand\Interfaces;
 
 /**
- * Interface storing the fully-qualified path to a binary.
+ * Interface class that commands must implement.
  */
-interface BinaryInterface
+interface CommandInterface
 {
     /**
-     * Return a string representation of fully-qualified path to the binary.
+     * Run the command blocking further execution, on completion return a result
      *
-     * @return string
+     * @return CommandResultInterface
      */
-    public function __toString();
+    public function runSynchronous();
 }

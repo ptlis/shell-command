@@ -11,7 +11,6 @@
 namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Interfaces\BinaryInterface;
 use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 use ptlis\ShellCommand\ShellResult;
@@ -22,7 +21,7 @@ use ptlis\ShellCommand\ShellResult;
 class MockSynchronousCommand implements SynchronousCommandInterface
 {
     /**
-     * @var BinaryInterface The binary to execute.
+     * @var string The command to execute.
      */
     private $binary;
 
@@ -40,12 +39,12 @@ class MockSynchronousCommand implements SynchronousCommandInterface
     /**
      * Constructor.
      *
-     * @param BinaryInterface $binary
+     * @param string $binary
      * @param ArgumentInterface[] $argumentList
      * @param ShellResult $result
      */
     public function __construct(
-        BinaryInterface $binary,
+        $binary,
         array $argumentList,
         ShellResult $result
     ) {
@@ -76,7 +75,7 @@ class MockSynchronousCommand implements SynchronousCommandInterface
             function ($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
-            $this->binary->__toString()
+            $this->binary
         );
     }
 }

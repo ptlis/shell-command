@@ -16,62 +16,45 @@ namespace ptlis\ShellCommand\Interfaces;
 interface CommandBuilderInterface
 {
     /**
-     * Set the binary to execute.
+     * Set the command to execute.
      *
-     * @param $binary
+     * @param $command
      *
      * @return $this
      */
-    public function setBinary($binary);
+    public function setCommand($command);
 
     /**
      * Add an argument to the command.
      *
      * @param string $argument
-     * @param string $value
-     * @param string $separator
      *
      * @return $this
      */
-    public function addArgument($argument, $value = '', $separator = ArgumentInterface::SEPARATOR_SPACE);
+    public function addArgument($argument);
 
     /**
-     * Add a flag to the command.
+     * Add one or more arguments to the command.
      *
-     * @param string $flag
-     * @param string $value
+     * @param string[] $argumentList
      *
      * @return $this
      */
-    public function addFlag($flag, $value = '');
+    public function addArguments(array $argumentList);
 
     /**
-     * Add a parameter to the command.
+     * Set the timeout
      *
-     * @param string $parameter
+     * @param int $timeout (microseconds) How long to wait for a command to finish executing.
      *
      * @return $this
      */
-    public function addParameter($parameter);
+    public function setTimeout($timeout);
 
     /**
-     * Add an ad-hoc argument, useful for non-standard and old commands.
+     * Get the build command.
      *
-     * @param string $argument
-     *
-     * @return $this
+     * @return CommandInterface
      */
-    public function addAdHoc($argument);
-
-    /**
-     * Gets the built command & resets the builder.
-     *
-     * @return SynchronousCommandInterface
-     */
-    public function getSynchronousCommand();
-
-    /**
-     * Clear & reset the builder to default state.
-     */
-    public function clear();
+    public function getCommand();
 }

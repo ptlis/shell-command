@@ -10,8 +10,6 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Mock\MockBinary;
 use ptlis\ShellCommand\Mock\MockSynchronousCommand;
 use ptlis\ShellCommand\ShellResult;
 
@@ -22,8 +20,8 @@ class MockCommandTest extends \PHPUnit_Framework_TestCase
         $path = 'binary';
 
         $command = new MockSynchronousCommand(
-            new MockBinary($path),
-            array(new AdHoc('foo')),
+            $path,
+            array('foo'),
             new ShellResult(0, array('hello world'), '')
         );
 

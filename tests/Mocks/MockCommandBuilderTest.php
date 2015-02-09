@@ -11,11 +11,6 @@
 namespace ptlis\ShellCommand\Test\Mocks;
 
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Argument\Argument;
-use ptlis\ShellCommand\Argument\Flag;
-use ptlis\ShellCommand\Argument\Parameter;
-use ptlis\ShellCommand\Mock\MockBinary;
 use ptlis\ShellCommand\Mock\MockSynchronousCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
@@ -26,23 +21,23 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new MockCommandBuilder();
 
-        $builder
-            ->setBinary('foo')
+        $builder = $builder
+            ->setCommand('foo')
             ->addMockResult(0, 'hello world', '')
-            ->addArgument('foo', 'bar')
-            ->addFlag('d', 10)
-            ->addAdHoc('if=/bar')
-            ->addParameter('wop');
+            ->addArgument('--foo bar')
+            ->addArgument('-d 10')
+            ->addArgument('if=/bar')
+            ->addArgument('wop');
 
-        $builtCommand = $builder->getSynchronousCommand();
+        $builtCommand = $builder->getCommand();
 
         $expectCommand = new MockSynchronousCommand(
-            new MockBinary('foo'),
+            'foo',
             array(
-                new Argument('foo', 'bar'),
-                new Flag('d', 10),
-                new AdHoc('if=/bar'),
-                new Parameter('wop')
+                '--foo bar',
+                '-d 10',
+                'if=/bar',
+                'wop'
             ),
             new ShellResult(0, 'hello world', '')
         );
@@ -67,14 +62,13 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new MockCommandBuilder();
 
-        $builder
-            ->setBinary('bar')
-            ->addMockResult(1, 'hurray!', '');
-
-        $builtCommand = $builder->getSynchronousCommand();
+        $builtCommand = $builder
+            ->setCommand('bar')
+            ->addMockResult(1, 'hurray!', '')
+            ->getCommand();
 
         $expectCommand = new MockSynchronousCommand(
-            new MockBinary('bar'),
+            'bar',
             array(),
             new ShellResult(1, 'hurray!', '')
         );
@@ -99,19 +93,15 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new MockCommandBuilder();
 
-        $builder
+        $builtCommand1 = $builder
             ->addMockResult(1, 'hurray!', '')
-            ->addMockResult(0, 'success', '');
-
-        // First
-        $builder
-            ->setBinary('bar');
-
-        $builtCommand1 = $builder->getSynchronousCommand();
+            ->addMockResult(0, 'success', '')
+            ->setCommand('bar')
+            ->getCommand();
 
         $expectResult1 = new ShellResult(1, 'hurray!', '');
         $expectCommand1 = new MockSynchronousCommand(
-            new MockBinary('bar'),
+            'bar',
             array(),
             new ShellResult(1, 'hurray!', '')
         );
@@ -121,14 +111,14 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             $builtCommand1->run()
         );
 
-        $builder
-            ->setBinary('baz');
-
-        $builtCommand2 = $builder->getSynchronousCommand();
+        $builtCommand2 = $builder
+            ->setCommand('baz')
+            ->addMockResult(0, 'success', '')
+            ->getCommand();
 
         $expectResult2 = new ShellResult(0, 'success', '');
         $expectCommand2 = new MockSynchronousCommand(
-            new MockBinary('baz'),
+            'baz',
             array(),
             new ShellResult(0, 'success', '')
         );
@@ -152,36 +142,34 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $builder = new MockCommandBuilder();
 
-        $builder->getSynchronousCommand();
+        $builder->getCommand();
     }
 
     public function testClearOne()
     {
         $this->setExpectedException(
             '\RuntimeException',
-            'No binary was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
+            'No result was provided for use when mocking execution of the command.'
         );
-        $builder = new MockCommandBuilder();
-        $builder->setBinary('foo');
-        $builder->clear();
 
-        $builder->getSynchronousCommand();
+        $builder = new MockCommandBuilder();
+        $builder
+            ->setCommand('foo')
+            ->getCommand();
     }
 
     public function testClearTwo()
     {
         $builder = new MockCommandBuilder();
 
-        $builder->addParameter('test');
-
-        $builder->clear();
-        $builder->setBinary('foo');
-        $builder->addMockResult(0, array('bar'), array());
-
-        $command = $builder->getSynchronousCommand();
+        $command = $builder
+            ->setCommand('foo')
+            ->addArgument('--test')
+            ->addMockResult(0, array('bar'), array())
+            ->getCommand();
 
         $this->assertEquals(
-            'foo',
+            'foo \'--test\'',
             $command->__toString()
         );
     }
@@ -195,8 +183,9 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder = new MockCommandBuilder();
 
-        $builder->setBinary('foo');
-        $builder->addParameter('test');
-        $builder->getSynchronousCommand();
+        $builder
+            ->setCommand('foo')
+            ->addArgument('--test')
+            ->getCommand();
     }
 }

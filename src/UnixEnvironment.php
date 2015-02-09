@@ -144,12 +144,15 @@ class UnixEnvironment implements EnvironmentInterface
     {
         $valid = false;
 
-        // Check for command in path list
-        foreach ($this->paths as $pathDir) {
-            $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $binaryName;
-            if (file_exists($tmpPath)) {
-                $valid = true;
-                break;
+        if (strlen($binaryName)) {
+
+            // Check for command in path list
+            foreach ($this->paths as $pathDir) {
+                $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $binaryName;
+                if (file_exists($tmpPath)) {
+                    $valid = true;
+                    break;
+                }
             }
         }
 

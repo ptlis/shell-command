@@ -10,14 +10,8 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
-use ptlis\ShellCommand\Argument\AdHoc;
-use ptlis\ShellCommand\Argument\Argument;
-use ptlis\ShellCommand\Argument\Flag;
-use ptlis\ShellCommand\Interfaces\ArgumentInterface;
-use ptlis\ShellCommand\Argument\Parameter;
 use ptlis\ShellCommand\ShellSynchronousCommand;
 use ptlis\ShellCommand\ShellResult;
-use ptlis\ShellCommand\UnixBinary;
 use ptlis\ShellCommand\UnixProcess;
 
 class ShellCommandTest extends \PHPUnit_Framework_TestCase
@@ -28,14 +22,14 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array(
-                new Flag('s', 'bar')
+                '-s bar'
             )
         );
 
         $this->assertSame(
-            realpath($path) . ' \'-s bar\'',
+            $path . ' \'-s bar\'',
             $command->__toString()
         );
     }
@@ -46,14 +40,14 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array(
-                new Argument('filter', 'hide-empty', ArgumentInterface::SEPARATOR_EQUALS)
+                '--filter=hide-empty'
             )
         );
 
         $this->assertSame(
-            realpath($path) . ' \'--filter=hide-empty\'',
+            $path . ' \'--filter=hide-empty\'',
             $command->__toString()
         );
     }
@@ -64,14 +58,14 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array(
-                new Parameter('my_files/')
+                'my_files/'
             )
         );
 
         $this->assertSame(
-            realpath($path) . ' \'my_files/\'',
+            $path . ' \'my_files/\'',
             $command->__toString()
         );
     }
@@ -82,14 +76,14 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array(
-                new AdHoc('if=/dev/sha1 of=/dev/sdb2')
+                'if=/dev/sha1 of=/dev/sdb2'
             )
         );
 
         $this->assertSame(
-            realpath($path) . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
             $command->__toString()
         );
     }
@@ -100,9 +94,9 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array(
-                new AdHoc('if=/dev/sha1 of=/dev/sdb2')
+                'if=/dev/sha1 of=/dev/sdb2'
             )
         );
 
@@ -128,7 +122,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array()
         );
 
@@ -148,7 +142,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
 
         $command = new ShellSynchronousCommand(
             new UnixProcess(),
-            new UnixBinary($path),
+            $path,
             array()
         );
 

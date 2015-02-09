@@ -12,21 +12,21 @@ namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 
 use ptlis\ShellCommand\ShellCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
-use ptlis\ShellCommand\UnixBinary;
+use ptlis\ShellCommand\UnixEnvironment;
 
 class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 {
     public function testBasic()
     {
         $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
-            ->setBinary(new UnixBinary($path))
-            ->getSynchronousCommand();
+            ->setCommand($path)
+            ->getCommand();
 
         $this->assertEquals(
-            realpath($path),
+            $path,
             $command->__toString()
         );
 
@@ -43,15 +43,15 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
     public function testArgument()
     {
         $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
-            ->setBinary(new UnixBinary($path))
-            ->addArgument('foo', 'bar')
-            ->getSynchronousCommand();
+            ->setCommand($path)
+            ->addArgument('--foo bar')
+            ->getCommand();
 
         $this->assertEquals(
-            realpath($path) . ' \'--foo bar\'',
+            $path . ' \'--foo bar\'',
             $command->__toString()
         );
 
@@ -68,15 +68,15 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
     public function testFlag()
     {
         $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
-            ->setBinary(new UnixBinary($path))
-            ->addFlag('foo')
-            ->getSynchronousCommand();
+            ->setCommand($path)
+            ->addArgument('-foo')
+            ->getCommand();
 
         $this->assertEquals(
-            realpath($path) . ' \'-foo\'',
+            $path . ' \'-foo\'',
             $command->__toString()
         );
 
@@ -93,15 +93,15 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
     public function testParameter()
     {
         $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
-            ->setBinary(new UnixBinary($path))
-            ->addParameter('wibble')
-            ->getSynchronousCommand();
+            ->setCommand($path)
+            ->addArgument('wibble')
+            ->getCommand();
 
         $this->assertEquals(
-            realpath($path) . ' \'wibble\'',
+            $path . ' \'wibble\'',
             $command->__toString()
         );
 
@@ -118,15 +118,15 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAdHoc()
     {
         $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
-            ->setBinary(new UnixBinary($path))
-            ->addAdHoc('if=/dev/sda1 of=/dev/sdb')
-            ->getSynchronousCommand();
+            ->setCommand($path)
+            ->addArgument('if=/dev/sda1 of=/dev/sdb')
+            ->getCommand();
 
         $this->assertEquals(
-            realpath($path) . ' \'if=/dev/sda1 of=/dev/sdb\'',
+            $path . ' \'if=/dev/sda1 of=/dev/sdb\'',
             $command->__toString()
         );
 
@@ -144,39 +144,36 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             '\RuntimeException',
-            'No binary was provided to "ptlis\ShellCommand\ShellCommandBuilder", unable to build command.'
+            'Invalid command "" provided.'
         );
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
-        $builder->getSynchronousCommand();
+        $builder->getCommand();
     }
 
     public function testClearOne()
     {
         $this->setExpectedException(
-            'ptlis\ShellCommand\Exceptions\InvalidBinaryException',
-            'Binary file "foo" not found or not executable.'
+            'RuntimeException',
+            'Invalid command "foo" provided.'
         );
-        $builder = new ShellCommandBuilder();
-        $builder->setBinary('foo');
-        $builder->clear();
-
-        $builder->getSynchronousCommand();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+        $builder
+            ->setCommand('foo')
+            ->getCommand();
     }
 
     public function testClearTwo()
     {
-        $builder = new ShellCommandBuilder();
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
 
-        $builder->addParameter('test');
-
-        $builder->clear();
-        $builder->setBinary('./tests/data/test_binary');
-
-        $command = $builder->getSynchronousCommand();
+        $command = $builder
+            ->addArgument('test')
+            ->setCommand('./tests/data/test_binary')
+            ->getCommand();
 
         $this->assertEquals(
-            getcwd() . '/tests/data/test_binary',
+            './tests/data/test_binary \'test\'',
             $command->__toString()
         );
     }
