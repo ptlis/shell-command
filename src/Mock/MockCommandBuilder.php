@@ -185,7 +185,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      *
      * @return CommandInterface
      */
-    public function getCommand()
+    public function buildCommand()
     {
         if (!$this->command) {
             throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');

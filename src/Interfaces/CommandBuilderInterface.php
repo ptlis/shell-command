@@ -56,5 +56,5 @@ interface CommandBuilderInterface
      *
      * @return CommandInterface
      */
-    public function getCommand();
+    public function buildCommand();
 }

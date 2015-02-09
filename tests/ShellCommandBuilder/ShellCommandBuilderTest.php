@@ -23,7 +23,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $command = $builder
             ->setCommand($path)
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             $path,
@@ -48,7 +48,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setCommand($path)
             ->addArgument('--foo bar')
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             $path . ' \'--foo bar\'',
@@ -73,7 +73,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setCommand($path)
             ->addArgument('-foo')
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             $path . ' \'-foo\'',
@@ -98,7 +98,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setCommand($path)
             ->addArgument('wibble')
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             $path . ' \'wibble\'',
@@ -123,7 +123,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->setCommand($path)
             ->addArgument('if=/dev/sda1 of=/dev/sdb')
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             $path . ' \'if=/dev/sda1 of=/dev/sdb\'',
@@ -148,7 +148,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $builder = new ShellCommandBuilder(new UnixEnvironment());
 
-        $builder->getCommand();
+        $builder->buildCommand();
     }
 
     public function testClearOne()
@@ -160,7 +160,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new ShellCommandBuilder(new UnixEnvironment());
         $builder
             ->setCommand('foo')
-            ->getCommand();
+            ->buildCommand();
     }
 
     public function testClearTwo()
@@ -170,7 +170,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $command = $builder
             ->addArgument('test')
             ->setCommand('./tests/data/test_binary')
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             './tests/data/test_binary \'test\'',

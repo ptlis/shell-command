@@ -138,7 +138,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
      *
      * @return CommandInterface
      */
-    public function getCommand()
+    public function buildCommand()
     {
         if (!$this->environment->validateCommand($this->command)) {
             throw new \RuntimeException('Invalid command "' . $this->command . '" provided.');

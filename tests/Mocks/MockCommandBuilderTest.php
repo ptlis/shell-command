@@ -29,7 +29,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addArgument('if=/bar')
             ->addArgument('wop');
 
-        $builtCommand = $builder->getCommand();
+        $builtCommand = $builder->buildCommand();
 
         $expectCommand = new MockSynchronousCommand(
             'foo',
@@ -65,7 +65,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builtCommand = $builder
             ->setCommand('bar')
             ->addMockResult(1, 'hurray!', '')
-            ->getCommand();
+            ->buildCommand();
 
         $expectCommand = new MockSynchronousCommand(
             'bar',
@@ -97,7 +97,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addMockResult(1, 'hurray!', '')
             ->addMockResult(0, 'success', '')
             ->setCommand('bar')
-            ->getCommand();
+            ->buildCommand();
 
         $expectResult1 = new ShellResult(1, 'hurray!', '');
         $expectCommand1 = new MockSynchronousCommand(
@@ -114,7 +114,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builtCommand2 = $builder
             ->setCommand('baz')
             ->addMockResult(0, 'success', '')
-            ->getCommand();
+            ->buildCommand();
 
         $expectResult2 = new ShellResult(0, 'success', '');
         $expectCommand2 = new MockSynchronousCommand(
@@ -142,7 +142,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $builder = new MockCommandBuilder();
 
-        $builder->getCommand();
+        $builder->buildCommand();
     }
 
     public function testClearOne()
@@ -155,7 +155,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new MockCommandBuilder();
         $builder
             ->setCommand('foo')
-            ->getCommand();
+            ->buildCommand();
     }
 
     public function testClearTwo()
@@ -166,7 +166,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->setCommand('foo')
             ->addArgument('--test')
             ->addMockResult(0, array('bar'), array())
-            ->getCommand();
+            ->buildCommand();
 
         $this->assertEquals(
             'foo \'--test\'',
@@ -186,6 +186,6 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $builder
             ->setCommand('foo')
             ->addArgument('--test')
-            ->getCommand();
+            ->buildCommand();
     }
 }
