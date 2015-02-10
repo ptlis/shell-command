@@ -2,7 +2,7 @@
     "name": "ptlis/shell-command",
     "description": "A basic wrapper around execution of shell commands.",
     "license": "MIT",
-    "keywords": [ "shell", "exec", "command" ],
+    "keywords": [ "shell", "exec", "command", "process", "run", "execute" ],
     "type": "library",
     "authors": [
         {
