@@ -60,7 +60,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param int $timeout
      * @param int $pollTimeout
      * @param CommandResultInterface[] $mockResultList
-     * @param CommandInterface[] &$builtCommandList
+     * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
         $command = '',

@@ -13,6 +13,9 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
 
+/**
+ * Mock implementation of CommandInterface provided to simplify testing.
+ */
 class MockCommand implements CommandInterface
 {
     /**
