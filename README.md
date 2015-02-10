@@ -67,7 +67,7 @@ First we must provide the command to execute:
         
     $builder->setCommand('./local/bin/git') // Relative to current working directory
         
-    $builder->setCommand('/usr/bin/gi')     // Fully qualified path to binary
+    $builder->setCommand('/usr/bin/git')    // Fully qualified path to binary
 ```
 
 If the command is not locatable a ```RuntimeException``` is thrown.
