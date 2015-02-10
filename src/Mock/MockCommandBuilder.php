@@ -150,6 +150,9 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Add a mock result (to be returned in order of execution).
      *
+     * @todo Removing this method and switching to constructor injection would allow us to remove the pass-by-references
+     *   into constructor and make this class truly immutable.
+     *
      * @param int $exitCode
      * @param string $stdOut
      * @param string $stdErr
