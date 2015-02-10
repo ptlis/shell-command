@@ -136,19 +136,19 @@ class UnixEnvironment implements EnvironmentInterface
     /**
      * Validate a global command by checking through system & provided paths.
      *
-     * @param string $binaryName
+     * @param string $command
      *
      * @return bool
      */
-    private function isValidGlobalCommand($binaryName)
+    private function isValidGlobalCommand($command)
     {
         $valid = false;
 
-        if (strlen($binaryName)) {
+        if (strlen($command)) {
 
             // Check for command in path list
             foreach ($this->paths as $pathDir) {
-                $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $binaryName;
+                $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $command;
                 if (file_exists($tmpPath)) {
                     $valid = true;
                     break;

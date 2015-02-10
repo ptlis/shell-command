@@ -71,7 +71,7 @@ class MockCommandBuilder implements CommandBuilderInterface
 
 
     /**
-     * Set the binary to execute.
+     * Set the command to execute.
      *
      * @param string $command
      *
@@ -191,7 +191,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function buildCommand()
     {
         if (!$this->command) {
-            throw new \RuntimeException('No binary was provided to "' . __CLASS__ . '", unable to build command.');
+            throw new \RuntimeException('No command was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
         if (!count($this->mockResultList)) {

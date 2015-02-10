@@ -144,7 +144,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException(
             '\RuntimeException',
-            'No binary was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
+            'No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
         );
         $builder = new MockCommandBuilder();
 
