@@ -36,6 +36,12 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $timeout;
 
     /**
+     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
+     *  second.
+     */
+    private $pollTimeout;
+
+    /**
      * @var ShellResult[] Pre-populated list of results to return.
      */
     private $mockResultList = array();
@@ -52,12 +58,14 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param string $command
      * @param string[] $argumentsList
      * @param int $timeout
+     * @param int $pollTimeout
      * @param CommandResultInterface[] $mockResultList
      * @param CommandInterface[] &$builtCommandList
      */
     public function __construct(
         $command = '',
         array $argumentsList = array(),
+        $pollTimeout = 1000,
         $timeout = -1,
         array $mockResultList = array(),
         array &$builtCommandList = array()
@@ -65,6 +73,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
+        $this->pollTimeout = $pollTimeout;
         $this->mockResultList = $mockResultList;
         $this->builtCommandList = &$builtCommandList;
     }
@@ -83,6 +92,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $command,
             $this->argumentList,
             $this->timeout,
+            $this->pollTimeout,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -104,6 +114,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->command,
             $argumentList,
             $this->timeout,
+            $this->pollTimeout,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -124,6 +135,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->command,
             $argumentList,
             $this->timeout,
+            $this->pollTimeout,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -142,6 +154,26 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->command,
             $this->argumentList,
             $timeout,
+            $this->pollTimeout,
+            $this->mockResultList,
+            $this->builtCommandList
+        );
+    }
+
+    /**
+     * Set how long to sleep between polls of the running process when executing synchronously.
+     *
+     * @param int $pollTimeout
+     *
+     * @return $this
+     */
+    public function setPollTimeout($pollTimeout)
+    {
+        return new MockCommandBuilder(
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $pollTimeout,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -168,6 +200,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->command,
             $this->argumentList,
             $this->timeout,
+            $this->pollTimeout,
             $mockResultList,
             $this->builtCommandList
         );

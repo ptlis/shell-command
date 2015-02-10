@@ -140,6 +140,31 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testPollTimeout()
+    {
+        $path = './tests/data/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new MockCommandBuilder();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->setPollTimeout(1000000);
+
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $path,
+                $arguments,
+                -1,
+                1000000
+            ),
+            $partialBuilder
+        );
+    }
+
     public function testInvalidBinary()
     {
         $this->setExpectedException(

@@ -52,6 +52,15 @@ interface CommandBuilderInterface
     public function setTimeout($timeout);
 
     /**
+     * Set how long to sleep between polls of the running process when executing synchronously.
+     *
+     * @param int $pollTimeout
+     *
+     * @return $this
+     */
+    public function setPollTimeout($pollTimeout);
+
+    /**
      * Get the build command.
      *
      * @return CommandInterface

@@ -39,6 +39,12 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     private $timeout;
 
+    /**
+     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
+     *  second.
+     */
+    private $pollTimeout;
+
 
     /**
      * Constructor.
@@ -47,17 +53,20 @@ class ShellCommandBuilder implements CommandBuilderInterface
      * @param string $command
      * @param array $argumentsList
      * @param int $timeout
+     * @param int $pollTimeout
      */
     public function __construct(
         EnvironmentInterface $environment,
         $command = '',
         array $argumentsList = array(),
-        $timeout = -1
+        $timeout = -1,
+        $pollTimeout = 1000
     ) {
         $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
+        $this->pollTimeout = $pollTimeout;
     }
 
     /**
@@ -73,7 +82,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->environment,
             $command,
             $this->argumentList,
-            $this->timeout
+            $this->timeout,
+            $this->pollTimeout
         );
     }
 
@@ -93,7 +103,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->environment,
             $this->command,
             $argumentList,
-            $this->timeout
+            $this->timeout,
+            $this->pollTimeout
         );
     }
 
@@ -112,7 +123,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->environment,
             $this->command,
             $argumentList,
-            $this->timeout
+            $this->timeout,
+            $this->pollTimeout
         );
     }
 
@@ -129,7 +141,26 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->environment,
             $this->command,
             $this->argumentList,
-            $timeout
+            $timeout,
+            $this->pollTimeout
+        );
+    }
+
+    /**
+     * Set how long to sleep between polls of the running process when executing synchronously.
+     *
+     * @param int $pollTimeout
+     *
+     * @return $this
+     */
+    public function setPollTimeout($pollTimeout)
+    {
+        return new ShellCommandBuilder(
+            $this->environment,
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $pollTimeout
         );
     }
 
@@ -147,7 +178,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         return new ShellCommand(
             $this->command,
             $this->argumentList,
-            100   // TODO: From config!
+            $this->pollTimeout
         );
     }
 }

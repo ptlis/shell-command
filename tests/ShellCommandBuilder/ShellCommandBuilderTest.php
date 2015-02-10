@@ -10,6 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 
+use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -92,6 +93,31 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
                 ''
             ),
             $command->runSynchronous()
+        );
+    }
+
+    public function testPollTimeout()
+    {
+        $path = './tests/data/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->setPollTimeout(1000000)
+            ->buildCommand();
+
+        $this->assertEquals(
+            new ShellCommand(
+                $path,
+                $arguments,
+                1000000
+            ),
+            $command
         );
     }
 

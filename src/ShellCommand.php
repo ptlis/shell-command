@@ -44,7 +44,7 @@ class ShellCommand implements CommandInterface
     public function __construct(
         $command,
         array $argumentList,
-        $pollTimeout = 100
+        $pollTimeout = 1000
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
