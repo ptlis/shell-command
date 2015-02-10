@@ -8,13 +8,17 @@ The motivation behind this package was to provide a mockable API to support writ
 [![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?s=6c30a32e78672ae0d7cff3ecf00ceba95049879a)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?s=b8a262b33dd4a5de02d6f92f3e318ebb319f96c0)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
 
 
+TODO: Handle home directories
+
+chdir does not do tilde expansion - when we see this we should use $HOME environment variable to expand it manually.
+
 
 ## Install
 
 Either from the console:
 
 ```shell
-    $ composer require ptlis/shell-command:"~0.2"
+    $ composer require ptlis/shell-command:"~0.3"
 ```
 
 Or by Editing composer.json:
@@ -23,7 +27,7 @@ Or by Editing composer.json:
     {
         "require": {
             ...
-            "ptlis/shell-command": "~0.2",
+            "ptlis/shell-command": "~0.3",
             ...
         }
     }
@@ -41,7 +45,7 @@ Followed by a composer update:
 
 ### The Builder
 
-The package ships with a command builder, providing a simple and safe method to build commands.
+The package ships with a command builder, providing a simple and safe method to build commands. 
 
 ```php
     use ptlis\ShellCommand\ShellCommandBuilder;
@@ -49,71 +53,55 @@ The package ships with a command builder, providing a simple and safe method to 
     $builder = new ShellCommandBuilder();
 ```
 
+Note this builder is immutable - method calls must be chained and terminated with a call to ```buildCommand``` like so:
+ 
+```php
+    $command = $builder
+        ->setCommand('foo')
+        ->addArgument('--bar=baz')
+        ->buildCommand()
+``` 
 
-#### Add Binary
 
-First we must provide the 'binary' to execute:
+#### Add Command
+
+First we must provide the command to execute:
 
 ```php
-    $builder->setBinary('git');             // Binary in $PATH
-    $builder->setBinary('./local/bin/git'); // Relative to current working directory
-    $builder->setBinary('/usr/bin/gi');     // Fully qualified path to binary
+    $builder->setCommand('git')             // Command in $PATH
+        
+    $builder->setCommand('./local/bin/git') // Relative to current working directory
+        
+    $builder->setCommand('/usr/bin/gi')     // Fully qualified path to binary
 ```
 
-If the binary is not locatable an ```InvalidBinaryException``` is thrown.
+If the command is not locatable a ```RuntimeException``` is thrown.
 
 
 
 #### Add Arguments
 
-Next we must provide any command-line arguments to the binary.
-
-
-##### Ad Hoc Arguments
-
-The simplest method is to use ad-hoc arguments, this is also useful when executing with pre-formatted arguments. 
-
-```php
-    $builder->addAdHoc(
-        $command            // Eg '--foo=bar baz'
-    );
-```
-    
-##### Add Flag
-
-Add a flag. These are usually single characters, prefixed with a '-' symbol, optionally with a value
-
-```php
-    $builder->addFlag(
-        $flag,              // Eg 'l'
-        $value              // (optional) Eg '50'
-    );
-    // Builds to '-l 50'
-```
-    
-##### Add Argument
+Next we may provide any arguments to the command, either one at a time:.
 
 Add an argument. These are textual identifiers, prefixed with '--', optionally with a value. The separator is configurable & defaults to a single space character.
 
 ```php
-    $builder->addFlag(
-        $flag,              // Eg 'foo'
-        $value,             // (optional) Eg 'bar'
-        $separator          // Eg '='
-    );
-    // Builds to '--foo=bar'
+    $builder
+        ->addArgument('--foo=bar')
+        ->addArgument('-xzcf')
+        ->addArgument('if=/dev/sda of=/dev/sdb');
 ```
 
-##### Add Parameter
+Or in bulk:
 
-A simple string that is contextually understood by the underlying binary.
-
-```php    
-    $builder->addParameter(
-        $parameter          // Eg '/path/to/my/files'
-    );
+```php
+    $builder
+        ->addArguments(array(
+            '--foo=bar',
+            '-xzcf',
+            'if=/dev/sda of=/dev/sdb'
+        ))
 ```
-
 
 
 #### Build the Command
@@ -121,17 +109,17 @@ A simple string that is contextually understood by the underlying binary.
 One the builder has been configured, the command can be retrieved for execution:
 
 ```php
-    $command = $builder->getCommand();
+    $command = $builder->buildCommand();
 ```
 
 
 
-### Execute the Command
+### Synchronous Execution
 
-Executing the command is done using the ```run``` method which returns a class implementing the ```CommandResultInterface```, ```ShellResult``` by default.
+Executing the command is done using the ```runSynchronous``` method which returns a class implementing the ```CommandResultInterface```, ```ShellResult``` by default.
 
 ```php
-    $result = $command->run(); 
+    $result = $command->runSynchronous(); 
 ```
 
 The exit code & output of the command are available as methods on this object:
