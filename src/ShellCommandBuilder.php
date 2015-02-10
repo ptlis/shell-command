@@ -178,6 +178,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         return new ShellCommand(
             $this->command,
             $this->argumentList,
+            $this->timeout,
             $this->pollTimeout
         );
     }

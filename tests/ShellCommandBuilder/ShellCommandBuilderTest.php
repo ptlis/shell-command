@@ -115,6 +115,34 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
             new ShellCommand(
                 $path,
                 $arguments,
+                -1,
+                1000000
+            ),
+            $command
+        );
+    }
+
+    public function testTimeout()
+    {
+        $path = './tests/data/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->setPollTimeout(1000 * 1000)
+            ->setTimeout(60 * 1000 * 1000)
+            ->buildCommand();
+
+        $this->assertEquals(
+            new ShellCommand(
+                $path,
+                $arguments,
+                60 * 1000 * 1000,
                 1000000
             ),
             $command

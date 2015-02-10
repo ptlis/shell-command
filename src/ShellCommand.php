@@ -14,6 +14,8 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
+ *
+ * @todo Use timeout!
  */
 class ShellCommand implements CommandInterface
 {
@@ -28,6 +30,11 @@ class ShellCommand implements CommandInterface
     private $argumentList;
 
     /**
+     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
+     */
+    private $timeout;
+
+    /**
      * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
      *  second.
      */
@@ -39,15 +46,18 @@ class ShellCommand implements CommandInterface
      *
      * @param string $command
      * @param string[] $argumentList
+     * @param int $timeout
      * @param int $pollTimeout
      */
     public function __construct(
         $command,
         array $argumentList,
+        $timeout = -1,
         $pollTimeout = 1000
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
+        $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
     }
 
