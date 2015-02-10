@@ -64,12 +64,18 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand = $builder
             ->setCommand('bar')
+            ->addArguments(
+                array(
+                    'baz',
+                    'bat'
+                )
+            )
             ->addMockResult(1, 'hurray!', '')
             ->buildCommand();
 
         $expectCommand = new MockCommand(
             'bar',
-            array(),
+            array('baz', 'bat'),
             new ShellResult(1, 'hurray!', '')
         );
 

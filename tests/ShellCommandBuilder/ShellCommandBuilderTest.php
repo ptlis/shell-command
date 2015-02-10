@@ -65,75 +65,30 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFlag()
+    public function testArgumentList()
     {
         $path = './tests/data/test_binary';
         $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
             ->setCommand($path)
-            ->addArgument('-foo')
+            ->addArguments(
+                array(
+                    '--foo bar',
+                    'baz'
+                )
+            )
             ->buildCommand();
 
         $this->assertEquals(
-            $path . ' \'-foo\'',
+            $path . ' \'--foo bar\' \'baz\'',
             $command->__toString()
         );
 
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command' . PHP_EOL . '-foo' . PHP_EOL,
-                ''
-            ),
-            $command->runSynchronous()
-        );
-    }
-
-    public function testParameter()
-    {
-        $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder(new UnixEnvironment());
-
-        $command = $builder
-            ->setCommand($path)
-            ->addArgument('wibble')
-            ->buildCommand();
-
-        $this->assertEquals(
-            $path . ' \'wibble\'',
-            $command->__toString()
-        );
-
-        $this->assertEquals(
-            new ShellResult(
-                0,
-                'Test command' . PHP_EOL . 'wibble' . PHP_EOL,
-                ''
-            ),
-            $command->runSynchronous()
-        );
-    }
-
-    public function testAdHoc()
-    {
-        $path = './tests/data/test_binary';
-        $builder = new ShellCommandBuilder(new UnixEnvironment());
-
-        $command = $builder
-            ->setCommand($path)
-            ->addArgument('if=/dev/sda1 of=/dev/sdb')
-            ->buildCommand();
-
-        $this->assertEquals(
-            $path . ' \'if=/dev/sda1 of=/dev/sdb\'',
-            $command->__toString()
-        );
-
-        $this->assertEquals(
-            new ShellResult(
-                0,
-                'Test command' . PHP_EOL . 'if=/dev/sda1 of=/dev/sdb' . PHP_EOL,
+                'Test command' . PHP_EOL . '--foo bar baz' . PHP_EOL,
                 ''
             ),
             $command->runSynchronous()
