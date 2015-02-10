@@ -16,6 +16,8 @@ use ptlis\ShellCommand\ShellResult;
 
 /**
  * Mock implementation of the command interface.
+ *
+ * @todo Replace with MockCommand implementing CommandInterface.
  */
 class MockSynchronousCommand implements SynchronousCommandInterface
 {

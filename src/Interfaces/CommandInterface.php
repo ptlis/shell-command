@@ -21,4 +21,18 @@ interface CommandInterface
      * @return CommandResultInterface
      */
     public function runSynchronous();
+
+    /**
+     * Run the command asynchronously, return an object representing the running process.
+     *
+     * @return RunningProcessInterface
+     */
+    public function runAsynchronous();
+
+    /**
+     * Gets the string representation of the command.
+     *
+     * @return string
+     */
+    public function __toString();
 }

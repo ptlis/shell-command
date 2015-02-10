@@ -33,10 +33,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command',
+                'Test command' . PHP_EOL . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -58,10 +58,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command' . PHP_EOL . '--foo bar',
+                'Test command' . PHP_EOL . '--foo bar' . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -83,10 +83,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command' . PHP_EOL . '-foo',
+                'Test command' . PHP_EOL . '-foo' . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -108,10 +108,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command' . PHP_EOL . 'wibble',
+                'Test command' . PHP_EOL . 'wibble' . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -133,10 +133,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                'Test command' . PHP_EOL . 'if=/dev/sda1 of=/dev/sdb',
+                'Test command' . PHP_EOL . 'if=/dev/sda1 of=/dev/sdb' . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 

@@ -144,10 +144,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
             throw new \RuntimeException('Invalid command "' . $this->command . '" provided.');
         }
 
-        return new ShellSynchronousCommand(
-            new UnixProcess(100),   // TODO: From config!
+        return new ShellCommand(
             $this->command,
-            $this->argumentList
+            $this->argumentList,
+            100   // TODO: From config!
         );
     }
 }

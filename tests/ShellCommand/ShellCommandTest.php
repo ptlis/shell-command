@@ -10,9 +10,8 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
-use ptlis\ShellCommand\ShellSynchronousCommand;
+use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellResult;
-use ptlis\ShellCommand\UnixProcess;
 
 class ShellCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,8 +19,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/test_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array(
                 '-s bar'
@@ -38,8 +36,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/test_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array(
                 '--filter=hide-empty'
@@ -56,8 +53,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/test_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array(
                 'my_files/'
@@ -74,8 +70,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/test_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -92,8 +87,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/test_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -103,16 +97,10 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             new ShellResult(
                 0,
-                implode(
-                    PHP_EOL,
-                    array(
-                        'Test command',
-                        'if=/dev/sha1 of=/dev/sdb2'
-                    )
-                ),
+                'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -120,8 +108,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/sleep_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array()
         );
@@ -132,7 +119,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
                 '',
                 ''
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 
@@ -140,8 +127,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/data/error_binary';
 
-        $command = new ShellSynchronousCommand(
-            new UnixProcess(),
+        $command = new ShellCommand(
             $path,
             array()
         );
@@ -150,9 +136,9 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             new ShellResult(
                 5,
                 '',
-                'Fatal Error'
+                'Fatal Error' . PHP_EOL
             ),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 }
