@@ -41,7 +41,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $mockResultList = array();
 
     /**
-     * @var MockSynchronousCommand[] Array of commands built with this builder.
+     * @var MockCommand[] Array of commands built with this builder.
      */
     private $builtCommandList = array();
 
@@ -176,7 +176,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Get all commands built by this builder instance.
      *
-     * @return MockSynchronousCommand[]
+     * @return MockCommand[]
      */
     public function getBuiltCommands()
     {
