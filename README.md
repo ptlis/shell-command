@@ -76,9 +76,7 @@ If the command is not locatable a ```RuntimeException``` is thrown.
 
 #### Add Arguments
 
-Next we may provide any arguments to the command, either one at a time:.
-
-Add an argument. These are textual identifiers, prefixed with '--', optionally with a value. The separator is configurable & defaults to a single space character.
+Next we may provide any arguments to the command, either chained:
 
 ```php
     $builder
@@ -128,7 +126,7 @@ The exit code & output of the command are available as methods on this object:
 
 ## Mocking
 
-Mock implementations of the Command, Result & Builder interfaces are provided to aid testing.
+Mock implementations of the Command & Builder interfaces are provided to aid testing.
 
 By type hinting against the interfaces, rather than the concrete implementations, these mocks can be injected & used to return pre-configured result objects.
 
