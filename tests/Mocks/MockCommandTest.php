@@ -10,7 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
-use ptlis\ShellCommand\Mock\MockSynchronousCommand;
+use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\ShellResult;
 
 class MockCommandTest extends \PHPUnit_Framework_TestCase
@@ -19,7 +19,7 @@ class MockCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = 'binary';
 
-        $command = new MockSynchronousCommand(
+        $command = new MockCommand(
             $path,
             array('foo'),
             new ShellResult(0, array('hello world'), '')
@@ -29,7 +29,7 @@ class MockCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellResult(0, array('hello world'), ''),
-            $command->run()
+            $command->runSynchronous()
         );
     }
 }

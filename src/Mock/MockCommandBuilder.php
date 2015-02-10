@@ -200,7 +200,7 @@ class MockCommandBuilder implements CommandBuilderInterface
 
         $result = array_shift($this->mockResultList);
 
-        $command = new MockSynchronousCommand(
+        $command = new MockCommand(
             $this->command,
             $this->argumentList,
             $result

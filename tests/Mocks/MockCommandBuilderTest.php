@@ -11,7 +11,7 @@
 namespace ptlis\ShellCommand\Test\Mocks;
 
 
-use ptlis\ShellCommand\Mock\MockSynchronousCommand;
+use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
 
@@ -31,7 +31,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builtCommand = $builder->buildCommand();
 
-        $expectCommand = new MockSynchronousCommand(
+        $expectCommand = new MockCommand(
             'foo',
             array(
                 '--foo bar',
@@ -54,7 +54,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellResult(0, 'hello world', ''),
-            $builtCommand->run()
+            $builtCommand->runSynchronous()
         );
     }
 
@@ -67,7 +67,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addMockResult(1, 'hurray!', '')
             ->buildCommand();
 
-        $expectCommand = new MockSynchronousCommand(
+        $expectCommand = new MockCommand(
             'bar',
             array(),
             new ShellResult(1, 'hurray!', '')
@@ -85,7 +85,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellResult(1, 'hurray!', ''),
-            $builtCommand->run()
+            $builtCommand->runSynchronous()
         );
     }
 
@@ -100,7 +100,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->buildCommand();
 
         $expectResult1 = new ShellResult(1, 'hurray!', '');
-        $expectCommand1 = new MockSynchronousCommand(
+        $expectCommand1 = new MockCommand(
             'bar',
             array(),
             new ShellResult(1, 'hurray!', '')
@@ -108,7 +108,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectResult1,
-            $builtCommand1->run()
+            $builtCommand1->runSynchronous()
         );
 
         $builtCommand2 = $builder
@@ -117,7 +117,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->buildCommand();
 
         $expectResult2 = new ShellResult(0, 'success', '');
-        $expectCommand2 = new MockSynchronousCommand(
+        $expectCommand2 = new MockCommand(
             'baz',
             array(),
             new ShellResult(0, 'success', '')
@@ -125,7 +125,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectResult2,
-            $builtCommand2->run()
+            $builtCommand2->runSynchronous()
         );
 
         $this->assertEquals(

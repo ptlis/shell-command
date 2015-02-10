@@ -10,64 +10,62 @@
 
 namespace ptlis\ShellCommand\Mock;
 
-use ptlis\ShellCommand\Interfaces\SynchronousCommandInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
-use ptlis\ShellCommand\ShellResult;
 
-/**
- * Mock implementation of the command interface.
- *
- * @todo Replace with MockCommand implementing CommandInterface.
- */
-class MockSynchronousCommand implements SynchronousCommandInterface
+class MockCommand implements CommandInterface
 {
     /**
      * @var string The command to execute.
      */
-    private $binary;
+    private $command;
 
     /**
-     * @var string[] Array of arguments to pass to the binary.
+     * @var string[] Array of arguments to pass with the command.
      */
-    private $argumentList = array();
+    private $argumentList;
 
     /**
-     * @var ShellResult The mocked result of this operation.
+     * @var CommandResultInterface The mocked result of this operation.
      */
     private $result;
 
 
     /**
-     * Constructor.
+     * Constructor
      *
-     * @param string $binary
+     * @param string $command
      * @param string[] $argumentList
-     * @param ShellResult $result
+     * @param CommandResultInterface $result
      */
     public function __construct(
-        $binary,
+        $command,
         array $argumentList,
-        ShellResult $result
+        CommandResultInterface $result
     ) {
-        $this->binary = $binary;
+        $this->command = $command;
         $this->argumentList = $argumentList;
         $this->result = $result;
     }
 
     /**
-     * Execute the command and return its result.
-     *
-     * @return CommandResultInterface
+     * {@inheritDoc}
      */
-    public function run()
+    public function runSynchronous()
     {
         return $this->result;
     }
 
     /**
-     * Gets the string representation of the command, ready to execute.
-     *
-     * @return string
+     * {@inheritDoc}
+     */
+    public function runAsynchronous()
+    {
+        // TODO: Implement runAsynchronous() method.
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function __toString()
     {
@@ -76,7 +74,7 @@ class MockSynchronousCommand implements SynchronousCommandInterface
             function ($string, $argument) {
                 return $string . ' ' . escapeshellarg($argument);
             },
-            $this->binary
+            $this->command
         );
     }
 }
