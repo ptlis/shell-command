@@ -11,6 +11,7 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
@@ -19,6 +20,11 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
  */
 class ShellCommand implements CommandInterface
 {
+    /**
+     * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
+     */
+    private $environment;
+
     /**
      * @var string The command to execute.
      */
@@ -44,17 +50,20 @@ class ShellCommand implements CommandInterface
     /**
      * Constructor
      *
+     * @param EnvironmentInterface $environment
      * @param string $command
      * @param string[] $argumentList
      * @param int $timeout
      * @param int $pollTimeout
      */
     public function __construct(
+        EnvironmentInterface $environment,
         $command,
         array $argumentList,
         $timeout = -1,
         $pollTimeout = 1000
     ) {
+        $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->timeout = $timeout;
@@ -83,13 +92,11 @@ class ShellCommand implements CommandInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @todo This should not assume Unix!
      */
     public function runAsynchronous()
     {
-        return new UnixRunningProcess(
-            $this->__toString(),
+        return $this->environment->buildProcess(
+            $this,
             $this->pollTimeout
         );
     }

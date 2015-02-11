@@ -113,6 +113,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellCommand(
+                new UnixEnvironment(),
                 $path,
                 $arguments,
                 -1,
@@ -140,6 +141,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new ShellCommand(
+                new UnixEnvironment(),
                 $path,
                 $arguments,
                 60 * 1000 * 1000,

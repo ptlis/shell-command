@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand\Test\ShellCommand;
 
 use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\UnixEnvironment;
 
 class ShellCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,6 +21,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array(
                 '-s bar'
@@ -37,6 +39,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array(
                 '--filter=hide-empty'
@@ -54,6 +57,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array(
                 'my_files/'
@@ -71,6 +75,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -88,6 +93,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/test_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -109,6 +115,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/sleep_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array()
         );
@@ -128,6 +135,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $path = './tests/data/error_binary';
 
         $command = new ShellCommand(
+            new UnixEnvironment(),
             $path,
             array()
         );

@@ -10,7 +10,9 @@
 
 namespace ptlis\ShellCommand;
 
+use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
 /**
  * Implementation of a UNIX environment.
@@ -65,6 +67,17 @@ class UnixEnvironment implements EnvironmentInterface
         }
 
         return $valid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildProcess(CommandInterface $command, $pollTimeout = 1000)
+    {
+        return new UnixRunningProcess(
+            $command,
+            $pollTimeout
+        );
     }
 
     /**

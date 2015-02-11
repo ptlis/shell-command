@@ -176,6 +176,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         }
 
         return new ShellCommand(
+            $this->environment,
             $this->command,
             $this->argumentList,
             $this->timeout,

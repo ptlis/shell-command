@@ -23,4 +23,14 @@ interface EnvironmentInterface
      * @return bool
      */
     public function validateCommand($command);
+
+    /**
+     * Accepts a command and a polling timeout and returns an object implementing RunningProcessInterface.
+     *
+     * @param CommandInterface $command
+     * @param int $pollTimeout
+     *
+     * @return RunningProcessInterface
+     */
+    public function buildProcess(CommandInterface $command, $pollTimeout = 1000);
 }
