@@ -120,6 +120,7 @@ The exit code & output of the command are available as methods on this object:
 ```php
     $result->getExitCode();     // 0 for success, anything else conventionally indicates an error
     $result->getOutput();       // The contents of stdout
+    $result->getOutput();       // The contents of stderr
 ```
 
 
