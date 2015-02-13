@@ -97,6 +97,7 @@ class ShellCommand implements CommandInterface
     {
         return $this->environment->buildProcess(
             $this,
+            $this->timeout,
             $this->pollTimeout
         );
     }

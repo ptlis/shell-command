@@ -23,11 +23,22 @@ class UnixRunningProcess implements RunningProcessInterface
     const STDERR = 2;
     const EXITCODE = 3;
 
+
     /**
-     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
+     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
+     */
+    private $timeout;
+
+    /**
+     * @var int (microseconds) The amount of time to sleep for when polling for completion, defaults to 1/100 of a
      *  second.
      */
     private $pollTimeout;
+
+    /**
+     * @var float Unix timestamp with microseconds.
+     */
+    private $startTime;
 
     /**
      * @var int The exit code of the process, set once the process has exited.
@@ -51,9 +62,10 @@ class UnixRunningProcess implements RunningProcessInterface
      * @throws CommandExecutionException
      *
      * @param string $command
+     * @param int $timeout
      * @param int $pollTimeout
      */
-    public function __construct($command, $pollTimeout = 1000)
+    public function __construct($command, $timeout = -1, $pollTimeout = 1000)
     {
         $this->process = proc_open(
             $command . '; echo $? >&3',
@@ -64,6 +76,7 @@ class UnixRunningProcess implements RunningProcessInterface
             ),
             $this->pipeList
         );
+        $this->startTime = microtime(true);
 
         if (!is_resource($this->process)) {
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');

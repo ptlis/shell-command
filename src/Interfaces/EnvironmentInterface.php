@@ -28,9 +28,10 @@ interface EnvironmentInterface
      * Accepts a command and a polling timeout and returns an object implementing RunningProcessInterface.
      *
      * @param CommandInterface $command
+     * @param int $timeout
      * @param int $pollTimeout
      *
      * @return RunningProcessInterface
      */
-    public function buildProcess(CommandInterface $command, $pollTimeout = 1000);
+    public function buildProcess(CommandInterface $command, $timeout = -1, $pollTimeout = 1000);
 }

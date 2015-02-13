@@ -72,10 +72,11 @@ class UnixEnvironment implements EnvironmentInterface
     /**
      * {@inheritDoc}
      */
-    public function buildProcess(CommandInterface $command, $pollTimeout = 1000)
+    public function buildProcess(CommandInterface $command, $timeout = -1, $pollTimeout = 1000)
     {
         return new UnixRunningProcess(
             $command,
+            $timeout,
             $pollTimeout
         );
     }
