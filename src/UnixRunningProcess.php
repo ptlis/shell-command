@@ -110,7 +110,21 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function stop()
     {
-        // TODO: Implement stop() method.
+        $this->sendSignal(SIGTERM);
+    }
+
+    /**
+     * Send a signal to the running process.
+     *
+     * @param int $signal
+     */
+    public function sendSignal($signal)
+    {
+        if (true !== @proc_terminate($this->process, $signal)) {
+            throw new CommandExecutionException(
+                'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
+            );
+        }
     }
 
     /**

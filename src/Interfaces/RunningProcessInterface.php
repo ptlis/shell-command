@@ -42,6 +42,13 @@ interface RunningProcessInterface
     public function readOutput($streamId);
 
     /**
+     * Send a signal to the running process.
+     *
+     * @param int $signal
+     */
+    public function sendSignal($signal);
+
+    /**
      * Get the exit code of the running process.
      *
      * @throws \RuntimeException If the process has not yet exited.

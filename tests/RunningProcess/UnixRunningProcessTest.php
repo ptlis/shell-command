@@ -83,4 +83,13 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $process->getPid();
     }
+
+    public function testStopRunning()
+    {
+        $command = './tests/data/sleep_binary';
+
+        $process = new UnixRunningProcess($command);
+
+        $process->stop();
+    }
 }
