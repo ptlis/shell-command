@@ -46,6 +46,11 @@ class ShellCommand implements CommandInterface
      */
     private $pollTimeout;
 
+    /**
+     * @var string The current working directory to execute the command in.
+     */
+    private $cwd;
+
 
     /**
      * Constructor
@@ -53,6 +58,7 @@ class ShellCommand implements CommandInterface
      * @param EnvironmentInterface $environment
      * @param string $command
      * @param string[] $argumentList
+     * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
      */
@@ -60,6 +66,7 @@ class ShellCommand implements CommandInterface
         EnvironmentInterface $environment,
         $command,
         array $argumentList,
+        $cwd,
         $timeout = -1,
         $pollTimeout = 1000
     ) {
@@ -68,6 +75,7 @@ class ShellCommand implements CommandInterface
         $this->argumentList = $argumentList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
+        $this->cwd = $cwd;
     }
 
     /**
@@ -97,6 +105,7 @@ class ShellCommand implements CommandInterface
     {
         return $this->environment->buildProcess(
             $this,
+            $this->cwd,
             $this->timeout,
             $this->pollTimeout
         );

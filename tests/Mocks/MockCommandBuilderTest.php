@@ -190,6 +190,32 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSetCwd()
+    {
+        $path = './tests/data/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new MockCommandBuilder();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->setCwd('/foo/bar');
+
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $path,
+                $arguments,
+                -1,
+                1000,
+                '/foo/bar'
+            ),
+            $partialBuilder
+        );
+    }
+
     public function testInvalidBinary()
     {
         $this->setExpectedException(

@@ -35,7 +35,7 @@ namespace ptlis\ShellCommand\Test\RunningProcess {
 
             $command = './tests/data/test_binary';
 
-            $process = new UnixRunningProcess($command);
+            $process = new UnixRunningProcess($command, getcwd());
             $process->stop();
         }
     }

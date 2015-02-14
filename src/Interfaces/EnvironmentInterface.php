@@ -19,19 +19,21 @@ interface EnvironmentInterface
      * Accepts a command (without arguments) and verifies whether or not it can be executed.
      *
      * @param string $command
+     * @param string $cwdOverride
      *
      * @return bool
      */
-    public function validateCommand($command);
+    public function validateCommand($command, $cwdOverride = '');
 
     /**
      * Accepts a command and a polling timeout and returns an object implementing RunningProcessInterface.
      *
      * @param CommandInterface $command
+     * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
      *
      * @return RunningProcessInterface
      */
-    public function buildProcess(CommandInterface $command, $timeout = -1, $pollTimeout = 1000);
+    public function buildProcess(CommandInterface $command, $cwd, $timeout = -1, $pollTimeout = 1000);
 }

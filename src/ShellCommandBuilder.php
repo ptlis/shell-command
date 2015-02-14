@@ -45,6 +45,11 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     private $pollTimeout;
 
+    /**
+     * @var string The current working directory to execute the command in.
+     */
+    private $cwd;
+
 
     /**
      * Constructor.
@@ -54,19 +59,22 @@ class ShellCommandBuilder implements CommandBuilderInterface
      * @param array $argumentsList
      * @param int $timeout
      * @param int $pollTimeout
+     * @param string $cwd
      */
     public function __construct(
         EnvironmentInterface $environment,
         $command = '',
         array $argumentsList = array(),
         $timeout = -1,
-        $pollTimeout = 1000
+        $pollTimeout = 1000,
+        $cwd = ''
     ) {
         $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
+        $this->cwd = $cwd;
     }
 
     /**
@@ -83,7 +91,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $command,
             $this->argumentList,
             $this->timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->cwd
         );
     }
 
@@ -104,7 +113,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->command,
             $argumentList,
             $this->timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->cwd
         );
     }
 
@@ -124,7 +134,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->command,
             $argumentList,
             $this->timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->cwd
         );
     }
 
@@ -142,7 +153,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->command,
             $this->argumentList,
             $timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->cwd
         );
     }
 
@@ -160,7 +172,27 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->command,
             $this->argumentList,
             $this->timeout,
-            $pollTimeout
+            $pollTimeout,
+            $this->cwd
+        );
+    }
+
+    /**
+     * Set the current working directory for the command.
+     *
+     * @param string $cwd
+     *
+     * @return $this
+     */
+    public function setCwd($cwd)
+    {
+        return new ShellCommandBuilder(
+            $this->environment,
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $this->pollTimeout,
+            $cwd
         );
     }
 
@@ -175,10 +207,16 @@ class ShellCommandBuilder implements CommandBuilderInterface
             throw new \RuntimeException('Invalid command "' . $this->command . '" provided.');
         }
 
+        $cwd = $this->cwd;
+        if (!strlen($cwd)) {
+            $cwd = getcwd();
+        }
+
         return new ShellCommand(
             $this->environment,
             $this->command,
             $this->argumentList,
+            $cwd,
             $this->timeout,
             $this->pollTimeout
         );

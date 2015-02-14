@@ -70,9 +70,9 @@ class UnixEnvironmentTest extends \PHPUnit_Framework_TestCase
         $command = './data/test_binary';
         $cwd = getcwd() . DIRECTORY_SEPARATOR . 'tests';
 
-        $env = new UnixEnvironment($cwd);
+        $env = new UnixEnvironment();
 
-        $valid = $env->validateCommand($command);
+        $valid = $env->validateCommand($command, $cwd);
 
         $this->assertSame(true, $valid);
     }
@@ -83,7 +83,7 @@ class UnixEnvironmentTest extends \PHPUnit_Framework_TestCase
             realpath(getcwd() . '/tests/data')
         );
 
-        $env = new UnixEnvironment(null, $paths);
+        $env = new UnixEnvironment($paths);
 
         $valid = $env->validateCommand('test_binary');
 

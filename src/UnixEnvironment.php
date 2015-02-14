@@ -20,13 +20,6 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 class UnixEnvironment implements EnvironmentInterface
 {
     /**
-     * Use this working directory in place of the default one.
-     *
-     * @var string
-     */
-    private $cwd;
-
-    /**
      * Use the paths stored here in place of the system paths.
      *
      * @var string[]
@@ -37,28 +30,28 @@ class UnixEnvironment implements EnvironmentInterface
     /**
      * Constructor.
      *
-     * @param string $cwdOverride
      * @param string[] $pathsOverride
      */
-    public function __construct($cwdOverride = '', array $pathsOverride = array())
+    public function __construct(array $pathsOverride = array())
     {
-        $this->setCwd($cwdOverride);
         $this->setPaths($pathsOverride);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function validateCommand($command)
+    public function validateCommand($command, $cwdOverride = '')
     {
         $valid = false;
+
+        $cwd = $this->normalizeCwd($cwdOverride);
 
         // Fully-qualified path
         if ($this->isValidFullPath($command)) {
             $valid = true;
 
         // From current directory
-        } elseif (strlen($this->isValidRelativePath($command))) {
+        } elseif (strlen($this->isValidRelativePath($command, $cwd))) {
             $valid = true;
 
         // In path
@@ -72,26 +65,29 @@ class UnixEnvironment implements EnvironmentInterface
     /**
      * {@inheritDoc}
      */
-    public function buildProcess(CommandInterface $command, $timeout = -1, $pollTimeout = 1000)
+    public function buildProcess(CommandInterface $command, $cwd, $timeout = -1, $pollTimeout = 1000)
     {
         return new UnixRunningProcess(
             $command,
+            $cwd,
             $timeout,
             $pollTimeout
         );
     }
 
     /**
-     * Set the CWD, if $cwdOverride is not set default then default to real CWD.
+     * Normalize CWD - if Override is set return that otherwise return the real CWD.
      *
      * @param string $cwdOverride
+     *
+     * @return string Normalized CWD.
      */
-    private function setCwd($cwdOverride)
+    private function normalizeCwd($cwdOverride)
     {
         if (strlen($cwdOverride)) {
-            $this->cwd = $cwdOverride;
+            return $cwdOverride;
         } else {
-            $this->cwd = getcwd();
+            return getcwd();
         }
     }
 
@@ -130,14 +126,15 @@ class UnixEnvironment implements EnvironmentInterface
      * Validate a relative command path.
      *
      * @param string $relativePath
+     * @param string $cwd
      *
      * @return bool
      */
-    private function isValidRelativePath($relativePath)
+    private function isValidRelativePath($relativePath, $cwd)
     {
         $valid = false;
         if ('./' === substr($relativePath, 0, 2)) {
-            $tmpPath = $this->cwd . DIRECTORY_SEPARATOR . substr($relativePath, 2, strlen($relativePath));
+            $tmpPath = $cwd . DIRECTORY_SEPARATOR . substr($relativePath, 2, strlen($relativePath));
 
             if ($this->isValidFullPath($tmpPath)) {
                 $valid = true;

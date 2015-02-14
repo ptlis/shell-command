@@ -18,7 +18,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
     {
         $command = './tests/data/test_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
         $process->wait();
 
         $this->assertEquals(
@@ -31,7 +31,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
     {
         $command = './tests/data/error_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
         $process->wait();
 
         $this->assertEquals(
@@ -54,7 +54,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
         $process->getExitCode();
     }
 
@@ -62,7 +62,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
     {
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
 
         $this->assertNotNull(
             $process->getPid()
@@ -78,7 +78,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $command = './tests/data/test_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
         $process->wait();
 
         $process->getPid();
@@ -88,7 +88,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
     {
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command);
+        $process = new UnixRunningProcess($command, getcwd());
 
         $process->stop();
     }

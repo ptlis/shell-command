@@ -42,6 +42,11 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $pollTimeout;
 
     /**
+     * @var string The current working directory to execute the command in.
+     */
+    private $cwd;
+
+    /**
      * @var ShellResult[] Pre-populated list of results to return.
      */
     private $mockResultList = array();
@@ -59,6 +64,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param string[] $argumentsList
      * @param int $timeout
      * @param int $pollTimeout
+     * @param string $cwd
      * @param CommandResultInterface[] $mockResultList
      * @param CommandInterface[] $builtCommandList
      */
@@ -67,6 +73,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         array $argumentsList = array(),
         $pollTimeout = 1000,
         $timeout = -1,
+        $cwd = '',
         array $mockResultList = array(),
         array &$builtCommandList = array()
     ) {
@@ -74,6 +81,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
+        $this->cwd = $cwd;
         $this->mockResultList = $mockResultList;
         $this->builtCommandList = &$builtCommandList;
     }
@@ -93,6 +101,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
+            $this->cwd,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -115,6 +124,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
+            $this->cwd,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -136,6 +146,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
+            $this->cwd,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -155,6 +166,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $timeout,
             $this->pollTimeout,
+            $this->cwd,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -174,6 +186,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $pollTimeout,
+            $this->cwd,
             $this->mockResultList,
             $this->builtCommandList
         );
@@ -201,7 +214,28 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
+            $this->cwd,
             $mockResultList,
+            $this->builtCommandList
+        );
+    }
+
+    /**
+     * Set the current working directory for the command.
+     *
+     * @param string $cwd
+     *
+     * @return $this
+     */
+    public function setCwd($cwd)
+    {
+        return new MockCommandBuilder(
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $this->pollTimeout,
+            $cwd,
+            $this->mockResultList,
             $this->builtCommandList
         );
     }

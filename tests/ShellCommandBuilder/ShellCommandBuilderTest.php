@@ -116,8 +116,37 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
                 new UnixEnvironment(),
                 $path,
                 $arguments,
+                getcwd(),
                 -1,
                 1000000
+            ),
+            $command
+        );
+    }
+
+    public function testSetCwd()
+    {
+        $path = './tests/data/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->setCwd('/bob')
+            ->buildCommand();
+
+        $this->assertEquals(
+            new ShellCommand(
+                new UnixEnvironment(),
+                $path,
+                $arguments,
+                '/bob',
+                -1,
+                1000
             ),
             $command
         );
@@ -144,6 +173,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
                 new UnixEnvironment(),
                 $path,
                 $arguments,
+                getcwd(),
                 60 * 1000 * 1000,
                 1000000
             ),

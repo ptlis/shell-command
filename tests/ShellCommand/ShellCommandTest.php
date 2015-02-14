@@ -25,7 +25,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $path,
             array(
                 '-s bar'
-            )
+            ),
+            getcwd()
         );
 
         $this->assertSame(
@@ -43,7 +44,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $path,
             array(
                 '--filter=hide-empty'
-            )
+            ),
+            getcwd()
         );
 
         $this->assertSame(
@@ -61,7 +63,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $path,
             array(
                 'my_files/'
-            )
+            ),
+            getcwd()
         );
 
         $this->assertSame(
@@ -79,7 +82,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
-            )
+            ),
+            getcwd()
         );
 
         $this->assertSame(
@@ -97,7 +101,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
-            )
+            ),
+            getcwd()
         );
 
         $this->assertEquals(
@@ -117,7 +122,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $command = new ShellCommand(
             new UnixEnvironment(),
             $path,
-            array()
+            array(),
+            getcwd()
         );
 
         $this->assertEquals(
@@ -137,7 +143,8 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         $command = new ShellCommand(
             new UnixEnvironment(),
             $path,
-            array()
+            array(),
+            getcwd()
         );
 
         $this->assertEquals(

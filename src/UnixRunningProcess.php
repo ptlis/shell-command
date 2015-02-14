@@ -62,11 +62,16 @@ class UnixRunningProcess implements RunningProcessInterface
      * @throws CommandExecutionException
      *
      * @param string $command
+     * @param string $cwdOverride
      * @param int $timeout
      * @param int $pollTimeout
      */
-    public function __construct($command, $timeout = -1, $pollTimeout = 1000)
+    public function __construct($command, $cwdOverride, $timeout = -1, $pollTimeout = 1000)
     {
+        // Store CWD, set to override
+        $prevCwd = getcwd();
+        chdir($cwdOverride);
+
         $this->process = proc_open(
             $command . '; echo $? >&3',
             array(
@@ -77,6 +82,9 @@ class UnixRunningProcess implements RunningProcessInterface
             $this->pipeList
         );
         $this->startTime = microtime(true);
+
+        // Reset CWD to previous
+        chdir($prevCwd);
 
         if (!is_resource($this->process)) {
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');

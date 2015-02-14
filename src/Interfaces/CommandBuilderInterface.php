@@ -61,6 +61,15 @@ interface CommandBuilderInterface
     public function setPollTimeout($pollTimeout);
 
     /**
+     * Set the current working directory for the command.
+     *
+     * @param string $cwd
+     *
+     * @return $this
+     */
+    public function setCwd($cwd);
+
+    /**
      * Get the build command.
      *
      * @return CommandInterface
