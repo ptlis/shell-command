@@ -15,8 +15,6 @@ use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
- *
- * @todo Use timeout!
  */
 class ShellCommand implements CommandInterface
 {

@@ -15,6 +15,8 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
 /**
  * UNIX implementation of running process.
+ *
+ * @todo Use timeout!
  */
 class UnixRunningProcess implements RunningProcessInterface
 {
