@@ -95,13 +95,12 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testMockCommandMultiUse()
+    public function testMockCommandMultiUseOne()
     {
         $builder = new MockCommandBuilder();
 
         $builtCommand1 = $builder
             ->addMockResult(1, 'hurray!', '')
-            ->addMockResult(0, 'success', '')
             ->setCommand('bar')
             ->buildCommand();
 
@@ -140,6 +139,51 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testMockCommandMultiUseTwo()
+    {
+        $builder = new MockCommandBuilder();
+        $primedBuilder = $builder
+            ->addMockResult(1, 'hurray!', '')
+            ->addMockResult(0, 'success', '');
+
+        $builtCommand1 = $primedBuilder
+            ->setCommand('bar')
+            ->buildCommand();
+
+        $expectResult1 = new ShellResult(1, 'hurray!', '');
+        $expectCommand1 = new MockCommand(
+            'bar',
+            array(),
+            new ShellResult(1, 'hurray!', '')
+        );
+
+        $this->assertEquals(
+            $expectResult1,
+            $builtCommand1->runSynchronous()
+        );
+
+        $builtCommand2 = $primedBuilder
+            ->setCommand('baz')
+            ->buildCommand();
+
+        $expectResult2 = new ShellResult(0, 'success', '');
+        $expectCommand2 = new MockCommand(
+            'baz',
+            array(),
+            new ShellResult(0, 'success', '')
+        );
+
+        $this->assertEquals(
+            $expectResult2,
+            $builtCommand2->runSynchronous()
+        );
+
+        $this->assertEquals(
+            array($expectCommand1, $expectCommand2),
+            $builder->getBuiltCommands()
+        );
+    }
+
     public function testPollTimeout()
     {
         $path = './tests/data/test_binary';
@@ -154,9 +198,10 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addArguments($arguments)
             ->setPollTimeout(1000000);
 
+        $results = array();
         $this->assertEquals(
             new MockCommandBuilder(
-                array(),
+                $results,
                 $path,
                 $arguments,
                 -1,
@@ -180,9 +225,10 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addArguments($arguments)
             ->setTimeout(60 * 1000 * 1000);
 
+        $results = array();
         $this->assertEquals(
             new MockCommandBuilder(
-                array(),
+                $results,
                 $path,
                 $arguments,
                 60 * 1000 * 1000,
@@ -206,9 +252,10 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
             ->addArguments($arguments)
             ->setCwd('/foo/bar');
 
+        $results = array();
         $this->assertEquals(
             new MockCommandBuilder(
-                array(),
+                $results,
                 $path,
                 $arguments,
                 -1,

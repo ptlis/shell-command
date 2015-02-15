@@ -60,6 +60,8 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Constructor.
      *
+     * @todo Deal with odd implications of mockResultList being passed in by reference.
+     *
      * @param CommandResultInterface[] $mockResultList
      * @param string $command
      * @param string[] $argumentsList
@@ -69,7 +71,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
-        array $mockResultList = array(),
+        array &$mockResultList = array(),
         $command = '',
         array $argumentsList = array(),
         $pollTimeout = 1000,
@@ -77,7 +79,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         $cwd = '',
         array &$builtCommandList = array()
     ) {
-        $this->mockResultList = $mockResultList;
+        $this->mockResultList = &$mockResultList;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
