@@ -156,6 +156,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new MockCommandBuilder(
+                array(),
                 $path,
                 $arguments,
                 -1,
@@ -181,6 +182,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new MockCommandBuilder(
+                array(),
                 $path,
                 $arguments,
                 60 * 1000 * 1000,
@@ -206,6 +208,7 @@ class MockCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new MockCommandBuilder(
+                array(),
                 $path,
                 $arguments,
                 -1,

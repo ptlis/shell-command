@@ -60,29 +60,29 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Constructor.
      *
+     * @param CommandResultInterface[] $mockResultList
      * @param string $command
      * @param string[] $argumentsList
      * @param int $timeout
      * @param int $pollTimeout
      * @param string $cwd
-     * @param CommandResultInterface[] $mockResultList
      * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
+        array $mockResultList = array(),
         $command = '',
         array $argumentsList = array(),
         $pollTimeout = 1000,
         $timeout = -1,
         $cwd = '',
-        array $mockResultList = array(),
         array &$builtCommandList = array()
     ) {
+        $this->mockResultList = $mockResultList;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
-        $this->mockResultList = $mockResultList;
         $this->builtCommandList = &$builtCommandList;
     }
 
@@ -97,12 +97,12 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function setCommand($command)
     {
         return new MockCommandBuilder(
+            $this->mockResultList,
             $command,
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
@@ -120,12 +120,12 @@ class MockCommandBuilder implements CommandBuilderInterface
         $argumentList[] = $argument;
 
         return new MockCommandBuilder(
+            $this->mockResultList,
             $this->command,
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
@@ -142,12 +142,12 @@ class MockCommandBuilder implements CommandBuilderInterface
         $argumentList = array_merge($this->argumentList, $argumentList);
 
         return new MockCommandBuilder(
+            $this->mockResultList,
             $this->command,
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
@@ -162,12 +162,12 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function setTimeout($timeout)
     {
         return new MockCommandBuilder(
+            $this->mockResultList,
             $this->command,
             $this->argumentList,
             $timeout,
             $this->pollTimeout,
             $this->cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
@@ -182,12 +182,12 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function setPollTimeout($pollTimeout)
     {
         return new MockCommandBuilder(
+            $this->mockResultList,
             $this->command,
             $this->argumentList,
             $this->timeout,
             $pollTimeout,
             $this->cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
@@ -210,12 +210,12 @@ class MockCommandBuilder implements CommandBuilderInterface
         $mockResultList[] = new ShellResult($exitCode, $stdOut, $stdErr);
 
         return new MockCommandBuilder(
+            $mockResultList,
             $this->command,
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
-            $mockResultList,
             $this->builtCommandList
         );
     }
@@ -230,12 +230,12 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function setCwd($cwd)
     {
         return new MockCommandBuilder(
+            $this->mockResultList,
             $this->command,
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
             $cwd,
-            $this->mockResultList,
             $this->builtCommandList
         );
     }
