@@ -143,7 +143,7 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function sendSignal($signal)
     {
-        if (true !== @proc_terminate($this->process, $signal)) {
+        if (true !== proc_terminate($this->process, $signal)) {
             throw new CommandExecutionException(
                 'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
             );
