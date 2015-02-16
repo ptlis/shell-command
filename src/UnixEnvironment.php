@@ -136,9 +136,7 @@ class UnixEnvironment implements EnvironmentInterface
         if ('./' === substr($relativePath, 0, 2)) {
             $tmpPath = $cwd . DIRECTORY_SEPARATOR . substr($relativePath, 2, strlen($relativePath));
 
-            if ($this->isValidFullPath($tmpPath)) {
-                $valid = true;
-            }
+            $valid = $this->isValidFullPath($tmpPath);
         }
 
         return $valid;
@@ -160,7 +158,7 @@ class UnixEnvironment implements EnvironmentInterface
             // Check for command in path list
             foreach ($this->paths as $pathDir) {
                 $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $command;
-                if (file_exists($tmpPath)) {
+                if ($this->isValidFullPath($tmpPath)) {
                     $valid = true;
                     break;
                 }
