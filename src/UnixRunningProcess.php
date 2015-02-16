@@ -118,9 +118,22 @@ class UnixRunningProcess implements RunningProcessInterface
     /**
      * {@inheritDoc}
      */
-    public function stop()
+    public function stop($timeout = 1000000)
     {
+        $originalTime = microtime(true);
         $this->sendSignal(SIGTERM);
+
+        while ($this->isRunning()) {
+            $time = microtime(true);
+
+            // If term hasn't succeeded by the specified timeout then try and kill
+            if (($time - $originalTime) * 1000000 > $timeout) {
+                $this->sendSignal(SIGKILL);
+                break;
+            }
+
+            usleep($this->pollTimeout);
+        }
     }
 
     /**

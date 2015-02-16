@@ -29,8 +29,10 @@ interface RunningProcessInterface
 
     /**
      * Stops the running process.
+     *
+     * @param int $timeout (microseconds)
      */
-    public function stop();
+    public function stop($timeout = 1000000);
 
     /**
      * Read the pending output from the specified stream.

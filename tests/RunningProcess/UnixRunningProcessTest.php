@@ -92,4 +92,13 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $process->stop();
     }
+
+    public function testStopLongRunning()
+    {
+        $command = './tests/data/long_sleep_binary';
+
+        $process = new UnixRunningProcess($command, getcwd());
+
+        $process->stop();
+    }
 }
