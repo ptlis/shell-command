@@ -50,6 +50,10 @@ class UnixEnvironment implements EnvironmentInterface
         if ($this->isValidFullPath($command)) {
             $valid = true;
 
+        // In users home directory
+        } elseif ($this->isValidHomeDirectory($command)) {
+            $valid = true;
+
         // From current directory
         } elseif (strlen($this->isValidRelativePath($command, $cwd))) {
             $valid = true;
@@ -67,6 +71,10 @@ class UnixEnvironment implements EnvironmentInterface
      */
     public function buildProcess(CommandInterface $command, $cwd, $timeout = -1, $pollTimeout = 1000)
     {
+        if ($this->isValidHomeDirectory($cwd)) {
+            $cwd = $this->expandHomeDirectory($cwd);
+        }
+
         return new UnixRunningProcess(
             $command,
             $cwd,
@@ -103,6 +111,38 @@ class UnixEnvironment implements EnvironmentInterface
         } else {
             $this->paths = explode(':', getenv('PATH'));
         }
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    private function expandHomeDirectory($path)
+    {
+        return getenv('HOME') . DIRECTORY_SEPARATOR . substr($path, 2, strlen($path));
+    }
+
+    /**
+     * Returns true if the path is relative to the users home directory.
+     *
+     * The home directory receives special attention due to the fact that chdir (and pals) don't expand '~' to the users
+     *  home directory - this is a function of the shell on UNIX systems so we must replicate the behaviour here.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function isValidHomeDirectory($path)
+    {
+        $valid = false;
+        if ('~/' === substr($path, 0, 2)) {
+            $valid = $this->isValidFullPath(
+                $this->expandHomeDirectory($path)
+            );
+        }
+
+        return $valid;
     }
 
     /**

@@ -142,4 +142,3 @@ You can contribute by submitting an Issue to the [issue tracker](https://github.
 ## Known limitations
 
 * Currently supports UNIX environments only, pull requests welcomed for Windows (or other platforms).
-* Doesn't correctly handle home directories, chdir does not do tilde expansion - when we see this we should use $HOME environment variable to expand it manually.

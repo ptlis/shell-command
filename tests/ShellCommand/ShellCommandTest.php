@@ -115,6 +115,66 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testRunFromHome()
+    {
+        $originalPath = getenv('PATH');
+
+        $pathToCommand = realpath(getcwd() . '/tests/data');
+
+        putenv('HOME=' . $pathToCommand);
+
+        $path = '~/test_binary';
+
+        $command = new ShellCommand(
+            new UnixEnvironment(),
+            $path,
+            array(
+                'if=/dev/sha1 of=/dev/sdb2'
+            ),
+            getcwd()
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
+                ''
+            ),
+            $command->runSynchronous()
+        );
+
+        putenv('PATH=' . $originalPath);
+    }
+
+    public function testRunHomeCwd()
+    {
+        $originalPath = getenv('PATH');
+
+        $pathToCommand = realpath(getcwd() . '/tests/data');
+
+        putenv('HOME=' . $pathToCommand);
+
+        $path = '~/sleep_binary';
+
+        $command = new ShellCommand(
+            new UnixEnvironment(),
+            $path,
+            array(),
+            '~/'
+        );
+
+        $this->assertEquals(
+            new ShellResult(
+                0,
+                '',
+                ''
+            ),
+            $command->runSynchronous()
+        );
+
+        putenv('PATH=' . $originalPath);
+    }
+
     public function testRunWithSleep()
     {
         $path = './tests/data/sleep_binary';

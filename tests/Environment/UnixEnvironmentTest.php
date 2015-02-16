@@ -54,6 +54,23 @@ class UnixEnvironmentTest extends \PHPUnit_Framework_TestCase
         putenv('PATH=' . $originalPath);
     }
 
+    public function testFromHome()
+    {
+        $originalPath = getenv('PATH');
+
+        $pathToCommand = realpath(getcwd() . '/tests/data');
+
+        putenv('HOME=' . $pathToCommand);
+
+        $env = new UnixEnvironment();
+
+        $valid = $env->validateCommand('~/test_binary');
+
+        $this->assertSame(true, $valid);
+
+        putenv('PATH=' . $originalPath);
+    }
+
     public function testNotFound()
     {
         $command = 'bob_1_2_3';
