@@ -13,7 +13,7 @@ The motivation behind this package was to provide a mockable API to support writ
 Either from the console:
 
 ```shell
-    $ composer require ptlis/shell-command:"~0.3"
+    $ composer require ptlis/shell-command:"~0.5"
 ```
 
 Or by Editing composer.json:
@@ -22,7 +22,7 @@ Or by Editing composer.json:
     {
         "require": {
             ...
-            "ptlis/shell-command": "~0.3",
+            "ptlis/shell-command": "~0.5",
             ...
         }
     }
