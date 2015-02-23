@@ -23,7 +23,6 @@ class UnixRunningProcess implements RunningProcessInterface
     const STDIN = 0;
     const STDOUT = 1;
     const STDERR = 2;
-    const EXITCODE = 3;
 
 
     /**
@@ -75,11 +74,10 @@ class UnixRunningProcess implements RunningProcessInterface
         chdir($cwdOverride);
 
         $this->process = proc_open(
-            $command . '; echo $? >&3',
+            $command,
             array(
                 self::STDOUT => array('pipe', 'w'),
-                self::STDERR => array('pipe', 'w'),
-                self::EXITCODE => array('pipe', 'w')
+                self::STDERR => array('pipe', 'w')
             ),
             $this->pipeList
         );
@@ -100,7 +98,7 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function isRunning()
     {
-        $status = proc_get_status($this->process);
+        $status = $this->getStatus();
 
         return $status['running'];
     }
@@ -167,10 +165,6 @@ class UnixRunningProcess implements RunningProcessInterface
             throw new \RuntimeException('Cannot get exit code of still-running process.');
         }
 
-        if (is_null($this->exitCode)) {
-            $this->exitCode = intval($this->readOutput(self::EXITCODE));
-        }
-
         return $this->exitCode;
     }
 
@@ -179,11 +173,32 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function getPid()
     {
-        $status = proc_get_status($this->process);
+        $status = $this->getStatus();
         if (!$status['running']) {
             throw new \RuntimeException('Cannot get the process id of a process that has already exited.');
         }
 
         return $status['pid'];
+    }
+
+    /**
+     * Proxy method to proc_get_status.
+     *
+     * This is used so that we always update the exit code when retrieving process status. This works around the issue
+     * where only the last call after process termination contains the real exit code.
+     *
+     * See http://stackoverflow.com/a/7841550 For more information.
+     *
+     * @return array
+     */
+    private function getStatus()
+    {
+        $status = proc_get_status($this->process);
+
+        if (!$status['running'] && is_null($this->exitCode)) {
+            $this->exitCode = $status['exitcode'];
+        }
+
+        return $status;
     }
 }
