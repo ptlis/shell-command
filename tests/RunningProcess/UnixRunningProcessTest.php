@@ -41,7 +41,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'Fatal Error' . PHP_EOL,
-            $process->readOutput(UnixRunningProcess::STDERR)
+            $process->getCompleteOutput(UnixRunningProcess::STDERR)
         );
     }
 

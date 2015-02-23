@@ -44,6 +44,17 @@ interface RunningProcessInterface
     public function readOutput($streamId);
 
     /**
+     * Read the complete output from the specified stream.
+     *
+     * @throws \RuntimeException If the process has not yet exited.
+     *
+     * @param int $streamId
+     *
+     * @return string
+     */
+    public function getCompleteOutput($streamId);
+
+    /**
      * Send a signal to the running process.
      *
      * @param int $signal

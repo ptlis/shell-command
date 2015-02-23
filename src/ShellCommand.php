@@ -86,8 +86,8 @@ class ShellCommand implements CommandInterface
         $process->wait();
 
         $exitCode = $process->getExitCode();
-        $stdOut = $process->readOutput(UnixRunningProcess::STDOUT);
-        $stdErr = $process->readOutput(UnixRunningProcess::STDERR);
+        $stdOut = $process->getCompleteOutput(UnixRunningProcess::STDOUT);
+        $stdErr = $process->getCompleteOutput(UnixRunningProcess::STDERR);
 
         return new ShellResult(
             $exitCode,
