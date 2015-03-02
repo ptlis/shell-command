@@ -27,6 +27,21 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testWaitWithClosure()
+    {
+        $command = './tests/data/test_binary';
+
+        $process = new UnixRunningProcess($command, getcwd());
+        $process->wait(function($stdOut, $stdErr) {
+
+        });
+
+        $this->assertEquals(
+            false,
+            $process->isRunning()
+        );
+    }
+
     public function testHandleCommandError()
     {
         $command = './tests/data/error_binary';

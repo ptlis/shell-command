@@ -74,6 +74,7 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     private $stdErr = '';
 
+
     /**
      * Constructor.
      *
@@ -126,7 +127,7 @@ class UnixRunningProcess implements RunningProcessInterface
     /**
      * {@inheritDoc}
      */
-    public function wait()
+    public function wait(\Closure $callback = null)
     {
         // TODO: We must make sure the buffer does not fill (or the process halts), so for now we're polling the output
         // every iteration of the loop. The problem is that this isn't the only way to use the class so other cases
@@ -135,12 +136,19 @@ class UnixRunningProcess implements RunningProcessInterface
             $stdOut = $this->readOutput(self::STDOUT);
             $stdErr = $this->readOutput(self::STDERR);
 
+            if (!is_null($callback)) {
+                $callback($stdOut, $stdErr);
+            }
+
             usleep($this->pollTimeout);
         }
 
         $stdOut = $this->readOutput(self::STDOUT);
         $stdErr = $this->readOutput(self::STDERR);
 
+        if (!is_null($callback)) {
+            $callback($stdOut, $stdErr);
+        }
     }
 
     /**
