@@ -58,6 +58,20 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
         $process->getExitCode();
     }
 
+    public function testGetOutputBeforeComplete()
+    {
+        $this->setExpectedException(
+            'RuntimeException',
+            'Cannot get complete output of still-running process.'
+        );
+
+        $command = './tests/data/sleep_binary';
+
+        $process = new UnixRunningProcess($command, getcwd());
+
+        $process->getCompleteOutput(UnixRunningProcess::STDOUT);
+    }
+
     public function testGetPid()
     {
         $command = './tests/data/sleep_binary';
