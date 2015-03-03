@@ -82,7 +82,7 @@ Next we may provide any arguments to the command, either chained:
     $builder
         ->addArgument('--foo=bar')
         ->addArgument('-xzcf')
-        ->addArgument('if=/dev/sda of=/dev/sdb');
+        ->addArgument('if=/dev/sda of=/dev/sdb')
 ```
 
 Or in bulk:
@@ -102,7 +102,9 @@ Or in bulk:
 One the builder has been configured, the command can be retrieved for execution:
 
 ```php
-    $command = $builder->buildCommand();
+    $command = $builder
+        // Command configuration...
+        ->buildCommand();
 ```
 
 
