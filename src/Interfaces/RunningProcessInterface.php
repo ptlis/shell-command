@@ -25,7 +25,7 @@ interface RunningProcessInterface
     /**
      * Blocks execution until the command has finished executing.
      *
-     * @param \Closure $callback Execute when the wait time has elapsed, is provided the latest contents of stdout and
+     * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout and
      *  stderr.
      */
     public function wait(\Closure $callback = null);
