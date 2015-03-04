@@ -111,7 +111,7 @@ One the builder has been configured, the command can be retrieved for execution:
 
 ### Synchronous Execution
 
-Executing the command is done using the ```runSynchronous``` method which returns a class implementing the ```CommandResultInterface```, ```ShellResult``` by default.
+Executing the command is done using the ```runSynchronous``` method which returns an object implementing the ```CommandResultInterface```.
 
 ```php
     $result = $command->runSynchronous(); 
@@ -121,8 +121,10 @@ The exit code & output of the command are available as methods on this object:
 
 ```php
     $result->getExitCode();     // 0 for success, anything else conventionally indicates an error
-    $result->getOutput();       // The contents of stdout
-    $result->getOutput();       // The contents of stderr
+    $result->getStdOut();       // The contents of stdout (as a string)
+    $result->getStdOutLines();  // The contents of stdout (as an array of lines)
+    $result->getStdErr();       // The contents of stderr (as a string)
+    $result->getStdErrLines();  // The contents of stderr (as a string of lines)
 ```
 
 
