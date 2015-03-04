@@ -124,7 +124,7 @@ The exit code & output of the command are available as methods on this object:
     $result->getStdOut();       // The contents of stdout (as a string)
     $result->getStdOutLines();  // The contents of stdout (as an array of lines)
     $result->getStdErr();       // The contents of stderr (as a string)
-    $result->getStdErrLines();  // The contents of stderr (as a string of lines)
+    $result->getStdErrLines();  // The contents of stderr (as an array of lines)
 ```
 
 
