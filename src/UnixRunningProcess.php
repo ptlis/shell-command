@@ -111,6 +111,7 @@ class UnixRunningProcess implements RunningProcessInterface
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
         }
 
+        $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
     }
 
