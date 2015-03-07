@@ -56,24 +56,6 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     private $process = null;
 
-    /**
-     * @var bool Whether to cache all output in this class.
-     *
-     * @todo Rethink this - is really about forcing the streams to be flushed regularly to prevent them filling &
-     *  blocking the process.
-     */
-    private $cacheOutput;
-
-    /**
-     * @var string The accumulating output from STDOUT.
-     */
-    private $stdOut = '';
-
-    /**
-     * @var string The accumulating error output from STDOUT.
-     */
-    private $stdErr = '';
-
 
     /**
      * Constructor.
@@ -84,12 +66,9 @@ class UnixRunningProcess implements RunningProcessInterface
      * @param string $cwdOverride
      * @param int $timeout
      * @param int $pollTimeout
-     * @param bool $cacheOutput
      */
-    public function __construct($command, $cwdOverride, $timeout = -1, $pollTimeout = 1000, $cacheOutput = true)
+    public function __construct($command, $cwdOverride, $timeout = -1, $pollTimeout = 1000)
     {
-        $this->cacheOutput = $cacheOutput;
-
         // Store CWD, set to override
         $prevCwd = getcwd();
         chdir($cwdOverride);
@@ -130,9 +109,6 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function wait(\Closure $callback = null)
     {
-        // TODO: We must make sure the buffer does not fill (or the process halts), so for now we're polling the output
-        // every iteration of the loop. The problem is that this isn't the only way to use the class so other cases
-        // will trigger this issue.
         while ($this->isRunning()) {
             $stdOut = $this->readOutput(self::STDOUT);
             $stdErr = $this->readOutput(self::STDERR);
@@ -193,39 +169,6 @@ class UnixRunningProcess implements RunningProcessInterface
     public function readOutput($streamId)
     {
         $data = stream_get_contents($this->pipeList[$streamId]);
-        if ($this->cacheOutput) {
-            if (self::STDOUT === $streamId) {
-                $this->stdOut .= $data;
-            } elseif (self::STDERR === $streamId) {
-
-                $this->stdErr .= $data;
-            }
-        }
-        return $data;
-    }
-
-    /**
-     * Read the complete output from the specified stream.
-     *
-     * @throws \RuntimeException If the process has not yet exited.
-     *
-     * @param int $streamId
-     *
-     * @return string
-     */
-    public function getCompleteOutput($streamId)
-    {
-        if ($this->isRunning()) {
-            throw new \RuntimeException('Cannot get complete output of still-running process.');
-        }
-
-        $data = '';
-        if (self::STDOUT === $streamId) {
-            $data = $this->stdOut;
-        } elseif (self::STDERR === $streamId) {
-            $data = $this->stdErr;
-        }
-
         return $data;
     }
 

@@ -83,16 +83,19 @@ class ShellCommand implements CommandInterface
     {
         $process = $this->runAsynchronous();
 
-        $process->wait();
+        $fullStdOut = '';
+        $fullStdErr = '';
 
-        $exitCode = $process->getExitCode();
-        $stdOut = $process->getCompleteOutput(UnixRunningProcess::STDOUT);
-        $stdErr = $process->getCompleteOutput(UnixRunningProcess::STDERR);
+        // Accumulate output as we wait
+        $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
+            $fullStdOut .= $stdOut;
+            $fullStdErr .= $stdErr;
+        });
 
         return new ShellResult(
-            $exitCode,
-            $stdOut,
-            $stdErr
+            $process->getExitCode(),
+            $fullStdOut,
+            $fullStdErr
         );
     }
 

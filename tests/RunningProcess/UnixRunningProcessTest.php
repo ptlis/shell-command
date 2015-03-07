@@ -47,7 +47,13 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
         $command = './tests/data/error_binary';
 
         $process = new UnixRunningProcess($command, getcwd());
-        $process->wait();
+
+        $fullStdOut = '';
+        $fullStdErr = '';
+        $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
+            $fullStdOut .= $stdOut;
+            $fullStdErr .= $stdErr;
+        });
 
         $this->assertEquals(
             5,
@@ -56,7 +62,7 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             'Fatal Error' . PHP_EOL,
-            $process->getCompleteOutput(UnixRunningProcess::STDERR)
+            $fullStdErr
         );
     }
 
@@ -71,20 +77,6 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
 
         $process = new UnixRunningProcess($command, getcwd());
         $process->getExitCode();
-    }
-
-    public function testGetOutputBeforeComplete()
-    {
-        $this->setExpectedException(
-            'RuntimeException',
-            'Cannot get complete output of still-running process.'
-        );
-
-        $command = './tests/data/sleep_binary';
-
-        $process = new UnixRunningProcess($command, getcwd());
-
-        $process->getCompleteOutput(UnixRunningProcess::STDOUT);
     }
 
     public function testGetPid()
