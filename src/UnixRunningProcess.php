@@ -21,6 +21,11 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 class UnixRunningProcess implements RunningProcessInterface
 {
     /**
+     * @var string The command executed to create this process.
+     */
+    private $command;
+
+    /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
      */
     private $timeout;
@@ -64,6 +69,8 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function __construct($command, $cwdOverride, $timeout = -1, $pollTimeout = 1000)
     {
+        $this->command = $command;
+
         // Store CWD, set to override
         $prevCwd = getcwd();
         chdir($cwdOverride);
@@ -190,6 +197,14 @@ class UnixRunningProcess implements RunningProcessInterface
         }
 
         return $status['pid'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCommand()
+    {
+        return $this->command;
     }
 
     /**

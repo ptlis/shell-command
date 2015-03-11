@@ -74,4 +74,11 @@ interface RunningProcessInterface
      * @return int
      */
     public function getPid();
+
+    /**
+     * Get the command that was executed to create the process.
+     *
+     * @return string
+     */
+    public function getCommand();
 }
