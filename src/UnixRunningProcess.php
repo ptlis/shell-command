@@ -20,11 +20,6 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
  */
 class UnixRunningProcess implements RunningProcessInterface
 {
-    const STDIN = 0;
-    const STDOUT = 1;
-    const STDERR = 2;
-
-
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
      */

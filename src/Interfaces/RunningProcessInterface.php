@@ -15,6 +15,10 @@ namespace ptlis\ShellCommand\Interfaces;
  */
 interface RunningProcessInterface
 {
+    const STDIN = 0;
+    const STDOUT = 1;
+    const STDERR = 2;
+
     /**
      * Returns true if the process is still running.
      *
