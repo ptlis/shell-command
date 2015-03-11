@@ -112,22 +112,11 @@ class UnixRunningProcess implements RunningProcessInterface
     public function wait(\Closure $callback = null)
     {
         while ($this->isRunning()) {
-            $stdOut = $this->readOutput(self::STDOUT);
-            $stdErr = $this->readOutput(self::STDERR);
-
-            if (!is_null($callback)) {
-                $callback($stdOut, $stdErr);
-            }
-
+            $this->readStreams($callback);
             usleep($this->pollTimeout);
         }
 
-        $stdOut = $this->readOutput(self::STDOUT);
-        $stdErr = $this->readOutput(self::STDERR);
-
-        if (!is_null($callback)) {
-            $callback($stdOut, $stdErr);
-        }
+        $this->readStreams($callback);
     }
 
     /**
@@ -226,5 +215,20 @@ class UnixRunningProcess implements RunningProcessInterface
         }
 
         return $status;
+    }
+
+    /**
+     * Read from the stdout & stderr streams, passing data to callback if provided.
+     *
+     * @param \Closure|null $callback
+     */
+    private function readStreams(\Closure $callback = null)
+    {
+        $stdOut = $this->readOutput(self::STDOUT);
+        $stdErr = $this->readOutput(self::STDERR);
+
+        if (!is_null($callback)) {
+            $callback($stdOut, $stdErr);
+        }
     }
 }
