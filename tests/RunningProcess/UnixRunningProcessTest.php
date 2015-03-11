@@ -25,6 +25,11 @@ class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
             false,
             $process->isRunning()
         );
+
+        $this->assertEquals(
+            './tests/data/test_binary',
+            $process->getCommand()
+        );
     }
 
     public function testWaitWithClosure()
