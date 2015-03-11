@@ -19,7 +19,8 @@
         "phpmd/phpmd": "@dev",
         "phpunit/phpunit": "~4.0",
         "sebastian/phpcpd": "~2.0",
-        "squizlabs/php_codesniffer": "~1.5"
+        "squizlabs/php_codesniffer": "~1.5",
+        "psr/log": "1.0.0"
     },
     "autoload": {
         "psr-4": {
