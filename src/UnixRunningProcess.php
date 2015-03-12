@@ -248,5 +248,10 @@ class UnixRunningProcess implements RunningProcessInterface
         if (!is_null($callback)) {
             $callback($stdOut, $stdErr);
         }
+
+        if (!is_null($this->observer)) {
+            $this->observer->stdOutRead($stdOut);
+            $this->observer->stdErrRead($stdErr);
+        }
     }
 }
