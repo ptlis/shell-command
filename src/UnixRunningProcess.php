@@ -170,6 +170,10 @@ class UnixRunningProcess implements RunningProcessInterface
                 'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
             );
         }
+
+        if (!is_null($this->observer)) {
+            $this->observer->sentSignal($signal);
+        }
     }
 
     /**
