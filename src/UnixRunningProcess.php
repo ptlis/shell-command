@@ -230,6 +230,10 @@ class UnixRunningProcess implements RunningProcessInterface
 
         if (!$status['running'] && is_null($this->exitCode)) {
             $this->exitCode = $status['exitcode'];
+
+            if (!is_null($this->observer)) {
+                $this->observer->processExited($this->exitCode);
+            }
         }
 
         return $status;
