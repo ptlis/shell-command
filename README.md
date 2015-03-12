@@ -5,6 +5,7 @@ A developer-friendly wrapper around execution of shell commands.
 The motivation behind this package was twofold:
 * To provide easily mockable interfaces & ship default mocks - supporting the writing tests for dependant code.
 * To provide interfaces that neatly encapsulate state - something that I felt was lacking in existing packages.
+* Integration of PSR-3 logging instrumentation.
 
 
 [![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?s=6c30a32e78672ae0d7cff3ecf00ceba95049879a)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?s=b8a262b33dd4a5de02d6f92f3e318ebb319f96c0)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
@@ -15,7 +16,7 @@ The motivation behind this package was twofold:
 Either from the console:
 
 ```shell
-    $ composer require ptlis/shell-command:"~0.6"
+    $ composer require ptlis/shell-command:"~0.7"
 ```
 
 Or by Editing composer.json:
@@ -24,7 +25,7 @@ Or by Editing composer.json:
     {
         "require": {
             ...
-            "ptlis/shell-command": "~0.6",
+            "ptlis/shell-command": "~0.7",
             ...
         }
     }
