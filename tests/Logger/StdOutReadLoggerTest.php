@@ -19,9 +19,6 @@ use ptlis\ShellCommand\UnixRunningProcess;
 
 class StdOutReadLoggerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Note - this test may (in theory) fail - being an integration test there's a chance that
-     */
     public function testCalled()
     {
         $command = './tests/data/test_binary';

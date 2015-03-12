@@ -21,7 +21,7 @@ use ptlis\ShellCommand\UnixRunningProcess;
 class SignalSentLoggerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Note - this test may (in theory) fail - being an integration test there's a chance that
+     * Note - this test may (in theory) fail - being timer-dependant there's a chance that the process may exit early.
      */
     public function testCalled()
     {
