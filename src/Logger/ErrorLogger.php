@@ -22,17 +22,6 @@ use Psr\Log\LogLevel;
 class ErrorLogger extends AggregateLogger
 {
     /**
-     * @var StdErrReadLogger
-     */
-    private $stdErrLogger;
-
-    /**
-     * @var ProcessExitedLogger
-     */
-    private $exitLogger;
-
-
-    /**
      * Constructor.
      *
      * @param LoggerInterface $logger
@@ -48,8 +37,5 @@ class ErrorLogger extends AggregateLogger
             $logger,
             $logLevel
         );
-
-        $this->stdErrLogger = new StdErrReadLogger($logger, $logLevel);
-        $this->exitLogger = new ProcessExitedLogger($logger, $logLevel);
     }
 }
