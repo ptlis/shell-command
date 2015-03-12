@@ -11,6 +11,7 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
 /**
@@ -24,6 +25,11 @@ class UnixRunningProcess implements RunningProcessInterface
      * @var string The command executed to create this process.
      */
     private $command;
+
+    /**
+     * @var ProcessObserverInterface Observer watching process state.
+     */
+    private $observer;
 
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
@@ -66,10 +72,17 @@ class UnixRunningProcess implements RunningProcessInterface
      * @param string $cwdOverride
      * @param int $timeout
      * @param int $pollTimeout
+     * @param ProcessObserverInterface $observer
      */
-    public function __construct($command, $cwdOverride, $timeout = -1, $pollTimeout = 1000)
-    {
+    public function __construct(
+        $command,
+        $cwdOverride,
+        $timeout = -1,
+        $pollTimeout = 1000,
+        ProcessObserverInterface $observer = null
+    ) {
         $this->command = $command;
+        $this->observer = $observer;
 
         // Store CWD, set to override
         $prevCwd = getcwd();
@@ -84,6 +97,11 @@ class UnixRunningProcess implements RunningProcessInterface
             $this->pipeList
         );
         $this->startTime = microtime(true);
+
+        // Notify observer of process creation.
+        if (!is_null($observer)) {
+            $observer->processCreated($command);
+        }
 
         // Reset CWD to previous
         chdir($prevCwd);
