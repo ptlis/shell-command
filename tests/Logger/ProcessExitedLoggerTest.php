@@ -48,4 +48,34 @@ class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
             $logList[0]
         );
     }
+
+    public function testStopped()
+    {
+        $command = './tests/data/sleep_binary';
+
+        $mockLogger = new MockPsrLogger();
+
+        $process = new UnixRunningProcess(
+            $command,
+            getcwd(),
+            -1,
+            1000,
+            new ProcessExitedLogger(
+                $mockLogger,
+                LogLevel::DEBUG
+            )
+        );
+        $process->stop();
+
+        $logList = $mockLogger->getLogs();
+
+        $this->assertEquals(
+            array(
+                'level' => LogLevel::DEBUG,
+                'message' => 'Process exited with code -1',
+                'context' => array()
+            ),
+            $logList[0]
+        );
+    }
 }
