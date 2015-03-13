@@ -70,6 +70,15 @@ interface CommandBuilderInterface
     public function setCwd($cwd);
 
     /**
+     * Add a logger to attach to running processes.
+     *
+     * @param ProcessObserverInterface $observer
+     *
+     * @return $this;
+     */
+    public function addProcessObserver(ProcessObserverInterface $observer);
+
+    /**
      * Get the build command.
      *
      * @return CommandInterface

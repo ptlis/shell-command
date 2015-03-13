@@ -30,10 +30,17 @@ interface EnvironmentInterface
      *
      * @param CommandInterface $command
      * @param string $cwd
+     * @param ProcessObserverInterface|null $processObserver
      * @param int $timeout
      * @param int $pollTimeout
      *
      * @return RunningProcessInterface
      */
-    public function buildProcess(CommandInterface $command, $cwd, $timeout = -1, $pollTimeout = 1000);
+    public function buildProcess(
+        CommandInterface $command,
+        $cwd,
+        ProcessObserverInterface $processObserver = null,
+        $timeout = -1,
+        $pollTimeout = 1000
+    );
 }

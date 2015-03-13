@@ -13,6 +13,8 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\Logger\AggregateLogger;
 
 /**
  * Immutable builder, used to create ShellCommands.
@@ -50,6 +52,11 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     private $cwd;
 
+    /**
+     * @var ProcessObserverInterface[] List of observers to attach to running processed created in built Command.
+     */
+    private $observerList;
+
 
     /**
      * Constructor.
@@ -60,6 +67,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
      * @param int $timeout
      * @param int $pollTimeout
      * @param string $cwd
+     * @param ProcessObserverInterface[] $observerList
      */
     public function __construct(
         EnvironmentInterface $environment,
@@ -67,7 +75,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
         array $argumentsList = array(),
         $timeout = -1,
         $pollTimeout = 1000,
-        $cwd = ''
+        $cwd = '',
+        array $observerList = array()
     ) {
         $this->environment = $environment;
         $this->command = $command;
@@ -75,6 +84,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
+        $this->observerList = $observerList;
     }
 
     /**
@@ -92,7 +102,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
-            $this->cwd
+            $this->cwd,
+            $this->observerList
         );
     }
 
@@ -114,7 +125,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
-            $this->cwd
+            $this->cwd,
+            $this->observerList
         );
     }
 
@@ -135,7 +147,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $argumentList,
             $this->timeout,
             $this->pollTimeout,
-            $this->cwd
+            $this->cwd,
+            $this->observerList
         );
     }
 
@@ -154,7 +167,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $timeout,
             $this->pollTimeout,
-            $this->cwd
+            $this->cwd,
+            $this->observerList
         );
     }
 
@@ -173,7 +187,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $pollTimeout,
-            $this->cwd
+            $this->cwd,
+            $this->observerList
         );
     }
 
@@ -192,9 +207,36 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $this->timeout,
             $this->pollTimeout,
-            $cwd
+            $cwd,
+            $this->observerList
         );
     }
+
+    /**
+     * Add a logger to attach to running processes.
+     *
+     * @param ProcessObserverInterface $observer
+     *
+     * @return $this;
+     */
+    public function addProcessObserver(ProcessObserverInterface $observer)
+    {
+        $observerList = $this->observerList;
+        $observerList[] = $observer;
+
+        return new ShellCommand(
+            $this->environment,
+            $this->command,
+            $this->argumentList,
+            $this->cwd,
+            $this->timeout,
+            $this->pollTimeout,
+            $observerList
+        );
+
+        return $this;
+    }
+
 
     /**
      * Get the build command
@@ -218,7 +260,22 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $this->argumentList,
             $cwd,
             $this->timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->getObserver()
         );
+    }
+
+    private function getObserver()
+    {
+        $observer = null;
+
+        if (1 === count($this->observerList)) {
+            $observer = $this->observerList[0];
+
+        } elseif (count($this->observerList)) {
+            $observer = new AggregateLogger($this->observerList);
+        }
+
+        return $observer;
     }
 }

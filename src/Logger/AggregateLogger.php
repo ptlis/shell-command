@@ -20,7 +20,7 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 /**
  * Aggregates several loggers.
  */
-class AggregateLogger extends BaseProcessLogger
+class AggregateLogger implements ProcessObserverInterface
 {
     /**
      * @var ProcessObserverInterface[]
@@ -32,13 +32,9 @@ class AggregateLogger extends BaseProcessLogger
      * Constructor.
      *
      * @param ProcessObserverInterface[] $loggerList
-     * @param LoggerInterface $logger
-     * @param string $logLevel
      */
-    public function __construct(array $loggerList, LoggerInterface $logger, $logLevel = LogLevel::DEBUG)
+    public function __construct(array $loggerList)
     {
-        parent::__construct($logger, $logLevel);
-
         $this->loggerList = $loggerList;
     }
 

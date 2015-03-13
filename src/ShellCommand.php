@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
@@ -49,6 +50,11 @@ class ShellCommand implements CommandInterface
      */
     private $cwd;
 
+    /**
+     * @var ProcessObserverInterface|null
+     */
+    private $processObserver;
+
 
     /**
      * Constructor
@@ -59,6 +65,7 @@ class ShellCommand implements CommandInterface
      * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
+     * @param ProcessObserverInterface $processObserver
      */
     public function __construct(
         EnvironmentInterface $environment,
@@ -66,7 +73,8 @@ class ShellCommand implements CommandInterface
         array $argumentList,
         $cwd,
         $timeout = -1,
-        $pollTimeout = 1000
+        $pollTimeout = 1000,
+        ProcessObserverInterface $processObserver = null
     ) {
         $this->environment = $environment;
         $this->command = $command;
@@ -74,6 +82,7 @@ class ShellCommand implements CommandInterface
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
+        $this->processObserver = $processObserver;
     }
 
     /**
@@ -107,6 +116,7 @@ class ShellCommand implements CommandInterface
         return $this->environment->buildProcess(
             $this,
             $this->cwd,
+            $this->processObserver,
             $this->timeout,
             $this->pollTimeout
         );

@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 
 /**
  * Implementation of a UNIX environment.
@@ -68,8 +69,13 @@ class UnixEnvironment implements EnvironmentInterface
     /**
      * {@inheritDoc}
      */
-    public function buildProcess(CommandInterface $command, $cwd, $timeout = -1, $pollTimeout = 1000)
-    {
+    public function buildProcess(
+        CommandInterface $command,
+        $cwd,
+        ProcessObserverInterface $processObserver = null,
+        $timeout = -1,
+        $pollTimeout = 1000
+    ) {
         if ($this->isValidHomeDirectory($cwd)) {
             $cwd = $this->expandHomeDirectory($cwd);
         }
@@ -78,7 +84,8 @@ class UnixEnvironment implements EnvironmentInterface
             $command,
             $cwd,
             $timeout,
-            $pollTimeout
+            $pollTimeout,
+            $processObserver
         );
     }
 

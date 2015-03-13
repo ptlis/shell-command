@@ -10,9 +10,13 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 
+use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Logger\ProcessExitedLogger;
+use ptlis\ShellCommand\Logger\ProcessStartedLogger;
 use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 use ptlis\ShellCommand\UnixEnvironment;
 
 class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
@@ -216,6 +220,70 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             './tests/data/test_binary \'test\'',
             $command->__toString()
+        );
+    }
+
+    public function testAddSingleLogger()
+    {
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+
+        $logger = new MockPsrLogger();
+
+        $command = $builder
+            ->addArgument('test')
+            ->setCommand('./tests/data/test_binary')
+            ->addProcessObserver(
+                new ProcessExitedLogger($logger)
+            )
+            ->buildCommand();
+
+        $command->runSynchronous();
+
+        $this->assertEquals(
+            array(
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited with code 0',
+                    'context' => array()
+                )
+            ),
+            $logger->getLogs()
+        );
+    }
+
+    public function testAddMultipleLogger()
+    {
+        $builder = new ShellCommandBuilder(new UnixEnvironment());
+
+        $logger = new MockPsrLogger();
+
+        $command = $builder
+            ->addArgument('test')
+            ->setCommand('./tests/data/test_binary')
+            ->addProcessObserver(
+                new ProcessStartedLogger($logger)
+            )
+            ->addProcessObserver(
+                new ProcessExitedLogger($logger)
+            )
+            ->buildCommand();
+
+        $command->runSynchronous();
+
+        $this->assertEquals(
+            array(
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process created with command: ./tests/data/test_binary \'test\'',
+                    'context' => array()
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited with code 0',
+                    'context' => array()
+                )
+            ),
+            $logger->getLogs()
         );
     }
 }

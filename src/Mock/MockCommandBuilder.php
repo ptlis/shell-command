@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\CommandResultInterface;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\ShellResult;
 
 /**
@@ -250,6 +251,11 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function getBuiltCommands()
     {
         return $this->builtCommandList;
+    }
+
+    public function addProcessObserver(ProcessObserverInterface $processObserver)
+    {
+
     }
 
     /**
