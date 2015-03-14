@@ -224,17 +224,15 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $observerList = $this->observerList;
         $observerList[] = $observer;
 
-        return new ShellCommand(
+        return new ShellCommandBuilder(
             $this->environment,
             $this->command,
             $this->argumentList,
-            $this->cwd,
             $this->timeout,
             $this->pollTimeout,
+            $this->cwd,
             $observerList
         );
-
-        return $this;
     }
 
 
