@@ -36,9 +36,7 @@ class AllLogger extends AggregateLogger
                 new StdOutReadLogger($logger, $logLevel),
                 new SignalSentLogger($logger, $logLevel),
                 new ProcessExitedLogger($logger, $logLevel)
-            ),
-            $logger,
-            $logLevel
+            )
         );
     }
 }

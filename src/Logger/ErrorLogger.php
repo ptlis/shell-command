@@ -33,9 +33,7 @@ class ErrorLogger extends AggregateLogger
             array(
                 new StdErrReadLogger($logger, $logLevel),
                 new ProcessExitedLogger($logger, $logLevel)
-            ),
-            $logger,
-            $logLevel
+            )
         );
     }
 }
