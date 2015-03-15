@@ -23,6 +23,6 @@ class ProcessStartedLogger extends BaseProcessLogger
      */
     public function processCreated($command)
     {
-        $this->log('Process created with command: ' . $command);
+        $this->log('Process created', array('command' => $command));
     }
 }

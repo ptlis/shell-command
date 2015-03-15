@@ -23,6 +23,6 @@ class StdOutReadLogger extends BaseProcessLogger
      */
     public function stdOutRead($stdOut)
     {
-        $this->log('Read from stdout: ' . $stdOut);
+        $this->log('Read from stdout', array('stdout' => $stdOut));
     }
 }

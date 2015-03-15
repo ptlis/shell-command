@@ -23,6 +23,6 @@ class ProcessExitedLogger extends BaseProcessLogger
      */
     public function processExited($exitCode)
     {
-        $this->log('Process exited with code ' . $exitCode);
+        $this->log('Process exited', array('exit_code' => $exitCode));
     }
 }

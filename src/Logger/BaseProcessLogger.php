@@ -47,11 +47,12 @@ abstract class BaseProcessLogger implements ProcessObserverInterface
     /**
      * Create a log entry, utility method for derived classes.
      *
-     * @param $message
+     * @param string $message
+     * @param array $context
      */
-    protected function log($message)
+    protected function log($message, array $context = array())
     {
-        $this->logger->log($this->logLevel, $message);
+        $this->logger->log($this->logLevel, $message, $context);
     }
 
     /**

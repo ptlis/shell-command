@@ -23,6 +23,6 @@ class StdErrReadLogger extends BaseProcessLogger
      */
     public function stdErrRead($stdErr)
     {
-        $this->log('Read from stderr: ' . $stdErr);
+        $this->log('Read from stderr', array('stderr' => $stdErr));
     }
 }

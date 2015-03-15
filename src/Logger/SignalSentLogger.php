@@ -23,6 +23,6 @@ class SignalSentLogger extends BaseProcessLogger
      */
     public function sentSignal($signal)
     {
-        $this->log('Signal Sent: ' . $signal);
+        $this->log('Signal sent', array('signal' => $signal));
     }
 }
