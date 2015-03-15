@@ -100,6 +100,22 @@ Or in bulk:
 ```
 
 
+
+#### Add Process Observers
+
+Finally we may attach any observers we wish to be executed by our running processes. In this case we add a simple logger:
+
+```php
+    $builder
+        ->addProcessObserver(
+            new AllLogger(
+                new DiskLogger(),
+                LogLevel::DEBUG
+            )
+        )
+```
+
+
 #### Build the Command
 
 One the builder has been configured, the command can be retrieved for execution:
