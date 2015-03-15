@@ -16,7 +16,7 @@ The motivation behind this package was twofold:
 Either from the console:
 
 ```shell
-    $ composer require ptlis/shell-command:"~0.7"
+    $ composer require ptlis/shell-command:"~0.8"
 ```
 
 Or by Editing composer.json:
@@ -25,7 +25,7 @@ Or by Editing composer.json:
     {
         "require": {
             ...
-            "ptlis/shell-command": "~0.7",
+            "ptlis/shell-command": "~0.8",
             ...
         }
     }
@@ -74,6 +74,18 @@ First we must provide the command to execute:
 ```
 
 If the command is not locatable a ```RuntimeException``` is thrown.
+``` 
+
+
+#### Set Timeout
+
+Setting the timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
+
+```php
+    $builder->setTimeout(30000000)          // Wait 30 seconds
+```
+
+If the process execution time exceeds this value a SIGTERM will be sent; if the process doesn't terminate after 1 second then a SIGKILL is sent.
 
 
 
