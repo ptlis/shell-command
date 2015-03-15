@@ -65,7 +65,7 @@ class ShellCommand implements CommandInterface
      * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
-     * @param ProcessObserverInterface $processObserver
+     * @param ProcessObserverInterface|null $processObserver
      */
     public function __construct(
         EnvironmentInterface $environment,
