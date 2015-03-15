@@ -27,7 +27,7 @@ class UnixRunningProcess implements RunningProcessInterface
     private $command;
 
     /**
-     * @var ProcessObserverInterface Observer watching process state.
+     * @var ProcessObserverInterface|null Observer watching process state.
      */
     private $observer;
 
@@ -72,7 +72,7 @@ class UnixRunningProcess implements RunningProcessInterface
      * @param string $cwdOverride
      * @param int $timeout
      * @param int $pollTimeout
-     * @param ProcessObserverInterface $observer
+     * @param ProcessObserverInterface|null $observer
      */
     public function __construct(
         $command,
