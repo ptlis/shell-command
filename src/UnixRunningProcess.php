@@ -98,6 +98,11 @@ class UnixRunningProcess implements RunningProcessInterface
         );
         $this->startTime = microtime(true);
 
+        // Mark pipe streams as non-blocking
+        foreach ($this->pipeList as $pipe) {
+            stream_set_blocking($pipe, 0);
+        }
+
         // Notify observer of process creation.
         if (!is_null($observer)) {
             $observer->processCreated($command);
@@ -132,6 +137,11 @@ class UnixRunningProcess implements RunningProcessInterface
         while ($this->isRunning()) {
             $this->readStreams($callback);
             usleep($this->pollTimeout);
+        }
+
+        // Mark pipe streams as non-blocking
+        foreach ($this->pipeList as $pipe) {
+            stream_set_blocking($pipe, 1);
         }
 
         $this->readStreams($callback);
