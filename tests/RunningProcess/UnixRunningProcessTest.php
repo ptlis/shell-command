@@ -144,12 +144,33 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testStopLongRunning()
+    public function testTimeoutLongRunning()
     {
         $command = './tests/data/long_sleep_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $logger = new MockPsrLogger();
 
-        $process->stop();
+        $process = new UnixRunningProcess(
+            $command,
+            getcwd(),
+            500000,
+            1000,
+            new SignalSentLogger($logger)
+        );
+
+        $process->wait();
+
+        $this->assertLogsMatch(
+            array(
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => array(
+                        'signal' => '15'
+                    )
+                )
+            ),
+            $logger->getLogs()
+        );
     }
 }

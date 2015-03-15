@@ -16,8 +16,6 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
 /**
  * UNIX implementation of running process.
- *
- * @todo Use timeout!
  */
 class UnixRunningProcess implements RunningProcessInterface
 {
@@ -135,6 +133,10 @@ class UnixRunningProcess implements RunningProcessInterface
     public function wait(\Closure $callback = null)
     {
         while ($this->isRunning()) {
+            if ($this->hasExceededTimeout()) {
+                $this->stop();
+            }
+
             $this->readStreams($callback);
             usleep($this->pollTimeout);
         }
@@ -226,6 +228,16 @@ class UnixRunningProcess implements RunningProcessInterface
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * Returns true if the process has been running for longer than the specified timeout.
+     *
+     * @return bool
+     */
+    private function hasExceededTimeout()
+    {
+        return -1 !== $this->timeout && (microtime(true) - $this->startTime) * 1000000 > $this->timeout;
     }
 
     /**
