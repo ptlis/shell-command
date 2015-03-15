@@ -243,8 +243,10 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Process exited with code 0',
-                    'context' => array()
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 0
+                    )
                 )
             ),
             $logger->getLogs()
@@ -274,13 +276,17 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Process created with command: ./tests/data/test_binary \'test\'',
-                    'context' => array()
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/data/test_binary \'test\''
+                    )
                 ),
                 array(
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Process exited with code 0',
-                    'context' => array()
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 0
+                    )
                 )
             ),
             $logger->getLogs()
