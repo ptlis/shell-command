@@ -13,8 +13,6 @@
 
 namespace ptlis\ShellCommand\Logger;
 
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 
 /**
