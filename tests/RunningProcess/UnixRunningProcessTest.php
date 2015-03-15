@@ -10,6 +10,9 @@
 
 namespace ptlis\ShellCommand\Test\RunningProcess;
 
+use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Logger\SignalSentLogger;
+use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
@@ -115,9 +118,30 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $logger = new MockPsrLogger();
+
+        $process = new UnixRunningProcess(
+            $command,
+            getcwd(),
+            -1,
+            1000,
+            new SignalSentLogger($logger)
+        );
 
         $process->stop();
+
+        $this->assertLogsMatch(
+            array(
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => array(
+                        'signal' => '15'
+                    )
+                )
+            ),
+            $logger->getLogs()
+        );
     }
 
     public function testStopLongRunning()
