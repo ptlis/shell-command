@@ -33,6 +33,16 @@ class MockCommand implements CommandInterface
      */
     private $result;
 
+    /**
+     * @var int (microseconds) The amount of time to simulate the process running for.
+     */
+    private $runningTime;
+
+    /**
+     * @var int The simulated process id.
+     */
+    private $pid;
+
 
     /**
      * Constructor
@@ -40,15 +50,21 @@ class MockCommand implements CommandInterface
      * @param string $command
      * @param string[] $argumentList
      * @param CommandResultInterface $result
+     * @param int $runningTime
+     * @param int $pid
      */
     public function __construct(
         $command,
         array $argumentList,
-        CommandResultInterface $result
+        CommandResultInterface $result,
+        $runningTime = 314,
+        $pid = 31415
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->result = $result;
+        $this->runningTime = $runningTime;
+        $this->pid = $pid;
     }
 
     /**
@@ -64,7 +80,13 @@ class MockCommand implements CommandInterface
      */
     public function runAsynchronous()
     {
-        // TODO: Implement runAsynchronous() method.
+        return new MockRunningProcess(
+            $this->result->getExitCode(),
+            $this->result->getStdOut(),
+            $this->result->getStdErr(),
+            $this->runningTime,
+            $this->pid
+        );
     }
 
     /**
