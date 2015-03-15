@@ -10,9 +10,10 @@
 
 namespace ptlis\ShellCommand\Test\Environment;
 
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class UnixEnvironmentTest extends \PHPUnit_Framework_TestCase
+class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {

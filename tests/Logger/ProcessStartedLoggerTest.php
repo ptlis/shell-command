@@ -15,9 +15,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class ProcessStartedLoggerTest extends \PHPUnit_Framework_TestCase
+class ProcessStartedLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
@@ -37,7 +38,7 @@ class ProcessStartedLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
                 array(
                     'level' => LogLevel::DEBUG,

@@ -12,9 +12,10 @@ namespace ptlis\ShellCommand\Test\RunningProcess;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 
-class UnixRunningProcessSigTermIgnoredTest extends \PHPUnit_Framework_TestCase
+class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
@@ -32,7 +33,7 @@ class UnixRunningProcessSigTermIgnoredTest extends \PHPUnit_Framework_TestCase
 
         $process->stop();
 
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
                 array(
                     'level' => LogLevel::DEBUG,

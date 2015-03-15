@@ -15,9 +15,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\AllLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class AllLoggerTest extends \PHPUnit_Framework_TestCase
+class AllLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
@@ -36,39 +37,31 @@ class AllLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Process created',
-                'context' => array(
-                    'command' => './tests/data/test_binary'
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/data/test_binary'
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Read from stdout',
+                    'context' => array(
+                        'stdout' => 'Test command' . PHP_EOL . PHP_EOL
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 0
+                    )
                 )
             ),
-            $logList[0]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => 0
-                )
-            ),
-            $logList[1]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Read from stdout',
-                'context' => array(
-                    'stdout' => 'Test command' . PHP_EOL . PHP_EOL
-                )
-            ),
-            $logList[2]
+            $mockLogger->getLogs()
         );
     }
 }

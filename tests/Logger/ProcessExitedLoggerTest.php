@@ -15,9 +15,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
+class ProcessExitedLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
@@ -37,17 +38,17 @@ class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => 0
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 0
+                    )
                 )
             ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 
@@ -69,17 +70,17 @@ class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->stop();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => -1
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => -1
+                    )
                 )
             ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 }

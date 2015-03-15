@@ -16,9 +16,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class SignalSentLoggerTest extends \PHPUnit_Framework_TestCase
+class SignalSentLoggerTest extends ptlisShellCommandTestcase
 {
     /**
      * Note - this test may (in theory) fail - being timer-dependant there's a chance that the process may exit early.
@@ -41,17 +42,17 @@ class SignalSentLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->stop();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Signal sent',
-                'context' => array(
-                    'signal' => SIGTERM
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => array(
+                        'signal' => SIGTERM
+                    )
                 )
             ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 }

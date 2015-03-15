@@ -10,9 +10,10 @@
 
 namespace ptlis\ShellCommand\Test\RunningProcess {
 
+    use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
     use ptlis\ShellCommand\UnixRunningProcess;
 
-    class UnixRunningProcessStopFailureTest extends \PHPUnit_Framework_TestCase
+    class UnixRunningProcessStopFailureTest extends ptlisShellCommandTestcase
     {
         public function setUp()
         {

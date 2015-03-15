@@ -10,9 +10,10 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellResult;
 
-class ShellResultTest extends \PHPUnit_Framework_TestCase
+class ShellResultTest extends ptlisShellCommandTestcase
 {
     public function testShellResult()
     {

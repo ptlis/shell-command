@@ -13,13 +13,14 @@ namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellCommandBuilder;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
+class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testBasic()
     {
@@ -239,7 +240,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $command->runSynchronous();
 
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
                 array(
                     'level' => LogLevel::DEBUG,
@@ -272,7 +273,7 @@ class ShellCommandBuilderTest extends \PHPUnit_Framework_TestCase
 
         $command->runSynchronous();
 
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
                 array(
                     'level' => LogLevel::DEBUG,

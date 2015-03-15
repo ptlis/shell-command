@@ -15,9 +15,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\StdErrReadLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class StdErrReadLoggerTest extends \PHPUnit_Framework_TestCase
+class StdErrReadLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
@@ -37,17 +38,17 @@ class StdErrReadLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Read from stderr',
-                'context' => array(
-                    'stderr' => 'Fatal Error' . PHP_EOL
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Read from stderr',
+                    'context' => array(
+                        'stderr' => 'Fatal Error' . PHP_EOL
+                    )
                 )
             ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 }

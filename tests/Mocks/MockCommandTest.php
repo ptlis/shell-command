@@ -11,9 +11,10 @@
 namespace ptlis\ShellCommand\Test\Mocks;
 
 use ptlis\ShellCommand\Mock\MockCommand;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellResult;
 
-class MockCommandTest extends \PHPUnit_Framework_TestCase
+class MockCommandTest extends ptlisShellCommandTestcase
 {
     public function testMockCommand()
     {

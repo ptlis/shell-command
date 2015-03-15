@@ -10,11 +10,12 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class ShellCommandTest extends \PHPUnit_Framework_TestCase
+class ShellCommandTest extends ptlisShellCommandTestcase
 {
     public function testWithFlag()
     {

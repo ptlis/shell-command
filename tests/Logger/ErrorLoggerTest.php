@@ -15,9 +15,10 @@ namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ErrorLogger;
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
+class ErrorLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
@@ -36,29 +37,24 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $logList = $mockLogger->getLogs();
-
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::ERROR,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => 5
+                array(
+                    'level' => LogLevel::ERROR,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 5
+                    )
+                ),
+                array(
+                    'level' => LogLevel::ERROR,
+                    'message' => 'Read from stderr',
+                    'context' => array(
+                        'stderr' => 'Fatal Error' . PHP_EOL
+                    )
                 )
             ),
-            $logList[0]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::ERROR,
-                'message' => 'Read from stderr',
-                'context' => array(
-                    'stderr' => 'Fatal Error' . PHP_EOL
-                )
-            ),
-            $logList[1]
+            $mockLogger->getLogs()
         );
     }
 
@@ -80,29 +76,24 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->wait();
 
-        $logList = $mockLogger->getLogs();
-
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::CRITICAL,
-                'message' => 'Read from stderr',
-                'context' => array(
-                    'stderr' => 'Fatal Error' . PHP_EOL
+                array(
+                    'level' => LogLevel::CRITICAL,
+                    'message' => 'Read from stderr',
+                    'context' => array(
+                        'stderr' => 'Fatal Error' . PHP_EOL
+                    )
+                ),
+                array(
+                    'level' => LogLevel::CRITICAL,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => 5
+                    )
                 )
             ),
-            $logList[1]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::CRITICAL,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => 5
-                )
-            ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 
@@ -123,17 +114,17 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         );
         $process->stop();
 
-        $logList = $mockLogger->getLogs();
-
-        $this->assertEquals(
+        $this->assertLogsMatch(
             array(
-                'level' => LogLevel::ERROR,
-                'message' => 'Process exited',
-                'context' => array(
-                    'exit_code' => -1
+                array(
+                    'level' => LogLevel::ERROR,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => -1
+                    )
                 )
             ),
-            $logList[0]
+            $mockLogger->getLogs()
         );
     }
 }

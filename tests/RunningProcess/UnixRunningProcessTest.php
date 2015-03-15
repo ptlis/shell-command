@@ -10,9 +10,10 @@
 
 namespace ptlis\ShellCommand\Test\RunningProcess;
 
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class UnixRunningProcessTest extends \PHPUnit_Framework_TestCase
+class UnixRunningProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
