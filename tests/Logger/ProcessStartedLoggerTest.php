@@ -41,8 +41,10 @@ class ProcessStartedLoggerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Process created with command: ./tests/data/test_binary',
-                    'context' => array()
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/data/test_binary'
+                    )
                 )
             ),
             $mockLogger->getLogs()

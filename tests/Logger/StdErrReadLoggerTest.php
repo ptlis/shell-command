@@ -42,8 +42,10 @@ class StdErrReadLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Read from stderr: Fatal Error' . PHP_EOL,
-                'context' => array()
+                'message' => 'Read from stderr',
+                'context' => array(
+                    'stderr' => 'Fatal Error' . PHP_EOL
+                )
             ),
             $logList[0]
         );

@@ -46,8 +46,10 @@ class SignalSentLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Signal Sent: ' . SIGTERM,
-                'context' => array()
+                'message' => 'Signal sent',
+                'context' => array(
+                    'signal' => SIGTERM
+                )
             ),
             $logList[0]
         );

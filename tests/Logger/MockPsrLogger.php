@@ -124,6 +124,14 @@ class MockPsrLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = array())
     {
+        if (array_key_exists('stderr', $context) && !strlen($context['stderr'])) {
+            return;
+        }
+
+        if (array_key_exists('stdout', $context) && !strlen($context['stdout'])) {
+            return;
+        }
+
         $this->logs[] = array(
             'level' => $level,
             'message' => $message,

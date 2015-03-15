@@ -42,8 +42,10 @@ class StdOutReadLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Read from stdout: Test command' . PHP_EOL . PHP_EOL,
-                'context' => array()
+                'message' => 'Read from stdout',
+                'context' => array(
+                    'stdout' => 'Test command' . PHP_EOL . PHP_EOL
+                )
             ),
             $logList[0]
         );

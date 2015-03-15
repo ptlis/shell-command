@@ -42,8 +42,10 @@ class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Process exited with code 0',
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => 0
+                )
             ),
             $logList[0]
         );
@@ -72,8 +74,10 @@ class ProcessExitedLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Process exited with code -1',
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => -1
+                )
             ),
             $logList[0]
         );

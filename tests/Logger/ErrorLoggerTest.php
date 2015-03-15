@@ -42,8 +42,10 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::ERROR,
-                'message' => 'Read from stderr: Fatal Error' . PHP_EOL,
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => 5
+                )
             ),
             $logList[0]
         );
@@ -51,8 +53,10 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::ERROR,
-                'message' => 'Process exited with code 5',
-                'context' => array()
+                'message' => 'Read from stderr',
+                'context' => array(
+                    'stderr' => 'Fatal Error' . PHP_EOL
+                )
             ),
             $logList[1]
         );
@@ -82,19 +86,23 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::CRITICAL,
-                'message' => 'Read from stderr: Fatal Error' . PHP_EOL,
-                'context' => array()
+                'message' => 'Read from stderr',
+                'context' => array(
+                    'stderr' => 'Fatal Error' . PHP_EOL
+                )
             ),
-            $logList[0]
+            $logList[1]
         );
 
         $this->assertEquals(
             array(
                 'level' => LogLevel::CRITICAL,
-                'message' => 'Process exited with code 5',
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => 5
+                )
             ),
-            $logList[1]
+            $logList[0]
         );
     }
 
@@ -120,8 +128,10 @@ class ErrorLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::ERROR,
-                'message' => 'Process exited with code -1',
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => -1
+                )
             ),
             $logList[0]
         );

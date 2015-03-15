@@ -41,8 +41,10 @@ class AllLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Process created with command: ./tests/data/test_binary',
-                'context' => array()
+                'message' => 'Process created',
+                'context' => array(
+                    'command' => './tests/data/test_binary'
+                )
             ),
             $logList[0]
         );
@@ -50,8 +52,10 @@ class AllLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Read from stdout: Test command' . PHP_EOL . PHP_EOL,
-                'context' => array()
+                'message' => 'Process exited',
+                'context' => array(
+                    'exit_code' => 0
+                )
             ),
             $logList[1]
         );
@@ -59,37 +63,12 @@ class AllLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'level' => LogLevel::DEBUG,
-                'message' => 'Read from stderr: ',
-                'context' => array()
+                'message' => 'Read from stdout',
+                'context' => array(
+                    'stdout' => 'Test command' . PHP_EOL . PHP_EOL
+                )
             ),
             $logList[2]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Process exited with code 0',
-                'context' => array()
-            ),
-            $logList[3]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Read from stdout: ',
-                'context' => array()
-            ),
-            $logList[4]
-        );
-
-        $this->assertEquals(
-            array(
-                'level' => LogLevel::DEBUG,
-                'message' => 'Read from stderr: ',
-                'context' => array()
-            ),
-            $logList[5]
         );
     }
 }
