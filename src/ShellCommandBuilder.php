@@ -63,7 +63,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
      *
      * @param EnvironmentInterface $environment
      * @param string $command
-     * @param array $argumentsList
+     * @param string[] $argumentsList
      * @param int $timeout
      * @param int $pollTimeout
      * @param string $cwd
