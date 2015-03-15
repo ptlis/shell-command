@@ -74,7 +74,7 @@ interface CommandBuilderInterface
      *
      * @param ProcessObserverInterface $observer
      *
-     * @return $this;
+     * @return $this
      */
     public function addProcessObserver(ProcessObserverInterface $observer);
 
