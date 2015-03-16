@@ -74,7 +74,6 @@ First we must provide the command to execute:
 ```
 
 If the command is not locatable a ```RuntimeException``` is thrown.
-``` 
 
 
 #### Set Timeout
