@@ -2,9 +2,13 @@
 
 A developer-friendly wrapper around execution of shell commands.
 
-The motivation behind this package was twofold:
-* To provide easily mockable interfaces & ship default mocks - supporting the writing tests for dependant code.
-* To provide interfaces that neatly encapsulate state - something that I felt was lacking in existing packages.
+There were several requirements that inspired the creation of this package:
+* Separation of running process state from command specification.
+* Need for 'command specifications' that
+    * Can be safely passed around the application before spawning a process.
+    * Can spawn multiple concurrently-running processes.
+    * Are stateless
+* Desire for easily mockable interfaces & provision of default mocks.
 * Integration of PSR-3 logging instrumentation.
 
 
