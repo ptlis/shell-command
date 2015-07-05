@@ -14,12 +14,12 @@
         "php": ">=5.3.0"
     },
     "require-dev": {
-        "pdepend/pdepend": "~1.1",
+        "pdepend/pdepend": "~2.1",
         "phploc/phploc": "~2.0",
-        "phpmd/phpmd": "@dev",
+        "phpmd/phpmd": "~2.2",
         "phpunit/phpunit": "~4.0",
         "sebastian/phpcpd": "~2.0",
-        "squizlabs/php_codesniffer": "~1.5",
+        "squizlabs/php_codesniffer": "~2.0",
         "psr/log": "1.0.0"
     },
     "autoload": {
