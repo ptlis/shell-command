@@ -1,5 +1,6 @@
 install:
-  - cinst php
+  - cinst php -y
+  - SET PATH=C:\tools\php\;%PATH%
   - php -r "readfile('https://getcomposer.org/installer');" | php
 
 build_script:
