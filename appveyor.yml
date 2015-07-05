@@ -15,5 +15,4 @@ cache:
   - vendor
 
 test_script:
-  - cd C:\projects\phpmd
   - bin\phpunit.bat
