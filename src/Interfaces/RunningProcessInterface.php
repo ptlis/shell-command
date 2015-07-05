@@ -15,6 +15,12 @@ namespace ptlis\ShellCommand\Interfaces;
  */
 interface RunningProcessInterface
 {
+    /** Signal used to request that the process terminates. */
+    const SIGTERM = 'SIGTERM';
+
+    /** Signal used to force the process to terminate. */
+    const SIGKILL = 'SIGKILL';
+
     const STDIN = 0;
     const STDOUT = 1;
     const STDERR = 2;

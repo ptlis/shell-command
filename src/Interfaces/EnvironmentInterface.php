@@ -43,4 +43,12 @@ interface EnvironmentInterface
         $timeout = -1,
         $pollTimeout = 1000
     );
+
+    /**
+     * Send the specified signal to the process.
+     *
+     * @param resource $process
+     * @param string $signal One of RunningProcessInterface SIG* constants
+     */
+    public function sendSignal($process, $signal);
 }

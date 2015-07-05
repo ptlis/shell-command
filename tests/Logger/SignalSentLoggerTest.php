@@ -14,9 +14,11 @@
 namespace ptlis\ShellCommand\Test\Logger;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
 class SignalSentLoggerTest extends ptlisShellCommandTestcase
@@ -31,6 +33,7 @@ class SignalSentLoggerTest extends ptlisShellCommandTestcase
         $mockLogger = new MockPsrLogger();
 
         $process = new UnixRunningProcess(
+            new UnixEnvironment(),
             $command,
             getcwd(),
             -1,
@@ -48,7 +51,7 @@ class SignalSentLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => SIGTERM
+                        'signal' => RunningProcessInterface::SIGTERM
                     )
                 )
             ),

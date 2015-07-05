@@ -13,6 +13,7 @@
 
 namespace ptlis\ShellCommand\Test\RunningProcess;
 
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\UnixRunningProcess;
 
 /**
@@ -26,7 +27,7 @@ class UnixRunningProcessBlockSigTerm extends UnixRunningProcess
     public function sendSignal($signal)
     {
         // Only send signal when not sigterm.
-        if (SIGTERM !== $signal) {
+        if (RunningProcessInterface::SIGTERM !== $signal) {
             parent::sendSignal($signal);
         }
     }

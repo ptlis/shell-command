@@ -11,6 +11,7 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
+use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
@@ -19,6 +20,11 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
  */
 class UnixRunningProcess implements RunningProcessInterface
 {
+    /**
+     * @var EnvironmentInterface The environment to execute the command in.
+     */
+    private $environment;
+
     /**
      * @var string The command executed to create this process.
      */
@@ -66,6 +72,7 @@ class UnixRunningProcess implements RunningProcessInterface
      *
      * @throws CommandExecutionException
      *
+     * @param EnvironmentInterface $environment
      * @param string $command
      * @param string $cwdOverride
      * @param int $timeout
@@ -73,12 +80,14 @@ class UnixRunningProcess implements RunningProcessInterface
      * @param ProcessObserverInterface|null $observer
      */
     public function __construct(
+        EnvironmentInterface $environment,
         $command,
         $cwdOverride,
         $timeout = -1,
         $pollTimeout = 1000,
         ProcessObserverInterface $observer = null
     ) {
+        $this->environment = $environment;
         $this->command = $command;
         $this->observer = $observer;
 
@@ -155,14 +164,14 @@ class UnixRunningProcess implements RunningProcessInterface
     public function stop($timeout = 1000000)
     {
         $originalTime = microtime(true);
-        $this->sendSignal(SIGTERM);
+        $this->sendSignal(RunningProcessInterface::SIGTERM);
 
         while ($this->isRunning()) {
             $time = microtime(true);
 
             // If term hasn't succeeded by the specified timeout then try and kill
             if (($time - $originalTime) * 1000000 > $timeout) {
-                $this->sendSignal(SIGKILL);
+                $this->sendSignal(RunningProcessInterface::SIGKILL);
                 break;
             }
 
@@ -177,11 +186,8 @@ class UnixRunningProcess implements RunningProcessInterface
      */
     public function sendSignal($signal)
     {
-        if (true !== proc_terminate($this->process, $signal)) {
-            throw new CommandExecutionException(
-                'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
-            );
-        }
+        // TODO: Pass env
+        $this->environment->sendSignal($this->process, $signal);
 
         if (!is_null($this->observer)) {
             $this->observer->sentSignal($signal);

@@ -16,6 +16,7 @@ namespace ptlis\ShellCommand\Test\Logger;
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\StdOutReadLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
 class StdOutReadLoggerTest extends ptlisShellCommandTestcase
@@ -27,6 +28,7 @@ class StdOutReadLoggerTest extends ptlisShellCommandTestcase
         $mockLogger = new MockPsrLogger();
 
         $process = new UnixRunningProcess(
+            new UnixEnvironment(),
             $command,
             getcwd(),
             -1,

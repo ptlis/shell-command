@@ -11,9 +11,11 @@
 namespace ptlis\ShellCommand\Test\RunningProcess;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
+use ptlis\ShellCommand\UnixEnvironment;
 
 class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
@@ -24,6 +26,7 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
         $logger = new MockPsrLogger();
 
         $process = new UnixRunningProcessBlockSigTerm(
+            new UnixEnvironment(),
             $command,
             getcwd(),
             -1,
@@ -39,7 +42,7 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => 9
+                        'signal' => RunningProcessInterface::SIGKILL
                     )
                 )
             ),

@@ -10,9 +10,11 @@
 
 namespace ptlis\ShellCommand;
 
+use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 
 /**
  * Implementation of a UNIX environment.
@@ -81,12 +83,43 @@ class UnixEnvironment implements EnvironmentInterface
         }
 
         return new UnixRunningProcess(
+            $this,
             $command,
             $cwd,
             $timeout,
             $pollTimeout,
             $processObserver
         );
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws CommandExecutionException on error.
+     */
+    public function sendSignal($process, $signal)
+    {
+        switch ($signal) {
+            case RunningProcessInterface::SIGTERM:
+                $mappedSignal = SIGTERM;
+                break;
+
+            case RunningProcessInterface::SIGKILL:
+                $mappedSignal = SIGKILL;
+                break;
+
+            default:
+                throw new CommandExecutionException(
+                    'Unknown signal "' . $signal . '" provided.'
+                );
+                break;
+        }
+
+        if (true !== proc_terminate($process, $mappedSignal)) {
+            throw new CommandExecutionException(
+                'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
+            );
+        }
     }
 
     /**

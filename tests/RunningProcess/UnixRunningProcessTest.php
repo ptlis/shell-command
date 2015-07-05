@@ -11,9 +11,11 @@
 namespace ptlis\ShellCommand\Test\RunningProcess;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
 class UnixRunningProcessTest extends ptlisShellCommandTestcase
@@ -22,7 +24,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/data/test_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait();
 
         $this->assertEquals(
@@ -40,7 +42,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/data/test_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait(function($stdOut, $stdErr) {
 
         });
@@ -55,7 +57,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/data/error_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
 
         $fullStdOut = '';
         $fullStdErr = '';
@@ -84,7 +86,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->getExitCode();
     }
 
@@ -92,7 +94,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/data/sleep_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
 
         $this->assertNotNull(
             $process->getPid()
@@ -108,7 +110,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/data/test_binary';
 
-        $process = new UnixRunningProcess($command, getcwd());
+        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait();
 
         $process->getPid();
@@ -121,6 +123,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
         $logger = new MockPsrLogger();
 
         $process = new UnixRunningProcess(
+            new UnixEnvironment(),
             $command,
             getcwd(),
             -1,
@@ -136,7 +139,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => '15'
+                        'signal' => RunningProcessInterface::SIGTERM
                     )
                 )
             ),
@@ -151,6 +154,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
         $logger = new MockPsrLogger();
 
         $process = new UnixRunningProcess(
+            new UnixEnvironment(),
             $command,
             getcwd(),
             500000,
@@ -166,7 +170,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => '15'
+                        'signal' => RunningProcessInterface::SIGTERM
                     )
                 )
             ),
