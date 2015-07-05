@@ -3,8 +3,8 @@ install:
   - SET PATH=C:\tools\php\;%PATH%
   - cd C:\tools\php
   - copy php.ini-production php.ini
-  - echo extension=php_openssl.dll >> php.ini
-  - echo extension=php_curl.dll >> php.ini
+  - echo extension=ext\php_openssl.dll >> php.ini
+  - echo extension=ext\php_curl.dll >> php.ini
   - php -r "readfile('https://getcomposer.org/installer');" | php
 
 build_script:
