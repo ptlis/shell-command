@@ -5,7 +5,13 @@ install:
   - echo extension=ext\php_openssl.dll >> C:\tools\php\php.ini
   - echo extension=ext\php_curl.dll >> C:\tools\php\php.ini
   - php -r "readfile('https://getcomposer.org/installer');" | php
+  - php composer.phar install --no-interaction
 
-build_script:
-  - php composer.phar install
-  - php bin\phpunit
+
+cache:
+  - composer.lock
+  - vendor
+
+test_script:
+  - cd C:\projects\phpmd
+  - bin\phpunit.bat
