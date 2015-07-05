@@ -1,0 +1,7 @@
+install:
+  - cinst php
+  - php -r "readfile('https://getcomposer.org/installer');" | php
+
+build_script:
+  - php composer.phar install
+  - php vendor\phpunit\phpunit\phpunit.php
