@@ -1,3 +1,5 @@
+build: false
+
 install:
   - cinst php -y
   - SET PATH=C:\tools\php\;%PATH%
