@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Environment;
+namespace ptlis\ShellCommand\Test\Integration\Environment;
 
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -17,9 +17,13 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {
-        $command = __DIR__ . '/../commands/unix/test_binary';
+        $command = __DIR__ . '/../../commands/unix/test_binary';
 
         $env = new UnixEnvironment();
+
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
 
         $valid = $env->validateCommand($command);
 
@@ -31,6 +35,10 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $command = './tests/commands/unix/test_binary';
 
         $env = new UnixEnvironment();
+
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
 
         $valid = $env->validateCommand($command);
 
@@ -48,6 +56,10 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
         $env = new UnixEnvironment();
 
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
+
         $valid = $env->validateCommand('test_binary');
 
         $this->assertSame(true, $valid);
@@ -64,6 +76,10 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         putenv('HOME=' . $pathToCommand);
 
         $env = new UnixEnvironment();
+
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
 
         $valid = $env->validateCommand('~/test_binary');
 
@@ -90,6 +106,10 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
         $env = new UnixEnvironment();
 
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
+
         $valid = $env->validateCommand($command, $cwd);
 
         $this->assertSame(true, $valid);
@@ -102,6 +122,10 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         );
 
         $env = new UnixEnvironment($paths);
+
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Unix operating system');
+        }
 
         $valid = $env->validateCommand('test_binary');
 
