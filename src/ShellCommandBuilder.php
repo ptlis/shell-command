@@ -61,7 +61,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
     /**
      * Constructor.
      *
-     * @param EnvironmentInterface $environment
+     * @throws \RuntimeException if no Environment is provided and the OS was not known.
+     *
+     * @param EnvironmentInterface|null $environment If not provided the builder will attempt to find the correct
+     *      environment for the OS.
      * @param string $command
      * @param string[] $argumentsList
      * @param int $timeout
@@ -70,7 +73,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
      * @param ProcessObserverInterface[] $observerList
      */
     public function __construct(
-        EnvironmentInterface $environment,
+        EnvironmentInterface $environment = null,
         $command = '',
         array $argumentsList = array(),
         $timeout = -1,
@@ -78,13 +81,36 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $cwd = '',
         array $observerList = array()
     ) {
-        $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
         $this->observerList = $observerList;
+
+        if (is_null($environment)) {
+            switch (PHP_OS) {
+                case 'Linux':
+                case 'Darwin':
+                    $environment = new UnixEnvironment();
+                    break;
+
+                case 'Windows':
+                case 'WINNT':
+                case 'WIN32':
+                    $environment = new WindowsEnvironment();
+                    break;
+
+                default:
+                    throw new \RuntimeException(
+                        'Unable to find Environment for OS "' . PHP_OS . '".' . PHP_EOL .
+                        'Try explicitly providing an Environment when instantiating the builder.'
+                    );
+                    break;
+            }
+        }
+
+        $this->environment = $environment;
     }
 
     /**
