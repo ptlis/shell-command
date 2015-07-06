@@ -187,7 +187,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testPollTimeout()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'
@@ -214,7 +214,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testTimeout()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'
@@ -241,7 +241,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testSetCwd()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'

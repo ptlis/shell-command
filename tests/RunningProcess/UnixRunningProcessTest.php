@@ -22,7 +22,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
-        $command = './tests/data/test_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait();
@@ -33,14 +33,14 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            './tests/data/test_binary',
+            './tests/commands/unix/test_binary',
             $process->getCommand()
         );
     }
 
     public function testWaitWithClosure()
     {
-        $command = './tests/data/test_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait(function($stdOut, $stdErr) {
@@ -55,7 +55,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testHandleCommandError()
     {
-        $command = './tests/data/error_binary';
+        $command = './tests/commands/unix/error_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
 
@@ -84,7 +84,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
             'Cannot get exit code of still-running process.'
         );
 
-        $command = './tests/data/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->getExitCode();
@@ -92,7 +92,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPid()
     {
-        $command = './tests/data/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
 
@@ -108,7 +108,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
             'Cannot get the process id of a process that has already exited.'
         );
 
-        $command = './tests/data/test_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
         $process->wait();
@@ -118,7 +118,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testStopRunning()
     {
-        $command = './tests/data/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();
 
@@ -149,7 +149,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testTimeoutLongRunning()
     {
-        $command = './tests/data/long_sleep_binary';
+        $command = './tests/commands/unix/long_sleep_binary';
 
         $logger = new MockPsrLogger();
 

@@ -20,7 +20,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 {
     public function testWithFlag()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -40,7 +40,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testWithArgument()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -60,7 +60,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testWithParameter()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -80,7 +80,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testWithAdHoc()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -100,7 +100,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRun()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -126,7 +126,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
     {
         $originalPath = getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/data');
+        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
         putenv('HOME=' . $pathToCommand);
 
@@ -158,7 +158,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
     {
         $originalPath = getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/data');
+        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
         putenv('HOME=' . $pathToCommand);
 
@@ -186,7 +186,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithSleep()
     {
-        $path = './tests/data/sleep_binary';
+        $path = './tests/commands/unix/sleep_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),
@@ -208,7 +208,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithError()
     {
-        $path = './tests/data/error_binary';
+        $path = './tests/commands/unix/error_binary';
 
         $command = new ShellCommand(
             new UnixEnvironment(),

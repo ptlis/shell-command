@@ -17,7 +17,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {
-        $command = __DIR__ . '/../data/test_binary';
+        $command = __DIR__ . '/../commands/unix/test_binary';
 
         $env = new UnixEnvironment();
 
@@ -28,7 +28,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testRelative()
     {
-        $command = './tests/data/test_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $env = new UnixEnvironment();
 
@@ -42,7 +42,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
     {
         $originalPath = getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/data');
+        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
         putenv('PATH=/foo/bar:/baz/bat:' . $pathToCommand);
 
@@ -59,7 +59,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
     {
         $originalPath = getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/data');
+        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
         putenv('HOME=' . $pathToCommand);
 
@@ -85,7 +85,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testCwdOverride()
     {
-        $command = './data/test_binary';
+        $command = './commands/unix/test_binary';
         $cwd = getcwd() . DIRECTORY_SEPARATOR . 'tests';
 
         $env = new UnixEnvironment();
@@ -98,7 +98,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
     public function testPathOverride()
     {
         $paths = array(
-            realpath(getcwd() . '/tests/data')
+            realpath(getcwd() . '/tests/commands/unix')
         );
 
         $env = new UnixEnvironment($paths);

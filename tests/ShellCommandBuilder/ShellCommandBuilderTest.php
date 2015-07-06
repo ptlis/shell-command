@@ -25,7 +25,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testBasic()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
@@ -49,7 +49,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testArgument()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
@@ -74,7 +74,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testArgumentList()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $builder = new ShellCommandBuilder(new UnixEnvironment());
 
         $command = $builder
@@ -104,7 +104,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testPollTimeout()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'
@@ -133,7 +133,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testSetCwd()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'
@@ -162,7 +162,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testTimeout()
     {
-        $path = './tests/data/test_binary';
+        $path = './tests/commands/unix/test_binary';
         $arguments = array(
             '--foo bar',
             'baz'
@@ -219,11 +219,11 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
         $command = $builder
             ->addArgument('test')
-            ->setCommand('./tests/data/test_binary')
+            ->setCommand('./tests/commands/unix/test_binary')
             ->buildCommand();
 
         $this->assertEquals(
-            './tests/data/test_binary \'test\'',
+            './tests/commands/unix/test_binary \'test\'',
             $command->__toString()
         );
     }
@@ -236,7 +236,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
         $command = $builder
             ->addArgument('test')
-            ->setCommand('./tests/data/test_binary')
+            ->setCommand('./tests/commands/unix/test_binary')
             ->addProcessObserver(
                 new ProcessExitedLogger($logger)
             )
@@ -266,7 +266,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
         $command = $builder
             ->addArgument('test')
-            ->setCommand('./tests/data/test_binary')
+            ->setCommand('./tests/commands/unix/test_binary')
             ->addProcessObserver(
                 new ProcessStartedLogger($logger)
             )
@@ -283,7 +283,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => array(
-                        'command' => './tests/data/test_binary \'test\''
+                        'command' => './tests/commands/unix/test_binary \'test\''
                     )
                 ),
                 array(

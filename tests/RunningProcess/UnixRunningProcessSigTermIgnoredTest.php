@@ -21,7 +21,7 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
-        $command = './tests/data/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();
 

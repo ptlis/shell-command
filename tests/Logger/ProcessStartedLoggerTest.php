@@ -23,7 +23,7 @@ class ProcessStartedLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
-        $command = './tests/data/test_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();
 
@@ -46,7 +46,7 @@ class ProcessStartedLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => array(
-                        'command' => './tests/data/test_binary'
+                        'command' => './tests/commands/unix/test_binary'
                     )
                 )
             ),

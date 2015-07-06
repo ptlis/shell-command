@@ -23,7 +23,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
-        $command = './tests/data/error_binary';
+        $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
 
@@ -62,7 +62,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testCalledWithCustomLogLevel()
     {
-        $command = './tests/data/error_binary';
+        $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
 
@@ -102,7 +102,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testSendSignal()
     {
-        $command = './tests/data/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary';
 
         $mockLogger = new MockPsrLogger();
 

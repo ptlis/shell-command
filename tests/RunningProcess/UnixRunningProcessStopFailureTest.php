@@ -36,7 +36,7 @@ namespace ptlis\ShellCommand\Test\RunningProcess {
                 'Call to proc_terminate with signal "' . RunningProcessInterface::SIGTERM . '" failed for unknown reason.'
             );
 
-            $command = './tests/data/test_binary';
+            $command = './tests/commands/unix/test_binary';
 
             $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
             $process->stop();
