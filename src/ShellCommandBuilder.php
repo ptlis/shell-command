@@ -96,15 +96,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     public function setCommand($command)
     {
-        return new ShellCommandBuilder(
-            $this->environment,
-            $command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->command = $command;
+
+        return $newBuilder;
     }
 
     /**
@@ -119,15 +114,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $argumentList = $this->argumentList;
         $argumentList[] = $argument;
 
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->argumentList = $argumentList;
+
+        return $newBuilder;
     }
 
     /**
@@ -141,15 +131,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
     {
         $argumentList = array_merge($this->argumentList, $argumentList);
 
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->argumentList = $argumentList;
+
+        return $newBuilder;
     }
 
     /**
@@ -161,15 +146,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     public function setTimeout($timeout)
     {
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $this->argumentList,
-            $timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->timeout = $timeout;
+
+        return $newBuilder;
     }
 
     /**
@@ -181,15 +161,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     public function setPollTimeout($pollTimeout)
     {
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $pollTimeout,
-            $this->cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->pollTimeout = $pollTimeout;
+
+        return $newBuilder;
     }
 
     /**
@@ -201,15 +176,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
      */
     public function setCwd($cwd)
     {
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $cwd,
-            $this->observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->cwd = $cwd;
+
+        return $newBuilder;
     }
 
     /**
@@ -224,15 +194,10 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $observerList = $this->observerList;
         $observerList[] = $observer;
 
-        return new ShellCommandBuilder(
-            $this->environment,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $observerList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->observerList = $observerList;
+
+        return $newBuilder;
     }
 
 
