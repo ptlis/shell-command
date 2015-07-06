@@ -28,7 +28,24 @@ class WindowsEnvironment implements EnvironmentInterface
      */
     public function validateCommand($command, $cwdOverride = '')
     {
-        // TODO: Implement validateCommand() method.
+        $valid = false;
+
+        $cwd = $this->normalizeCwd($cwdOverride);
+
+        // Fully-qualified path
+        if ($this->isValidFullPath($command)) {
+            $valid = true;
+
+        // From current directory
+        } elseif ($this->isValidRelativePath($command, $cwd)) {
+            $valid = true;
+        }
+
+        // TODO:
+        //  In users home directory
+        //  In path
+
+        return $valid;
     }
 
     /**
@@ -62,5 +79,52 @@ class WindowsEnvironment implements EnvironmentInterface
             'WINNT',
             'WIN32'
         );
+    }
+
+    /**
+     * Normalize CWD - if Override is set return that otherwise return the real CWD.
+     *
+     * @param string $cwdOverride
+     *
+     * @return string Normalized CWD.
+     */
+    private function normalizeCwd($cwdOverride)
+    {
+        if (strlen($cwdOverride)) {
+            return $cwdOverride;
+        } else {
+            return getcwd();
+        }
+    }
+
+
+    /**
+     * Returns true if the path points to an executable file.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function isValidFullPath($path)
+    {
+        $valid = false;
+        if (is_file($path)) {
+            $valid = true;
+        }
+
+        return $valid;
+    }
+
+    /**
+     * Validate a relative command path.
+     *
+     * @param string $relativePath
+     * @param string $cwd
+     *
+     * @return bool
+     */
+    private function isValidRelativePath($relativePath, $cwd)
+    {
+        return $this->isValidFullPath($cwd . DIRECTORY_SEPARATOR . $relativePath);
     }
 }
