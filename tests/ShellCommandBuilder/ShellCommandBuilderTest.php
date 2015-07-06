@@ -11,6 +11,7 @@
 namespace ptlis\ShellCommand\Test\ShellCommandBuilder;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
@@ -123,7 +124,8 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
                 $arguments,
                 getcwd(),
                 -1,
-                1000000
+                1000000,
+                new NullProcessObserver()
             ),
             $command
         );
@@ -151,7 +153,8 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
                 $arguments,
                 '/bob',
                 -1,
-                1000
+                1000,
+                new NullProcessObserver()
             ),
             $command
         );
@@ -180,7 +183,8 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
                 $arguments,
                 getcwd(),
                 60 * 1000 * 1000,
-                1000000
+                1000000,
+                new NullProcessObserver()
             ),
             $command
         );

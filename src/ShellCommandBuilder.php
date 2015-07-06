@@ -15,6 +15,7 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 
 /**
  * Immutable builder, used to create ShellCommands.
@@ -229,20 +230,19 @@ class ShellCommandBuilder implements CommandBuilderInterface
      *
      * This means that as far as
      *
-     * @return null|ProcessObserverInterface|AggregateLogger
+     * @return ProcessObserverInterface
      */
     private function getObserver()
     {
-        $observer = null;
-
         if (1 === count($this->observerList)) {
             $observer = $this->observerList[0];
 
         } elseif (count($this->observerList)) {
             $observer = new AggregateLogger($this->observerList);
-        }
 
-        // TODO: Use null logger!
+        } else {
+            $observer = new NullProcessObserver();
+        }
 
         return $observer;
     }
