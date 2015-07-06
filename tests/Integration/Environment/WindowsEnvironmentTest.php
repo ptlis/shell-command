@@ -20,7 +20,22 @@ class WindowsEnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     public function testFullyQualified()
     {
-        $command = __DIR__ . '/../../commands/windows/test.bat';
+        $command = __DIR__ . '\..\..\commands\windows\test.bat';
+
+        $env = new WindowsEnvironment();
+
+        if (!in_array(PHP_OS, $env->getSupportedList())) {
+            $this->markTestSkipped('Tests requires Windows operating system');
+        }
+
+        $valid = $env->validateCommand($command);
+
+        $this->assertSame(true, $valid);
+    }
+
+    public function testRelative()
+    {
+        $command = 'tests\commands\windows\test.bat';
 
         $env = new WindowsEnvironment();
 
