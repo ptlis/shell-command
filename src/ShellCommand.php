@@ -86,7 +86,7 @@ class ShellCommand implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function runSynchronous()
     {
@@ -109,7 +109,7 @@ class ShellCommand implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function runAsynchronous()
     {
@@ -123,7 +123,7 @@ class ShellCommand implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __toString()
     {

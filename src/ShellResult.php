@@ -48,9 +48,7 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
-     * Get the contents of stdout when executing the command.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getStdOut()
     {
@@ -58,10 +56,7 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
-     * Get the array representation of the contents of stdout when the command was executed (each element of the array
-     * contains one line from the output)..
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getStdOutLines()
     {
@@ -69,9 +64,7 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
-     * Get the contents of stderr when executing the command.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getStdErr()
     {
@@ -79,10 +72,7 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
-     * Get the array representation of the contents of stderr when the command was executed (each element of the array
-     * contains one line from the output)..
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public function getStdErrLines()
     {
@@ -90,9 +80,7 @@ class ShellResult implements CommandResultInterface
     }
 
     /**
-     * Get the exit code from the executed command.
-     *
-     * @return int
+     * @inheritDoc
      */
     public function getExitCode()
     {

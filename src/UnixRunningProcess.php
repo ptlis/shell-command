@@ -180,9 +180,7 @@ class UnixRunningProcess implements RunningProcessInterface
     }
 
     /**
-     * Send a signal to the running process.
-     *
-     * @param int $signal
+     * @inheritDoc
      */
     public function sendSignal($signal)
     {
@@ -195,7 +193,7 @@ class UnixRunningProcess implements RunningProcessInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function readOutput($streamId)
     {
@@ -204,7 +202,7 @@ class UnixRunningProcess implements RunningProcessInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getExitCode()
     {
@@ -216,7 +214,7 @@ class UnixRunningProcess implements RunningProcessInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getPid()
     {
@@ -229,7 +227,7 @@ class UnixRunningProcess implements RunningProcessInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getCommand()
     {

@@ -114,11 +114,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Set the command to execute.
-     *
-     * @param $command
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function setCommand($command)
     {
@@ -129,11 +125,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Add an argument to the command.
-     *
-     * @param string $argument
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function addArgument($argument)
     {
@@ -147,11 +139,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Add one or more arguments to the command.
-     *
-     * @param string[] $argumentList
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function addArguments(array $argumentList)
     {
@@ -164,11 +152,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Set the timeout
-     *
-     * @param int $timeout (microseconds) How long to wait for a command to finish executing.
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function setTimeout($timeout)
     {
@@ -179,11 +163,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Set how long to sleep between polls of the running process when executing synchronously.
-     *
-     * @param int $pollTimeout
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function setPollTimeout($pollTimeout)
     {
@@ -194,11 +174,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Set the current working directory for the command.
-     *
-     * @param string $cwd
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function setCwd($cwd)
     {
@@ -209,11 +185,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Add a logger to attach to running processes.
-     *
-     * @param ProcessObserverInterface $observer
-     *
-     * @return $this
+     * @inheritDoc
      */
     public function addProcessObserver(ProcessObserverInterface $observer)
     {
@@ -228,9 +200,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
 
 
     /**
-     * Get the build command
-     *
-     * @return CommandInterface
+     * @inheritDoc
      */
     public function buildCommand()
     {
@@ -254,6 +224,13 @@ class ShellCommandBuilder implements CommandBuilderInterface
         );
     }
 
+    /**
+     * If more than one observer is attached to the command then wrap them up in an Aggregate logger.
+     *
+     * This means that as far as
+     *
+     * @return null|ProcessObserverInterface|AggregateLogger
+     */
     private function getObserver()
     {
         $observer = null;
@@ -264,6 +241,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
         } elseif (count($this->observerList)) {
             $observer = new AggregateLogger($this->observerList);
         }
+
+        // TODO: Use null logger!
 
         return $observer;
     }

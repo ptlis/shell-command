@@ -40,7 +40,7 @@ class UnixEnvironment implements EnvironmentInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function validateCommand($command, $cwdOverride = '')
     {
@@ -69,7 +69,7 @@ class UnixEnvironment implements EnvironmentInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function buildProcess(
         CommandInterface $command,
