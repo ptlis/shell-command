@@ -57,11 +57,11 @@ class UnixEnvironment implements EnvironmentInterface
             $valid = true;
 
         // From current directory
-        } elseif (strlen($this->isValidRelativePath($command, $cwd))) {
+        } elseif ($this->isValidRelativePath($command, $cwd)) {
             $valid = true;
 
         // In path
-        } elseif (strlen($this->isValidGlobalCommand($command))) {
+        } elseif ($this->isValidGlobalCommand($command)) {
             $valid = true;
         }
 
