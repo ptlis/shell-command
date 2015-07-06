@@ -31,7 +31,7 @@ class UnixRunningProcess implements RunningProcessInterface
     private $command;
 
     /**
-     * @var ProcessObserverInterface|null Observer watching process state.
+     * @var ProcessObserverInterface Observer watching process state.
      */
     private $observer;
 

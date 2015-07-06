@@ -74,7 +74,7 @@ class UnixEnvironment implements EnvironmentInterface
     public function buildProcess(
         CommandInterface $command,
         $cwd,
-        ProcessObserverInterface $processObserver = null,
+        ProcessObserverInterface $processObserver,
         $timeout = -1,
         $pollTimeout = 1000
     ) {

@@ -10,6 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellResult;
@@ -23,6 +24,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 '-s bar'
@@ -42,6 +44,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 '--filter=hide-empty'
@@ -61,6 +64,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 'my_files/'
@@ -80,6 +84,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -99,6 +104,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -128,6 +134,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(
                 'if=/dev/sha1 of=/dev/sdb2'
@@ -159,6 +166,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(),
             '~/'
@@ -182,6 +190,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(),
             getcwd()
@@ -203,6 +212,7 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
         $command = new ShellCommand(
             new UnixEnvironment(),
+            new NullProcessObserver(),
             $path,
             array(),
             getcwd()

@@ -120,12 +120,12 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
         $this->assertEquals(
             new ShellCommand(
                 new UnixEnvironment(),
+                new NullProcessObserver(),
                 $path,
                 $arguments,
                 getcwd(),
                 -1,
-                1000000,
-                new NullProcessObserver()
+                1000000
             ),
             $command
         );
@@ -149,12 +149,12 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
         $this->assertEquals(
             new ShellCommand(
                 new UnixEnvironment(),
+                new NullProcessObserver(),
                 $path,
                 $arguments,
                 '/bob',
                 -1,
-                1000,
-                new NullProcessObserver()
+                1000
             ),
             $command
         );
@@ -179,12 +179,12 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
         $this->assertEquals(
             new ShellCommand(
                 new UnixEnvironment(),
+                new NullProcessObserver(),
                 $path,
                 $arguments,
                 getcwd(),
                 60 * 1000 * 1000,
-                1000000,
-                new NullProcessObserver()
+                1000000
             ),
             $command
         );

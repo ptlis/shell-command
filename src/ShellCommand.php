@@ -51,7 +51,7 @@ class ShellCommand implements CommandInterface
     private $cwd;
 
     /**
-     * @var ProcessObserverInterface|null
+     * @var ProcessObserverInterface
      */
     private $processObserver;
 
@@ -60,29 +60,29 @@ class ShellCommand implements CommandInterface
      * Constructor
      *
      * @param EnvironmentInterface $environment
+     * @param ProcessObserverInterface $processObserver
      * @param string $command
      * @param string[] $argumentList
      * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
-     * @param ProcessObserverInterface|null $processObserver
      */
     public function __construct(
         EnvironmentInterface $environment,
+        ProcessObserverInterface $processObserver,
         $command,
         array $argumentList,
         $cwd,
         $timeout = -1,
-        $pollTimeout = 1000,
-        ProcessObserverInterface $processObserver = null
+        $pollTimeout = 1000
     ) {
         $this->environment = $environment;
+        $this->processObserver = $processObserver;
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
-        $this->processObserver = $processObserver;
     }
 
     /**
