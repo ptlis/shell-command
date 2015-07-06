@@ -51,4 +51,13 @@ interface EnvironmentInterface
      * @param string $signal One of RunningProcessInterface SIG* constants
      */
     public function sendSignal($process, $signal);
+
+    /**
+     * Returns an array of OS strings that the environment supports.
+     *
+     * These strings map to values found in the PHP_OS constant.
+     *
+     * @return string[]
+     */
+    public function getSupportedList();
 }

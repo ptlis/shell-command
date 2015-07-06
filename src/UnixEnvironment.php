@@ -246,4 +246,15 @@ class UnixEnvironment implements EnvironmentInterface
 
         return $valid;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSupportedList()
+    {
+        return array(
+            'Linux',
+            'Darwin'
+        );
+    }
 }

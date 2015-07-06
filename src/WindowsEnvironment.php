@@ -52,4 +52,15 @@ class WindowsEnvironment implements EnvironmentInterface
         // TODO: Implement sendSignal() method.
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getSupportedList()
+    {
+        return array(
+            'Windows',
+            'WINNT',
+            'WIN32'
+        );
+    }
 }

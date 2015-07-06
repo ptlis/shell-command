@@ -90,25 +90,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $this->observerList = $observerList;
 
         if (is_null($environment)) {
-            switch (PHP_OS) {
-                case 'Linux':
-                case 'Darwin':
-                    $environment = new UnixEnvironment();
-                    break;
-
-                case 'Windows':
-                case 'WINNT':
-                case 'WIN32':
-                    $environment = new WindowsEnvironment();
-                    break;
-
-                default:
-                    throw new \RuntimeException(
-                        'Unable to find Environment for OS "' . PHP_OS . '".' . PHP_EOL .
-                        'Try explicitly providing an Environment when instantiating the builder.'
-                    );
-                    break;
-            }
+            $environment = $this->detectEnvironment();
         }
 
         $this->environment = $environment;
@@ -245,5 +227,40 @@ class ShellCommandBuilder implements CommandBuilderInterface
         }
 
         return $observer;
+    }
+
+    /**
+     * Try to detect the correct environment for the operating system.
+     *
+     * @throws \RuntimeException
+     *
+     * @return EnvironmentInterface
+     */
+    private function detectEnvironment()
+    {
+        $environmentList = array(
+            new UnixEnvironment(),
+            new WindowsEnvironment()
+        );
+
+        $environment = array_reduce(
+            $environmentList,
+            function (EnvironmentInterface $carry = null, EnvironmentInterface $item) {
+                if ($item->getSupportedList()) {
+                    $carry = $item;
+                }
+
+                return $carry;
+            }
+        );
+
+        if (is_null($environment)) {
+            throw new \RuntimeException(
+                'Unable to find Environment for OS "' . PHP_OS . '".' . PHP_EOL .
+                'Try explicitly providing an Environment when instantiating the builder.'
+            );
+        }
+
+        return $environment;
     }
 }
