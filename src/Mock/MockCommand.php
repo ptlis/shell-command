@@ -97,7 +97,8 @@ class MockCommand implements CommandInterface
         return array_reduce(
             $this->argumentList,
             function ($string, $argument) {
-                return $string . ' ' . escapeshellarg($argument);
+                // Note we always use single quotes for escaping - in reality this will be OS-dependant
+                return $string . ' \'' . str_replace('"', ' ', $argument) . '\'';
             },
             $this->command
         );
