@@ -82,6 +82,14 @@ class WindowsEnvironment implements EnvironmentInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function escapeShellArg($arg)
+    {
+        return escapeshellarg($arg);
+    }
+
+    /**
      * Normalize CWD - if Override is set return that otherwise return the real CWD.
      *
      * @param string $cwdOverride

@@ -257,4 +257,12 @@ class UnixEnvironment implements EnvironmentInterface
             'Darwin'
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function escapeShellArg($arg)
+    {
+        return escapeshellarg($arg);
+    }
 }

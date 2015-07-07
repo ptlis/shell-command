@@ -60,4 +60,13 @@ interface EnvironmentInterface
      * @return string[]
      */
     public function getSupportedList();
+
+    /**
+     * Escape an argument to be passed to the shell.
+     *
+     * @param string $arg
+     *
+     * @return string
+     */
+    public function escapeShellArg($arg);
 }
