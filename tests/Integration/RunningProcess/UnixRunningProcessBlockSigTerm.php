@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
 
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\UnixRunningProcess;

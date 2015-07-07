@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
@@ -21,6 +21,8 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();

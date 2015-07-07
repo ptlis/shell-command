@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
@@ -22,6 +22,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/test_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
@@ -40,6 +42,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testWaitWithClosure()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/test_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
@@ -55,6 +59,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testHandleCommandError()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/error_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
@@ -79,6 +85,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testErrorGetExitCodeWhileRunning()
     {
+        $this->skipIfNotUnix();
+
         $this->setExpectedException(
             'RuntimeException',
             'Cannot get exit code of still-running process.'
@@ -92,6 +100,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPid()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
@@ -103,6 +113,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testErrorGetPidNotRunning()
     {
+        $this->skipIfNotUnix();
+
         $this->setExpectedException(
             'RuntimeException',
             'Cannot get the process id of a process that has already exited.'
@@ -118,6 +130,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testStopRunning()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();
@@ -149,6 +163,8 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
     public function testTimeoutLongRunning()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/long_sleep_binary';
 
         $logger = new MockPsrLogger();

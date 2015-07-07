@@ -8,56 +8,56 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\RunningProcess {
+namespace ptlis\ShellCommand\Test\Integration\RunningProcess {
 
-    use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
     use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
     use ptlis\ShellCommand\UnixEnvironment;
     use ptlis\ShellCommand\UnixRunningProcess;
 
-    class UnixRunningProcessStopFailureTest extends ptlisShellCommandTestcase
+    class UnixRunningProcessStartFailureTest extends ptlisShellCommandTestcase
     {
         public function setUp()
         {
-            global $mockProcTerminateFail;
-            $mockProcTerminateFail = true;
+            global $mockProcOpenFail;
+            $mockProcOpenFail = true;
         }
 
         public function tearDown()
         {
-            global $mockProcTerminateFail;
-            $mockProcTerminateFail = false;
+            global $mockProcOpenFail;
+            $mockProcOpenFail = false;
         }
 
         public function testProcOpenFail()
         {
+            $this->skipIfNotUnix();
+
             $this->setExpectedException(
                 'ptlis\ShellCommand\Exceptions\CommandExecutionException',
-                'Call to proc_terminate with signal "' . RunningProcessInterface::SIGTERM . '" failed for unknown reason.'
+                'Call to proc_open failed for unknown reason.'
             );
 
             $command = './tests/commands/unix/test_binary';
 
             $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
-            $process->stop();
         }
     }
 }
 
 /**
- * Mock the proc_terminate command failing.
+ * Mock the proc_open command failing.
  */
 namespace ptlis\ShellCommand {
-    $mockProcTerminateFail = false;
+    $mockProcOpenFail = false;
 
-    function proc_terminate($signal) {
-        global $mockProcTerminateFail;
+    function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = array()) {
+        global $mockProcOpenFail;
 
-        if ($mockProcTerminateFail) {
+        if ($mockProcOpenFail) {
             return false;
 
         } else {
-            return \proc_terminate($signal);
+            return \proc_open($cmd, $descriptorspec, $pipes, $cwd, $env, $other_options);
         }
     }
 }
