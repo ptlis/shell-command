@@ -24,6 +24,24 @@ use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 class WindowsEnvironment implements EnvironmentInterface
 {
     /**
+     * Use the paths stored here in place of the system paths.
+     *
+     * @var string[]
+     */
+    private $paths;
+
+
+    /**
+     * Constructor.
+     *
+     * @param string[] $pathsOverride
+     */
+    public function __construct(array $pathsOverride = array())
+    {
+        $this->setPaths($pathsOverride);
+    }
+
+    /**
      * @inheritDoc
      */
     public function validateCommand($command, $cwdOverride = '')
@@ -38,6 +56,10 @@ class WindowsEnvironment implements EnvironmentInterface
 
         // From current directory
         } elseif ($this->isValidRelativePath($command, $cwd)) {
+            $valid = true;
+
+        // In path
+        } elseif ($this->isValidGlobalCommand($command)) {
             $valid = true;
         }
 
@@ -105,6 +127,19 @@ class WindowsEnvironment implements EnvironmentInterface
         }
     }
 
+    /**
+     * Set the paths to look for global commands, if $pathsOverride not set then default to system paths.
+     *
+     * @param string[] $pathsOverride
+     */
+    private function setPaths(array $pathsOverride)
+    {
+        if (count($pathsOverride)) {
+            $this->paths = $pathsOverride;
+        } else {
+            $this->paths = explode(';', getenv('PATH'));
+        }
+    }
 
     /**
      * Returns true if the path points to an executable file.
@@ -136,5 +171,31 @@ class WindowsEnvironment implements EnvironmentInterface
     private function isValidRelativePath($relativePath, $cwd)
     {
         return $this->isValidFullPath($cwd . DIRECTORY_SEPARATOR . $relativePath);
+    }
+
+    /**
+     * Validate a global command by checking through system & provided paths.
+     *
+     * @param string $command
+     *
+     * @return bool
+     */
+    private function isValidGlobalCommand($command)
+    {
+        $valid = false;
+
+        if (strlen($command)) {
+
+            // Check for command in path list
+            foreach ($this->paths as $pathDir) {
+                $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $command;
+                if ($this->isValidFullPath($tmpPath)) {
+                    $valid = true;
+                    break;
+                }
+            }
+        }
+
+        return $valid;
     }
 }

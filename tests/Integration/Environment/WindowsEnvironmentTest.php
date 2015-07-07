@@ -43,4 +43,24 @@ class WindowsEnvironmentTest extends ptlisShellCommandTestcase
 
         $this->assertSame(true, $valid);
     }
+
+
+    public function testGlobal()
+    {
+        $this->skipIfNotWindows();
+
+        $originalPath = getenv('PATH');
+
+        $pathToCommand = realpath(getcwd() . '\tests\commands\windows');
+
+        putenv('PATH=c:\foo\bar;d:\baz\bat;' . $pathToCommand);
+
+        $env = new WindowsEnvironment();
+
+        $valid = $env->validateCommand('test.bat');
+
+        $this->assertSame(true, $valid);
+
+        putenv('PATH=' . $originalPath);
+    }
 }
