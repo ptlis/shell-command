@@ -10,7 +10,6 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
-
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
