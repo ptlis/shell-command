@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\ShellCommand;
+namespace ptlis\ShellCommand\Test\Integration\Environment;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
@@ -16,90 +16,12 @@ use ptlis\ShellCommand\ShellCommand;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class ShellCommandTest extends ptlisShellCommandTestcase
+class UnixCommandTest extends ptlisShellCommandTestcase
 {
-    public function testWithFlag()
-    {
-        $path = './tests/commands/unix/test_binary';
-
-        $command = new ShellCommand(
-            new UnixEnvironment(),
-            new NullProcessObserver(),
-            $path,
-            array(
-                '-s bar'
-            ),
-            getcwd()
-        );
-
-        $this->assertSame(
-            $path . ' \'-s bar\'',
-            $command->__toString()
-        );
-    }
-
-    public function testWithArgument()
-    {
-        $path = './tests/commands/unix/test_binary';
-
-        $command = new ShellCommand(
-            new UnixEnvironment(),
-            new NullProcessObserver(),
-            $path,
-            array(
-                '--filter=hide-empty'
-            ),
-            getcwd()
-        );
-
-        $this->assertSame(
-            $path . ' \'--filter=hide-empty\'',
-            $command->__toString()
-        );
-    }
-
-    public function testWithParameter()
-    {
-        $path = './tests/commands/unix/test_binary';
-
-        $command = new ShellCommand(
-            new UnixEnvironment(),
-            new NullProcessObserver(),
-            $path,
-            array(
-                'my_files/'
-            ),
-            getcwd()
-        );
-
-        $this->assertSame(
-            $path . ' \'my_files/\'',
-            $command->__toString()
-        );
-    }
-
-    public function testWithAdHoc()
-    {
-        $path = './tests/commands/unix/test_binary';
-
-        $command = new ShellCommand(
-            new UnixEnvironment(),
-            new NullProcessObserver(),
-            $path,
-            array(
-                'if=/dev/sha1 of=/dev/sdb2'
-            ),
-            getcwd()
-        );
-
-        $this->assertSame(
-            $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
-            $command->__toString()
-        );
-    }
-
     public function testRun()
     {
+        $this->skipIfNotUnix();
+
         $path = './tests/commands/unix/test_binary';
 
         $command = new ShellCommand(
@@ -124,6 +46,8 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunFromHome()
     {
+        $this->skipIfNotUnix();
+
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -156,6 +80,8 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunHomeCwd()
     {
+        $this->skipIfNotUnix();
+
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -186,6 +112,8 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithSleep()
     {
+        $this->skipIfNotUnix();
+
         $path = './tests/commands/unix/sleep_binary';
 
         $command = new ShellCommand(
@@ -208,6 +136,8 @@ class ShellCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithError()
     {
+        $this->skipIfNotUnix();
+
         $path = './tests/commands/unix/error_binary';
 
         $command = new ShellCommand(
