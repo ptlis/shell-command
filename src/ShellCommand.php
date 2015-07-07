@@ -127,12 +127,12 @@ class ShellCommand implements CommandInterface
      */
     public function __toString()
     {
-        $that = $this;
+        $environment = $this->environment;
 
         return array_reduce(
             $this->argumentList,
-            function ($string, $argument) use ($that) {
-                return $string . ' ' . $that->environment->escapeShellArg($argument);
+            function ($string, $argument) use ($environment) {
+                return $string . ' ' . $environment->escapeShellArg($argument);
             },
             $this->command
         );
