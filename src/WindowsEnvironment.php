@@ -108,7 +108,9 @@ class WindowsEnvironment implements EnvironmentInterface
     private function isValidFullPath($path)
     {
         $valid = false;
-        if (is_file($path)) {
+
+        // TODO: Handle network shares?
+        if (1 === preg_match('/^[a-z]+:\\\\/i', $path) && is_file($path)) {
             $valid = true;
         }
 
