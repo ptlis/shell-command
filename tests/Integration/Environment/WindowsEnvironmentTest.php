@@ -13,20 +13,18 @@
 
 namespace ptlis\ShellCommand\Test\Integration\Environment;
 
-
+use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\WindowsEnvironment;
 
-class WindowsEnvironmentTest extends \PHPUnit_Framework_TestCase
+class WindowsEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {
+        $this->skipIfNotWindows();
+
         $command = __DIR__ . '\..\..\commands\windows\test.bat';
 
         $env = new WindowsEnvironment();
-
-        if (!in_array(PHP_OS, $env->getSupportedList())) {
-            $this->markTestSkipped('Tests requires Windows operating system');
-        }
 
         $valid = $env->validateCommand($command);
 
@@ -35,13 +33,11 @@ class WindowsEnvironmentTest extends \PHPUnit_Framework_TestCase
 
     public function testRelative()
     {
+        $this->skipIfNotWindows();
+
         $command = 'tests\commands\windows\test.bat';
 
         $env = new WindowsEnvironment();
-
-        if (!in_array(PHP_OS, $env->getSupportedList())) {
-            $this->markTestSkipped('Tests requires Windows operating system');
-        }
 
         $valid = $env->validateCommand($command);
 
