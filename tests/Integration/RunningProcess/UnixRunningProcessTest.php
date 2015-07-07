@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
-use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;

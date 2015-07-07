@@ -11,18 +11,21 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Logger\AllLogger;
+use ptlis\ShellCommand\Logger\ProcessStartedLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class AllLoggerTest extends ptlisShellCommandTestcase
+class UnixProcessStartedLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -33,8 +36,9 @@ class AllLoggerTest extends ptlisShellCommandTestcase
             getcwd(),
             -1,
             1000,
-            new AllLogger(
-                $mockLogger
+            new ProcessStartedLogger(
+                $mockLogger,
+                LogLevel::DEBUG
             )
         );
         $process->wait();
@@ -46,20 +50,6 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => array(
                         'command' => './tests/commands/unix/test_binary'
-                    )
-                ),
-                array(
-                    'level' => LogLevel::DEBUG,
-                    'message' => 'Read from stdout',
-                    'context' => array(
-                        'stdout' => 'Test command' . PHP_EOL . PHP_EOL
-                    )
-                ),
-                array(
-                    'level' => LogLevel::DEBUG,
-                    'message' => 'Process exited',
-                    'context' => array(
-                        'exit_code' => 0
                     )
                 )
             ),

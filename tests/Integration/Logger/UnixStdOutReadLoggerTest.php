@@ -11,19 +11,22 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Logger\StdErrReadLogger;
+use ptlis\ShellCommand\Logger\StdOutReadLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class StdErrReadLoggerTest extends ptlisShellCommandTestcase
+class UnixStdOutReadLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
-        $command = './tests/commands/unix/error_binary';
+        $this->skipIfNotUnix();
+
+        $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();
 
@@ -33,7 +36,7 @@ class StdErrReadLoggerTest extends ptlisShellCommandTestcase
             getcwd(),
             -1,
             1000,
-            new StdErrReadLogger(
+            new StdOutReadLogger(
                 $mockLogger,
                 LogLevel::DEBUG
             )
@@ -44,9 +47,9 @@ class StdErrReadLoggerTest extends ptlisShellCommandTestcase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Read from stderr',
+                    'message' => 'Read from stdout',
                     'context' => array(
-                        'stderr' => 'Fatal Error' . PHP_EOL
+                        'stdout' => 'Test command' . PHP_EOL . PHP_EOL
                     )
                 )
             ),

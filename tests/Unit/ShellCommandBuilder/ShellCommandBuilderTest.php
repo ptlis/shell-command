@@ -12,10 +12,10 @@ namespace ptlis\ShellCommand\Test\Unit\ShellCommandBuilder;
 
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ShellCommandBuilder;
-use ptlis\ShellCommand\Test\Logger\MockPsrLogger;
 
 class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 {

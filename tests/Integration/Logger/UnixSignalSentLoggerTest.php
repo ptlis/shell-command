@@ -11,23 +11,25 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
-use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class SignalSentLoggerTest extends ptlisShellCommandTestcase
+class UnixSignalSentLoggerTest extends ptlisShellCommandTestcase
 {
     /**
      * Note - this test may (in theory) fail - being timer-dependant there's a chance that the process may exit early.
      */
     public function testCalled()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $mockLogger = new MockPsrLogger();

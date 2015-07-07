@@ -11,18 +11,21 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class ProcessExitedLoggerTest extends ptlisShellCommandTestcase
+class UnixProcessExitedLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -56,6 +59,8 @@ class ProcessExitedLoggerTest extends ptlisShellCommandTestcase
 
     public function testStopped()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $mockLogger = new MockPsrLogger();

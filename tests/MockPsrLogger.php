@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;

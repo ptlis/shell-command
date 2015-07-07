@@ -11,18 +11,21 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Logger;
+namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ErrorLogger;
+use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\UnixRunningProcess;
 
-class ErrorLoggerTest extends ptlisShellCommandTestcase
+class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -62,6 +65,8 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testCalledWithCustomLogLevel()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -102,6 +107,8 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testSendSignal()
     {
+        $this->skipIfNotUnix();
+
         $command = './tests/commands/unix/sleep_binary';
 
         $mockLogger = new MockPsrLogger();
