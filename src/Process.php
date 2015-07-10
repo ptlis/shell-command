@@ -184,12 +184,11 @@ class Process implements ProcessInterface
      */
     public function sendSignal($signal)
     {
-        // TODO: Pass env
-        $this->environment->sendSignal($this->process, $signal);
-
         if (!is_null($this->observer)) {
             $this->observer->sentSignal($signal);
         }
+
+        $this->environment->sendSignal($this->process, $signal);
     }
 
     /**

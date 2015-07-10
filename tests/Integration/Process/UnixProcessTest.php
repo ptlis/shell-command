@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand\Test\Integration\Process;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
@@ -205,15 +206,13 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/long_sleep_binary';
 
-        $logger = new MockPsrLogger();
-
         $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
             500000,
             1000,
-            new SignalSentLogger($logger)
+            new NullProcessObserver()
         );
 
         $process->sendSignal('wibble');
