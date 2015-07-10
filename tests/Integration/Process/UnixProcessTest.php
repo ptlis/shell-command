@@ -193,4 +193,29 @@ class UnixProcessTest extends ptlisShellCommandTestcase
             $logger->getLogs()
         );
     }
+
+    public function testSendInvalidSignal()
+    {
+        $this->skipIfNotUnix();
+
+        $this->setExpectedException(
+            '\ptlis\ShellCommand\Exceptions\CommandExecutionException',
+            'Unknown signal "wibble" provided'
+        );
+
+        $command = './tests/commands/unix/long_sleep_binary';
+
+        $logger = new MockPsrLogger();
+
+        $process = new Process(
+            new UnixEnvironment(),
+            $command,
+            getcwd(),
+            500000,
+            1000,
+            new SignalSentLogger($logger)
+        );
+
+        $process->sendSignal('wibble');
+    }
 }
