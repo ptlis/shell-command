@@ -10,9 +10,6 @@ install:
   - php composer.phar install --no-interaction
 
 
-cache:
-  - composer.lock
-  - vendor
 
 test_script:
   - bin\phpunit.bat
