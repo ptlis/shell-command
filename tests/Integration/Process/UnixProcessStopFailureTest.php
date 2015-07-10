@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Integration\RunningProcess {
+namespace ptlis\ShellCommand\Test\Integration\Process {
 
-    use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+    use ptlis\ShellCommand\Interfaces\ProcessInterface;
     use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
     use ptlis\ShellCommand\UnixEnvironment;
-    use ptlis\ShellCommand\UnixRunningProcess;
+    use ptlis\ShellCommand\Process;
 
-    class UnixRunningProcessStopFailureTest extends ptlisShellCommandTestcase
+    class UnixProcessStopFailureTest extends ptlisShellCommandTestcase
     {
         public function setUp()
         {
@@ -35,12 +35,12 @@ namespace ptlis\ShellCommand\Test\Integration\RunningProcess {
 
             $this->setExpectedException(
                 'ptlis\ShellCommand\Exceptions\CommandExecutionException',
-                'Call to proc_terminate with signal "' . RunningProcessInterface::SIGTERM . '" failed for unknown reason.'
+                'Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.'
             );
 
             $command = './tests/commands/unix/test_binary';
 
-            $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+            $process = new Process(new UnixEnvironment(), $command, getcwd());
             $process->stop();
         }
     }

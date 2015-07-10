@@ -11,9 +11,9 @@
 namespace ptlis\ShellCommand\Interfaces;
 
 /**
- * Interface defining a way of monitoring an asynchronously running process.
+ * Interface defining a class to monitor process lifetimes.
  */
-interface RunningProcessInterface
+interface ProcessInterface
 {
     /** Signal used to request that the process terminates. */
     const SIGTERM = 'SIGTERM';
@@ -64,7 +64,7 @@ interface RunningProcessInterface
     public function sendSignal($signal);
 
     /**
-     * Get the exit code of the running process.
+     * Get the exit code of the process.
      *
      * @throws \RuntimeException If the process has not yet exited.
      *

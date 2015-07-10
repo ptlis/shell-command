@@ -13,12 +13,12 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 
 /**
- * UNIX implementation of running process.
+ * Class encapsulating the lifetime of a process.
  */
-class UnixRunningProcess implements RunningProcessInterface
+class Process implements ProcessInterface
 {
     /**
      * @var EnvironmentInterface The environment to execute the command in.
@@ -164,14 +164,14 @@ class UnixRunningProcess implements RunningProcessInterface
     public function stop($timeout = 1000000)
     {
         $originalTime = microtime(true);
-        $this->sendSignal(RunningProcessInterface::SIGTERM);
+        $this->sendSignal(ProcessInterface::SIGTERM);
 
         while ($this->isRunning()) {
             $time = microtime(true);
 
             // If term hasn't succeeded by the specified timeout then try and kill
             if (($time - $originalTime) * 1000000 > $timeout) {
-                $this->sendSignal(RunningProcessInterface::SIGKILL);
+                $this->sendSignal(ProcessInterface::SIGKILL);
                 break;
             }
 

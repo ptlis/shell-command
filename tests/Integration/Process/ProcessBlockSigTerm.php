@@ -11,15 +11,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\Process;
 
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
-use ptlis\ShellCommand\UnixRunningProcess;
+use ptlis\ShellCommand\Process;
 
 /**
- * Simple class wrapping UnixRunningProcess & blocking the sigterm signal.
+ * Simple class wrapping Process & blocking the sigterm signal.
  */
-class UnixRunningProcessBlockSigTerm extends UnixRunningProcess
+class ProcessBlockSigTerm extends Process
 {
     /**
      * {@inheritDoc}
@@ -27,7 +26,7 @@ class UnixRunningProcessBlockSigTerm extends UnixRunningProcess
     public function sendSignal($signal)
     {
         // Only send signal when not sigterm.
-        if (RunningProcessInterface::SIGTERM !== $signal) {
+        if (Process::SIGTERM !== $signal) {
             parent::sendSignal($signal);
         }
     }

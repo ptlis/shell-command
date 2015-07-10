@@ -54,7 +54,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
-     * @var ProcessObserverInterface[] List of observers to attach to running processed created in built Command.
+     * @var ProcessObserverInterface[] List of observers to attach to processes created by built Command.
      */
     private $observerList;
 

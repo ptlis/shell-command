@@ -8,16 +8,16 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\Process;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
+class UnixProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
@@ -27,7 +27,7 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 
         $logger = new MockPsrLogger();
 
-        $process = new UnixRunningProcessBlockSigTerm(
+        $process = new ProcessBlockSigTerm(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -44,7 +44,7 @@ class UnixRunningProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => RunningProcessInterface::SIGKILL
+                        'signal' => ProcessInterface::SIGKILL
                     )
                 )
             ),

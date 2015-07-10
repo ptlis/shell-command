@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 
 /**
  * Mock environment.
@@ -42,7 +42,7 @@ class MockEnvironment implements EnvironmentInterface
      * @param int $timeout
      * @param int $pollTimeout
      *
-     * @return RunningProcessInterface
+     * @return ProcessInterface
      */
     public function buildProcess(
         CommandInterface $command,

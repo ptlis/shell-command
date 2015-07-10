@@ -14,7 +14,7 @@ use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 
 /**
  * Implementation of a UNIX environment.
@@ -82,7 +82,7 @@ class UnixEnvironment implements EnvironmentInterface
             $cwd = $this->expandHomeDirectory($cwd);
         }
 
-        return new UnixRunningProcess(
+        return new Process(
             $this,
             $command,
             $cwd,
@@ -100,11 +100,11 @@ class UnixEnvironment implements EnvironmentInterface
     public function sendSignal($process, $signal)
     {
         switch ($signal) {
-            case RunningProcessInterface::SIGTERM:
+            case ProcessInterface::SIGTERM:
                 $mappedSignal = SIGTERM;
                 break;
 
-            case RunningProcessInterface::SIGKILL:
+            case ProcessInterface::SIGKILL:
                 $mappedSignal = SIGKILL;
                 break;
 

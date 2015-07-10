@@ -14,12 +14,12 @@
 namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
-use ptlis\ShellCommand\UnixRunningProcess;
+use ptlis\ShellCommand\Process;
 
 class UnixSignalSentLoggerTest extends ptlisShellCommandTestcase
 {
@@ -34,7 +34,7 @@ class UnixSignalSentLoggerTest extends ptlisShellCommandTestcase
 
         $mockLogger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -53,7 +53,7 @@ class UnixSignalSentLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => RunningProcessInterface::SIGTERM
+                        'signal' => ProcessInterface::SIGTERM
                     )
                 )
             ),

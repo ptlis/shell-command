@@ -26,7 +26,7 @@ interface EnvironmentInterface
     public function validateCommand($command, $cwdOverride = '');
 
     /**
-     * Accepts a command and a polling timeout and returns an object implementing RunningProcessInterface.
+     * Accepts a command and a polling timeout and returns an object implementing ProcessInterface.
      *
      * @param CommandInterface $command
      * @param string $cwd
@@ -34,7 +34,7 @@ interface EnvironmentInterface
      * @param int $timeout
      * @param int $pollTimeout
      *
-     * @return RunningProcessInterface
+     * @return ProcessInterface
      */
     public function buildProcess(
         CommandInterface $command,
@@ -48,7 +48,7 @@ interface EnvironmentInterface
      * Send the specified signal to the process.
      *
      * @param resource $process
-     * @param string $signal One of RunningProcessInterface SIG* constants
+     * @param string $signal One of ProcessInterface SIG* constants
      */
     public function sendSignal($process, $signal);
 

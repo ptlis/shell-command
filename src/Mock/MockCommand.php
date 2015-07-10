@@ -80,7 +80,7 @@ class MockCommand implements CommandInterface
      */
     public function runAsynchronous()
     {
-        return new MockRunningProcess(
+        return new MockProcess(
             $this->result->getExitCode(),
             $this->result->getStdOut(),
             $this->result->getStdErr(),

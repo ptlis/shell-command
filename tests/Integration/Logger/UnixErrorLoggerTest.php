@@ -18,7 +18,7 @@ use ptlis\ShellCommand\Logger\ErrorLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
-use ptlis\ShellCommand\UnixRunningProcess;
+use ptlis\ShellCommand\Process;
 
 class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 {
@@ -30,7 +30,7 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 
         $mockLogger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -71,7 +71,7 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 
         $mockLogger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -113,7 +113,7 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 
         $mockLogger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),

@@ -14,7 +14,7 @@
 namespace ptlis\ShellCommand\Interfaces;
 
 /**
- * Interface that classes wishing to observe changes in running processes must implement.
+ * Interface that classes wishing to observe changes in processes must implement.
  */
 interface ProcessObserverInterface
 {

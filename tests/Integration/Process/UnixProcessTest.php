@@ -8,17 +8,17 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Integration\RunningProcess;
+namespace ptlis\ShellCommand\Test\Integration\Process;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Interfaces\RunningProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
-use ptlis\ShellCommand\UnixRunningProcess;
+use ptlis\ShellCommand\Process;
 
-class UnixRunningProcessTest extends ptlisShellCommandTestcase
+class UnixProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
@@ -26,7 +26,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
         $process->wait();
 
         $this->assertEquals(
@@ -46,7 +46,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
         $process->wait(function($stdOut, $stdErr) {
 
         });
@@ -63,7 +63,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/error_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
 
         $fullStdOut = '';
         $fullStdErr = '';
@@ -94,7 +94,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/sleep_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
         $process->getExitCode();
     }
 
@@ -104,7 +104,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/sleep_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
 
         $this->assertNotNull(
             $process->getPid()
@@ -122,7 +122,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new UnixRunningProcess(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd());
         $process->wait();
 
         $process->getPid();
@@ -136,7 +136,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $logger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -153,7 +153,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => RunningProcessInterface::SIGTERM
+                        'signal' => ProcessInterface::SIGTERM
                     )
                 )
             ),
@@ -169,7 +169,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
 
         $logger = new MockPsrLogger();
 
-        $process = new UnixRunningProcess(
+        $process = new Process(
             new UnixEnvironment(),
             $command,
             getcwd(),
@@ -186,7 +186,7 @@ class UnixRunningProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
-                        'signal' => RunningProcessInterface::SIGTERM
+                        'signal' => ProcessInterface::SIGTERM
                     )
                 )
             ),
