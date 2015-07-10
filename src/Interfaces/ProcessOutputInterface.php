@@ -11,9 +11,9 @@
 namespace ptlis\ShellCommand\Interfaces;
 
 /**
- * Interface class that command results must implement.
+ * Interface for classes storing the output of a terminated process.
  */
-interface CommandResultInterface
+interface ProcessOutputInterface
 {
     /**
      * Get the string representation of the contents of stdout when the command was executed.

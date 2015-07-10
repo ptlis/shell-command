@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Test\Mocks;
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
-use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\ProcessOutput;
 
 class MockCommandBuilderTest extends ptlisShellCommandTestcase
 {
@@ -39,7 +39,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 'if=/bar',
                 'wop'
             ),
-            new ShellResult(0, 'hello world', '')
+            new ProcessOutput(0, 'hello world', '')
         );
 
         $this->assertEquals(
@@ -53,7 +53,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(0, 'hello world', ''),
+            new ProcessOutput(0, 'hello world', ''),
             $builtCommand->runSynchronous()
         );
     }
@@ -76,7 +76,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectCommand = new MockCommand(
             'bar',
             array('baz', 'bat'),
-            new ShellResult(1, 'hurray!', '')
+            new ProcessOutput(1, 'hurray!', '')
         );
 
         $this->assertEquals(
@@ -90,7 +90,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(1, 'hurray!', ''),
+            new ProcessOutput(1, 'hurray!', ''),
             $builtCommand->runSynchronous()
         );
     }
@@ -104,11 +104,11 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand('bar')
             ->buildCommand();
 
-        $expectResult1 = new ShellResult(1, 'hurray!', '');
+        $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
             'bar',
             array(),
-            new ShellResult(1, 'hurray!', '')
+            new ProcessOutput(1, 'hurray!', '')
         );
 
         $this->assertEquals(
@@ -121,11 +121,11 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->addMockResult(0, 'success', '')
             ->buildCommand();
 
-        $expectResult2 = new ShellResult(0, 'success', '');
+        $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
             'baz',
             array(),
-            new ShellResult(0, 'success', '')
+            new ProcessOutput(0, 'success', '')
         );
 
         $this->assertEquals(
@@ -150,11 +150,11 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand('bar')
             ->buildCommand();
 
-        $expectResult1 = new ShellResult(1, 'hurray!', '');
+        $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
             'bar',
             array(),
-            new ShellResult(1, 'hurray!', '')
+            new ProcessOutput(1, 'hurray!', '')
         );
 
         $this->assertEquals(
@@ -166,11 +166,11 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand('baz')
             ->buildCommand();
 
-        $expectResult2 = new ShellResult(0, 'success', '');
+        $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
             'baz',
             array(),
-            new ShellResult(0, 'success', '')
+            new ProcessOutput(0, 'success', '')
         );
 
         $this->assertEquals(

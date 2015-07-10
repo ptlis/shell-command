@@ -11,13 +11,13 @@
 namespace ptlis\ShellCommand\Test\ShellCommand;
 
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
-use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\ProcessOutput;
 
 class ShellResultTest extends ptlisShellCommandTestcase
 {
     public function testShellResult()
     {
-        $shellResult = new ShellResult(
+        $shellResult = new ProcessOutput(
             0,
             'great success!',
             ''

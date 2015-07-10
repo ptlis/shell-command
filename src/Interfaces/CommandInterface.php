@@ -18,7 +18,7 @@ interface CommandInterface
     /**
      * Run the command blocking further execution, on completion return a result
      *
-     * @return CommandResultInterface
+     * @return ProcessOutputInterface
      */
     public function runSynchronous();
 

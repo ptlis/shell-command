@@ -10,12 +10,12 @@
 
 namespace ptlis\ShellCommand;
 
-use ptlis\ShellCommand\Interfaces\CommandResultInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
- * Class that stores the result of executing a shell command.
+ * Stores the output of a terminated process.
  */
-class ShellResult implements CommandResultInterface
+class ProcessOutput implements ProcessOutputInterface
 {
     /**
      * @var int The exit code emitted by the command.

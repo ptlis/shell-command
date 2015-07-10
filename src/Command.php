@@ -101,7 +101,7 @@ class Command implements CommandInterface
             $fullStdErr .= $stdErr;
         });
 
-        return new ShellResult(
+        return new ProcessOutput(
             $process->getExitCode(),
             $fullStdOut,
             $fullStdErr

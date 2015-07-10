@@ -12,9 +12,9 @@ namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
-use ptlis\ShellCommand\Interfaces\CommandResultInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\ProcessOutput;
 
 /**
  * Mock implementation of the command builder interface.
@@ -48,7 +48,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
-     * @var ShellResult[] Pre-populated list of results to return.
+     * @var ProcessOutput[] Pre-populated list of results to return.
      */
     private $mockResultList = array();
 
@@ -63,7 +63,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      *
      * @todo Deal with odd implications of mockResultList being passed in by reference.
      *
-     * @param CommandResultInterface[] $mockResultList
+     * @param ProcessOutputInterface[] $mockResultList
      * @param string $command
      * @param string[] $argumentsList
      * @param int $timeout
@@ -210,7 +210,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function addMockResult($exitCode, $stdOut, $stdErr)
     {
         $mockResultList = $this->mockResultList;
-        $mockResultList[] = new ShellResult($exitCode, $stdOut, $stdErr);
+        $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr);
 
         return new MockCommandBuilder(
             $mockResultList,

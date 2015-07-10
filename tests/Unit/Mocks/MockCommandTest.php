@@ -12,7 +12,7 @@ namespace ptlis\ShellCommand\Test\Mocks;
 
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
-use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\ProcessOutput;
 
 class MockCommandTest extends ptlisShellCommandTestcase
 {
@@ -23,13 +23,13 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $command = new MockCommand(
             $path,
             array('foo'),
-            new ShellResult(0, array('hello world'), '')
+            new ProcessOutput(0, array('hello world'), '')
         );
 
         $this->assertEquals($path . ' \'foo\'', $command->__toString());
 
         $this->assertEquals(
-            new ShellResult(0, array('hello world'), ''),
+            new ProcessOutput(0, array('hello world'), ''),
             $command->runSynchronous()
         );
     }

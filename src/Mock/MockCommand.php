@@ -11,7 +11,7 @@
 namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
-use ptlis\ShellCommand\Interfaces\CommandResultInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
  * Mock implementation of CommandInterface provided to simplify testing.
@@ -29,7 +29,7 @@ class MockCommand implements CommandInterface
     private $argumentList;
 
     /**
-     * @var CommandResultInterface The mocked result of this operation.
+     * @var ProcessOutputInterface The mocked result of this operation.
      */
     private $result;
 
@@ -49,14 +49,14 @@ class MockCommand implements CommandInterface
      *
      * @param string $command
      * @param string[] $argumentList
-     * @param CommandResultInterface $result
+     * @param ProcessOutputInterface $result
      * @param int $runningTime
      * @param int $pid
      */
     public function __construct(
         $command,
         array $argumentList,
-        CommandResultInterface $result,
+        ProcessOutputInterface $result,
         $runningTime = 314,
         $pid = 31415
     ) {

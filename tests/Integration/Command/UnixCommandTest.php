@@ -13,7 +13,7 @@ namespace ptlis\ShellCommand\Test\Integration\Environment;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Command;
-use ptlis\ShellCommand\ShellResult;
+use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
 
 class UnixCommandTest extends ptlisShellCommandTestcase
@@ -35,7 +35,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(
+            new ProcessOutput(
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 ''
@@ -67,7 +67,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(
+            new ProcessOutput(
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 ''
@@ -99,7 +99,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(
+            new ProcessOutput(
                 0,
                 '',
                 ''
@@ -125,7 +125,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(
+            new ProcessOutput(
                 0,
                 '',
                 ''
@@ -149,7 +149,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            new ShellResult(
+            new ProcessOutput(
                 5,
                 '',
                 'Fatal Error' . PHP_EOL
