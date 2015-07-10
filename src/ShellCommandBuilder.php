@@ -90,7 +90,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
         $this->observerList = $observerList;
 
         if (is_null($environment)) {
-            $environment = $this->detectEnvironment();
+            $environment = $this->getEnvironment(PHP_OS);
         }
 
         $this->environment = $environment;
@@ -230,13 +230,15 @@ class ShellCommandBuilder implements CommandBuilderInterface
     }
 
     /**
-     * Try to detect the correct environment for the operating system.
+     * Build the correct Environment instance for the provided operating system.
      *
      * @throws \RuntimeException
      *
+     * @param string $operatingSystem A value from PHP_OS
+     *
      * @return EnvironmentInterface
      */
-    private function detectEnvironment()
+    public function getEnvironment($operatingSystem)
     {
         $environmentList = array(
             new UnixEnvironment(),
@@ -245,8 +247,8 @@ class ShellCommandBuilder implements CommandBuilderInterface
 
         $environment = array_reduce(
             $environmentList,
-            function (EnvironmentInterface $carry = null, EnvironmentInterface $item) {
-                if ($item->getSupportedList()) {
+            function (EnvironmentInterface $carry = null, EnvironmentInterface $item) use ($operatingSystem) {
+                if (in_array($operatingSystem, $item->getSupportedList())) {
                     $carry = $item;
                 }
 
@@ -256,7 +258,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
 
         if (is_null($environment)) {
             throw new \RuntimeException(
-                'Unable to find Environment for OS "' . PHP_OS . '".' . PHP_EOL .
+                'Unable to find Environment for OS "' . $operatingSystem . '".'.
                 'Try explicitly providing an Environment when instantiating the builder.'
             );
         }
