@@ -8,14 +8,14 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\ShellCommand;
+namespace ptlis\ShellCommand\Test\ProcessOutput;
 
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
-class ShellResultTest extends ptlisShellCommandTestcase
+class ProcessOutputTest extends ptlisShellCommandTestcase
 {
-    public function testShellResult()
+    public function testProcessOutput()
     {
         $shellResult = new ProcessOutput(
             0,

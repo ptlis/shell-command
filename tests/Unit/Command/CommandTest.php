@@ -14,7 +14,7 @@ use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Command;
 
-class ShellCommandTest extends \PHPUnit_Framework_TestCase
+class CommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithFlag()
     {

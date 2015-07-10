@@ -8,7 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Unit\ShellCommandBuilder;
+namespace ptlis\ShellCommand\Test\Unit\CommandBuilder;
 
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
@@ -17,7 +17,7 @@ use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\CommandBuilder;
 
-class ShellCommandBuilderTest extends ptlisShellCommandTestcase
+class CommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testBasic()
     {
