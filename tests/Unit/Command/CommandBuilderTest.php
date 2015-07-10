@@ -10,7 +10,7 @@
 
 namespace ptlis\ShellCommand\Test\Unit\Environment;
 
-use ptlis\ShellCommand\ShellCommandBuilder;
+use ptlis\ShellCommand\CommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
@@ -18,7 +18,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testDetectEnvironmentSuccess()
     {
-        $builder = new ShellCommandBuilder();
+        $builder = new CommandBuilder();
 
         $environment = $builder->getEnvironment('Linux');
 
@@ -35,7 +35,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             'Unable to find Environment for OS "foobar".'
         );
 
-        $builder = new ShellCommandBuilder();
+        $builder = new CommandBuilder();
 
         $builder->getEnvironment('foobar');
     }

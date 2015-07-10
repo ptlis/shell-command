@@ -12,7 +12,7 @@ namespace ptlis\ShellCommand\Test\ShellCommand;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockEnvironment;
-use ptlis\ShellCommand\ShellCommand;
+use ptlis\ShellCommand\Command;
 
 class ShellCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -40,7 +40,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -60,7 +60,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -80,7 +80,7 @@ class ShellCommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,

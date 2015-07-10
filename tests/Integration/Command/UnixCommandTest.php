@@ -12,7 +12,7 @@ namespace ptlis\ShellCommand\Test\Integration\Environment;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
-use ptlis\ShellCommand\ShellCommand;
+use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\ShellResult;
 use ptlis\ShellCommand\UnixEnvironment;
 
@@ -24,7 +24,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
         $path = './tests/commands/unix/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -56,7 +56,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
         $path = '~/test_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -90,7 +90,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
         $path = '~/sleep_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -116,7 +116,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
         $path = './tests/commands/unix/sleep_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
@@ -140,7 +140,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
         $path = './tests/commands/unix/error_binary';
 
-        $command = new ShellCommand(
+        $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,

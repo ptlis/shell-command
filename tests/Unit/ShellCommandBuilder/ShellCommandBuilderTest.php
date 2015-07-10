@@ -15,14 +15,14 @@ use ptlis\ShellCommand\Logger\ProcessStartedLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
-use ptlis\ShellCommand\ShellCommandBuilder;
+use ptlis\ShellCommand\CommandBuilder;
 
 class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testBasic()
     {
         $path = './tests/commands/unix/test_binary';
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -37,7 +37,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
     public function testArgument()
     {
         $path = './tests/commands/unix/test_binary';
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -53,7 +53,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
     public function testArgumentList()
     {
         $path = './tests/commands/unix/test_binary';
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -78,7 +78,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
             '--foo bar',
             'baz'
         );
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -99,7 +99,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
             '--foo bar',
             'baz'
         );
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -120,7 +120,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
             '--foo bar',
             'baz'
         );
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
             ->setCommand($path)
@@ -137,7 +137,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testAddSingleLogger()
     {
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $logger = new MockPsrLogger();
 
@@ -157,7 +157,7 @@ class ShellCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testAddMultipleLogger()
     {
-        $builder = new ShellCommandBuilder(new MockEnvironment());
+        $builder = new CommandBuilder(new MockEnvironment());
 
         $logger = new MockPsrLogger();
 

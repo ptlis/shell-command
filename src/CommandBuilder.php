@@ -18,9 +18,9 @@ use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 
 /**
- * Immutable builder, used to create ShellCommands.
+ * Immutable builder, used to create Commands.
  */
-class ShellCommandBuilder implements CommandBuilderInterface
+class CommandBuilder implements CommandBuilderInterface
 {
     /**
      * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
@@ -196,7 +196,7 @@ class ShellCommandBuilder implements CommandBuilderInterface
             $cwd = getcwd();
         }
 
-        return new ShellCommand(
+        return new Command(
             $this->environment,
             $this->getObserver(),
             $this->command,
