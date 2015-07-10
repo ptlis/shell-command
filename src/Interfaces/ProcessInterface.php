@@ -59,7 +59,7 @@ interface ProcessInterface
     /**
      * Send a signal to the running process.
      *
-     * @param int $signal
+     * @param string $signal One of SIG* constants
      */
     public function sendSignal($signal);
 
