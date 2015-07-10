@@ -112,7 +112,6 @@ class UnixEnvironment implements EnvironmentInterface
                 throw new CommandExecutionException(
                     'Unknown signal "' . $signal . '" provided.'
                 );
-                break;
         }
 
         if (true !== proc_terminate($process, $mappedSignal)) {

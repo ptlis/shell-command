@@ -11,7 +11,6 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
@@ -126,6 +125,7 @@ class CommandBuilder implements CommandBuilderInterface
      */
     public function addArguments(array $argumentList)
     {
+        /** @var string[] $argumentList */
         $argumentList = array_merge($this->argumentList, $argumentList);
 
         $newBuilder = clone $this;
@@ -245,6 +245,7 @@ class CommandBuilder implements CommandBuilderInterface
             new WindowsEnvironment()
         );
 
+        /** @var EnvironmentInterface $environment */
         $environment = array_reduce(
             $environmentList,
             function (EnvironmentInterface $carry = null, EnvironmentInterface $item) use ($operatingSystem) {
