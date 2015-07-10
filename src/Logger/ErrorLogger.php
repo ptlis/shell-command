@@ -19,8 +19,19 @@ use Psr\Log\LogLevel;
 /**
  * Logs error data from the process (stderr and exit code if not 0).
  */
-class ErrorLogger extends AggregateLogger
+class ErrorLogger extends NullProcessObserver
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var string
+     */
+    private $logLevel;
+
+
     /**
      * Constructor.
      *
@@ -29,11 +40,38 @@ class ErrorLogger extends AggregateLogger
      */
     public function __construct(LoggerInterface $logger, $logLevel = LogLevel::ERROR)
     {
-        parent::__construct(
-            array(
-                new StdErrReadLogger($logger, $logLevel),
-                new ProcessExitedLogger($logger, $logLevel)
-            )
-        );
+        $this->logger = $logger;
+        $this->logLevel = $logLevel;
+    }
+
+    /**
+     * Create a log entry, utility method for derived classes.
+     *
+     * @param string $message
+     * @param array $context
+     */
+    protected function log($message, array $context = array())
+    {
+        $this->logger->log($this->logLevel, $message, $context);
+    }
+
+    /**
+     * The contents of the stderr buffer have been read.
+     *
+     * @param string $stdErr
+     */
+    public function stdErrRead($stdErr)
+    {
+        $this->log('Read from stderr', array('stderr' => $stdErr));
+    }
+
+    /**
+     * Process has completed and the exit code is available.
+     *
+     * @param int $exitCode
+     */
+    public function processExited($exitCode)
+    {
+        $this->log('Process exited', array('exit_code' => $exitCode));
     }
 }

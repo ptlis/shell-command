@@ -15,12 +15,24 @@ namespace ptlis\ShellCommand\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 
 /**
  * Logs all information about the process.
  */
-class AllLogger extends AggregateLogger
+class AllLogger implements ProcessObserverInterface
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var string
+     */
+    private $logLevel;
+
+
     /**
      * Constructor.
      *
@@ -29,14 +41,68 @@ class AllLogger extends AggregateLogger
      */
     public function __construct(LoggerInterface $logger, $logLevel = LogLevel::DEBUG)
     {
-        parent::__construct(
-            array(
-                new ProcessStartedLogger($logger, $logLevel),
-                new StdErrReadLogger($logger, $logLevel),
-                new StdOutReadLogger($logger, $logLevel),
-                new SignalSentLogger($logger, $logLevel),
-                new ProcessExitedLogger($logger, $logLevel)
-            )
-        );
+        $this->logger = $logger;
+        $this->logLevel = $logLevel;
+    }
+
+    /**
+     * Create a log entry, utility method for derived classes.
+     *
+     * @param string $message
+     * @param array $context
+     */
+    protected function log($message, array $context = array())
+    {
+        $this->logger->log($this->logLevel, $message, $context);
+    }
+
+    /**
+     * The process has been created from the provided command.
+     *
+     * @param string $command
+     */
+    public function processCreated($command)
+    {
+        $this->log('Process created', array('command' => $command));
+    }
+
+    /**
+     * The contents of the stdout buffer have been read.
+     *
+     * @param string $stdOut
+     */
+    public function stdOutRead($stdOut)
+    {
+        $this->log('Read from stdout', array('stdout' => $stdOut));
+    }
+
+    /**
+     * The contents of the stderr buffer have been read.
+     *
+     * @param string $stdErr
+     */
+    public function stdErrRead($stdErr)
+    {
+        $this->log('Read from stderr', array('stderr' => $stdErr));
+    }
+
+    /**
+     * A signal has been sent to the process.
+     *
+     * @param int $signal
+     */
+    public function sentSignal($signal)
+    {
+        $this->log('Signal sent', array('signal' => $signal));
+    }
+
+    /**
+     * Process has completed and the exit code is available.
+     *
+     * @param int $exitCode
+     */
+    public function processExited($exitCode)
+    {
+        $this->log('Process exited', array('exit_code' => $exitCode));
     }
 }

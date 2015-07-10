@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand\Test\Integration\Process;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
@@ -143,7 +144,7 @@ class UnixProcessTest extends ptlisShellCommandTestcase
             getcwd(),
             -1,
             1000,
-            new SignalSentLogger($logger)
+            new AllLogger($logger)
         );
 
         $process->stop();
@@ -152,9 +153,23 @@ class UnixProcessTest extends ptlisShellCommandTestcase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/commands/unix/sleep_binary'
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
                         'signal' => ProcessInterface::SIGTERM
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => -1
                     )
                 )
             ),
@@ -176,7 +191,7 @@ class UnixProcessTest extends ptlisShellCommandTestcase
             getcwd(),
             500000,
             1000,
-            new SignalSentLogger($logger)
+            new AllLogger($logger)
         );
 
         $process->wait();
@@ -185,9 +200,23 @@ class UnixProcessTest extends ptlisShellCommandTestcase
             array(
                 array(
                     'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/commands/unix/long_sleep_binary'
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => array(
                         'signal' => ProcessInterface::SIGTERM
+                    )
+                ),
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => array(
+                        'exit_code' => -1
                     )
                 )
             ),

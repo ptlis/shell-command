@@ -12,7 +12,7 @@ namespace ptlis\ShellCommand\Test\Integration\Process;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
-use ptlis\ShellCommand\Logger\SignalSentLogger;
+use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -33,13 +33,20 @@ class UnixProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
             getcwd(),
             -1,
             1000,
-            new SignalSentLogger($logger)
+            new AllLogger($logger)
         );
 
         $process->stop();
 
         $this->assertLogsMatch(
             array(
+                array(
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => array(
+                        'command' => './tests/commands/unix/sleep_binary'
+                    )
+                ),
                 array(
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',

@@ -14,6 +14,9 @@ use ptlis\ShellCommand\CommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
+/**
+ * @todo merge with ptlis\ShellCommand\Unit\CommandBuilder\CommandBuilderTest
+ */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testDetectEnvironmentSuccess()

@@ -10,6 +10,8 @@
 
 namespace ptlis\ShellCommand\Test\Unit\CommandBuilder;
 
+use ptlis\ShellCommand\Logger\AllLogger;
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Logger\ProcessExitedLogger;
 use ptlis\ShellCommand\Logger\ProcessStartedLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
@@ -145,12 +147,12 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->addArgument('test')
             ->setCommand('./tests/commands/unix/test_binary')
             ->addProcessObserver(
-                new ProcessExitedLogger($logger)
+                new NullProcessObserver($logger)
             )
             ->buildCommand();
 
         $this->assertInstanceOf(
-            'ptlis\ShellCommand\Logger\ProcessExitedLogger',
+            'ptlis\ShellCommand\Logger\NullProcessObserver',
             \PHPUnit_Framework_TestCase::readAttribute($command, 'processObserver')
         );
     }
@@ -165,10 +167,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->addArgument('test')
             ->setCommand('./tests/commands/unix/test_binary')
             ->addProcessObserver(
-                new ProcessStartedLogger($logger)
+                new AllLogger($logger)
             )
             ->addProcessObserver(
-                new ProcessExitedLogger($logger)
+                new NullProcessObserver($logger)
             )
             ->buildCommand();
 
