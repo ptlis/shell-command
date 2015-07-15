@@ -72,19 +72,6 @@ class WindowsEnvironment implements EnvironmentInterface
     /**
      * @inheritDoc
      */
-    public function buildProcess(
-        CommandInterface $command,
-        $cwd,
-        ProcessObserverInterface $processObserver,
-        $timeout = -1,
-        $pollTimeout = 1000
-    ) {
-        // TODO: Implement buildProcess() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function sendSignal($process, $signal)
     {
         // TODO: Implement sendSignal() method.
@@ -108,6 +95,15 @@ class WindowsEnvironment implements EnvironmentInterface
     public function escapeShellArg($arg)
     {
         return escapeshellarg($arg);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function expandPath($path)
+    {
+        // TODO: Implement
+        return $path;
     }
 
     /**

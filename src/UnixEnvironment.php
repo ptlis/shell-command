@@ -70,30 +70,6 @@ class UnixEnvironment implements EnvironmentInterface
 
     /**
      * @inheritDoc
-     */
-    public function buildProcess(
-        CommandInterface $command,
-        $cwd,
-        ProcessObserverInterface $processObserver,
-        $timeout = -1,
-        $pollTimeout = 1000
-    ) {
-        if ($this->isValidHomeDirectory($cwd)) {
-            $cwd = $this->expandHomeDirectory($cwd);
-        }
-
-        return new Process(
-            $this,
-            $command,
-            $cwd,
-            $timeout,
-            $pollTimeout,
-            $processObserver
-        );
-    }
-
-    /**
-     * @inheritDoc
      *
      * @throws CommandExecutionException on error.
      */
@@ -119,6 +95,18 @@ class UnixEnvironment implements EnvironmentInterface
                 'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
             );
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function expandPath($path)
+    {
+        if ($this->isValidHomeDirectory($path)) {
+            $path = $this->expandHomeDirectory($path);
+        }
+
+        return $path;
     }
 
     /**

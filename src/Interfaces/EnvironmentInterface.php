@@ -26,25 +26,6 @@ interface EnvironmentInterface
     public function validateCommand($command, $cwdOverride = '');
 
     /**
-     * Accepts a command and a polling timeout and returns an object implementing ProcessInterface.
-     *
-     * @param CommandInterface $command
-     * @param string $cwd
-     * @param ProcessObserverInterface $processObserver
-     * @param int $timeout
-     * @param int $pollTimeout
-     *
-     * @return ProcessInterface
-     */
-    public function buildProcess(
-        CommandInterface $command,
-        $cwd,
-        ProcessObserverInterface $processObserver,
-        $timeout = -1,
-        $pollTimeout = 1000
-    );
-
-    /**
      * Send the specified signal to the process.
      *
      * @param resource $process
@@ -69,4 +50,13 @@ interface EnvironmentInterface
      * @return string
      */
     public function escapeShellArg($arg);
+
+    /**
+     * Performs an platform-specific path expansions (e.g. home folder).
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function expandPath($path);
 }

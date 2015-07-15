@@ -113,12 +113,13 @@ class Command implements CommandInterface
      */
     public function runAsynchronous()
     {
-        return $this->environment->buildProcess(
+        return new Process(
+            $this->environment,
             $this,
-            $this->cwd,
-            $this->processObserver,
+            $this->environment->expandPath($this->cwd),
             $this->timeout,
-            $this->pollTimeout
+            $this->pollTimeout,
+            $this->processObserver
         );
     }
 

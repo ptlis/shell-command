@@ -104,4 +104,16 @@ class MockEnvironment implements EnvironmentInterface
         // Simply wrap in single quotes
         return "'" . $arg . "'";
     }
+
+    /**
+     * Performs an platform-specific path expansions (e.g. home folder).
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function expandPath($path)
+    {
+        return $path;
+    }
 }
