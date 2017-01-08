@@ -107,6 +107,15 @@ class WindowsEnvironment implements EnvironmentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function runAsRoot($command, SudoUser $sudoUser)
+    {
+        // TODO: Implement runAsRoot() method.
+        return $command;
+    }
+
+    /**
      * Normalize CWD - if Override is set return that otherwise return the real CWD.
      *
      * @param string $cwdOverride

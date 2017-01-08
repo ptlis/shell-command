@@ -51,6 +51,11 @@ class Command implements CommandInterface
     private $cwd;
 
     /**
+     * @var SudoUser|null
+     */
+    private $sudoUser = null;
+
+    /**
      * @var ProcessObserverInterface
      */
     private $processObserver;
@@ -66,6 +71,7 @@ class Command implements CommandInterface
      * @param string $cwd
      * @param int $timeout
      * @param int $pollTimeout
+     * @param SudoUser|null $sudoUser
      */
     public function __construct(
         EnvironmentInterface $environment,
@@ -74,7 +80,8 @@ class Command implements CommandInterface
         array $argumentList,
         $cwd,
         $timeout = -1,
-        $pollTimeout = 1000
+        $pollTimeout = 1000,
+        SudoUser $sudoUser = null
     ) {
         $this->environment = $environment;
         $this->processObserver = $processObserver;
@@ -83,6 +90,7 @@ class Command implements CommandInterface
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
+        $this->sudoUser = $sudoUser;
     }
 
     /**
@@ -130,12 +138,18 @@ class Command implements CommandInterface
     {
         $environment = $this->environment;
 
-        return array_reduce(
+        $stringCommand = array_reduce(
             $this->argumentList,
             function ($string, $argument) use ($environment) {
                 return $string . ' ' . $environment->escapeShellArg($argument);
             },
             $this->command
         );
+
+        if ($this->sudoUser) {
+            $stringCommand = $this->environment->runAsRoot($stringCommand, $this->sudoUser);
+        }
+
+        return $stringCommand;
     }
 }

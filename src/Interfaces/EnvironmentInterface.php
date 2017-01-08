@@ -9,6 +9,7 @@
  */
 
 namespace ptlis\ShellCommand\Interfaces;
+use ptlis\ShellCommand\SudoUser;
 
 /**
  * Interface class that operating-system specific classes must implement.
@@ -59,4 +60,13 @@ interface EnvironmentInterface
      * @return string
      */
     public function expandPath($path);
+
+    /**
+     * Makes the provided command run as root.
+     *
+     * @param string $command
+     * @param SudoUser $sudoUser
+     * @return string
+     */
+    public function runAsRoot($command, SudoUser $sudoUser);
 }

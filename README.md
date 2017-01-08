@@ -50,9 +50,19 @@ Followed by a composer update:
 The package ships with a command builder, providing a simple and safe method to build commands. 
 
 ```php
-    use ptlis\ShellCommand\ShellCommandBuilder;
+    use ptlis\ShellCommand\CommandBuilder;
     
-    $builder = new ShellCommandBuilder();
+    $builder = new CommandBuilder();
+```
+
+The builder will attempt to determine your environment (UNIX or Windows) when constructed, you can override this by specifying an environment as the first argument:
+
+```php
+
+    use ptlis\ShellCommand\CommandBuilder;
+    use ptlis\ShellCommand\UnixEnvironment;
+    
+    $builder = new CommandBuilder(new UnixEnvironment());
 ```
 
 Note this builder is immutable - method calls must be chained and terminated with a call to ```buildCommand``` like so:
@@ -112,6 +122,21 @@ Or in bulk:
             '-xzcf',
             'if=/dev/sda of=/dev/sdb'
         ))
+```
+
+
+
+#### Run as sudo
+
+Commands can be run with elevated privileges:
+
+```php
+    $builder
+        ->setSudo(
+            true,
+            'password',
+            'optional username'
+        )
 ```
 
 

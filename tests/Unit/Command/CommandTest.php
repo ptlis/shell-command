@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand\Test\ShellCommand;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Command;
+use ptlis\ShellCommand\SudoUser;
 
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -92,6 +93,52 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $command->__toString()
+        );
+    }
+
+    public function testWithSudoPassword()
+    {
+        $path = './tests/commands/unix/test_binary';
+
+        $command = new Command(
+            new MockEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            array(
+                'if=/dev/sha1 of=/dev/sdb2'
+            ),
+            getcwd(),
+            -1,
+            1000,
+            new SudoUser('', 'testpass')
+        );
+
+        $this->assertSame(
+            'run_as_root -u \'\' -p \'testpass\' ' . $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $command->__toString()
+        );
+    }
+
+    public function testWithSudoPasswordAndUsername()
+    {
+        $path = './tests/commands/unix/test_binary';
+
+        $command = new Command(
+            new MockEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            array(
+                'if=/dev/sha1 of=/dev/sdb2'
+            ),
+            getcwd(),
+            -1,
+            1000,
+            new SudoUser('testuser', 'testpass')
+        );
+
+        $this->assertSame(
+            'run_as_root -u \'testuser\' -p \'testpass\' ' . $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
             $command->__toString()
         );
     }

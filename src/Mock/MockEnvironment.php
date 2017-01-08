@@ -14,6 +14,7 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use ptlis\ShellCommand\SudoUser;
 
 /**
  * Mock environment.
@@ -115,5 +116,18 @@ class MockEnvironment implements EnvironmentInterface
     public function expandPath($path)
     {
         return $path;
+    }
+
+    /**
+     * Wraps the command such that it's run as root.
+     *
+     * @param string $command
+     * @param SudoUser $sudoUser
+     *
+     * @return string
+     */
+    public function runAsRoot($command, SudoUser $sudoUser)
+    {
+        return 'run_as_root -u ' . $this->escapeShellArg($sudoUser->getUsername()) . ' -p ' . $this->escapeShellArg($sudoUser->getPassword()) . ' ' . $command;
     }
 }

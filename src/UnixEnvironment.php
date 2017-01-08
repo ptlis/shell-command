@@ -110,6 +110,19 @@ class UnixEnvironment implements EnvironmentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function runAsRoot($command, SudoUser $sudoUser)
+    {
+        $sudoCommandPrefix = 'echo ' . $this->escapeShellArg($sudoUser->getPassword()) . ' | sudo -S ';
+        if ($sudoUser->getUsername()) {
+            $sudoCommandPrefix .= ' -u ' . $sudoUser->getUsername() . ' ';
+        }
+
+        return $sudoCommandPrefix . $command . ' 2>/dev/null';
+    }
+
+    /**
      * Normalize CWD - if Override is set return that otherwise return the real CWD.
      *
      * @param string $cwdOverride
