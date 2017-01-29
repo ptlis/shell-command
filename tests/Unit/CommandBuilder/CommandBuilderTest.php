@@ -155,7 +155,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->buildCommand();
 
         $this->assertSame(
-            ['TEST' => 'VALUE'],
+            array('TEST' => 'VALUE'),
             \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
         );
     }
