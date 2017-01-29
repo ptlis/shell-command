@@ -137,6 +137,29 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testEnvironmentVariables()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new CommandBuilder(new MockEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->addEnvironmentVariable('TEST', 'VALUE')
+            ->setPollTimeout(1000 * 1000)
+            ->setTimeout(60 * 1000 * 1000)
+            ->buildCommand();
+
+        $this->assertSame(
+            ['TEST' => 'VALUE'],
+            \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
+        );
+    }
+
     public function testCommandWithSudoPassword()
     {
         $path = './tests/commands/unix/test_binary';

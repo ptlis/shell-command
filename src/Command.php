@@ -51,6 +51,11 @@ class Command implements CommandInterface
     private $cwd;
 
     /**
+     * @var string[]
+     */
+    private $envVariableList;
+
+    /**
      * @var SudoUser|null
      */
     private $sudoUser = null;
@@ -69,6 +74,7 @@ class Command implements CommandInterface
      * @param string $command
      * @param string[] $argumentList
      * @param string $cwd
+     * @param string[] $envVariableList
      * @param int $timeout
      * @param int $pollTimeout
      * @param SudoUser|null $sudoUser
@@ -79,6 +85,7 @@ class Command implements CommandInterface
         $command,
         array $argumentList,
         $cwd,
+        $envVariableList = array(),
         $timeout = -1,
         $pollTimeout = 1000,
         SudoUser $sudoUser = null
@@ -88,6 +95,7 @@ class Command implements CommandInterface
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->timeout = $timeout;
+        $this->envVariableList = $envVariableList;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
         $this->sudoUser = $sudoUser;
@@ -138,7 +146,13 @@ class Command implements CommandInterface
     {
         $environment = $this->environment;
 
-        $stringCommand = array_reduce(
+        // TODO: Move to UNIX Environment!
+        $stringCommand = '';
+        foreach ($this->envVariableList as $key => $value) {
+            $stringCommand .= $key . '=' . $environment->escapeShellArg($value) . ' ';
+        }
+
+        $stringCommand .= array_reduce(
             $this->argumentList,
             function ($string, $argument) use ($environment) {
                 return $string . ' ' . $environment->escapeShellArg($argument);

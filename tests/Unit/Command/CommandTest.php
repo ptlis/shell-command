@@ -97,6 +97,27 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testWithEnvVariables()
+    {
+        $path = './tests/commands/unix/test_binary';
+
+        $command = new Command(
+            new MockEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            array(
+                'if=/dev/sha1 of=/dev/sdb2'
+            ),
+            getcwd(),
+            array('MY_VAR' => 'VALUE')
+        );
+
+        $this->assertSame(
+            'MY_VAR=\'VALUE\' ' . $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $command->__toString()
+        );
+    }
+
     public function testWithSudoPassword()
     {
         $path = './tests/commands/unix/test_binary';
@@ -109,6 +130,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
                 'if=/dev/sha1 of=/dev/sdb2'
             ),
             getcwd(),
+            array(),
             -1,
             1000,
             new SudoUser('', 'testpass')
@@ -132,6 +154,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
                 'if=/dev/sha1 of=/dev/sdb2'
             ),
             getcwd(),
+            array(),
             -1,
             1000,
             new SudoUser('testuser', 'testpass')

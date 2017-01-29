@@ -48,6 +48,11 @@ class MockCommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
+     * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
+     */
+    private $envVariableList = array();
+
+    /**
      * @var ProcessOutput[] Pre-populated list of results to return.
      */
     private $mockResultList = array();
@@ -69,6 +74,7 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param int $timeout
      * @param int $pollTimeout
      * @param string $cwd
+     * @param string[] $envVariableList
      * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
@@ -78,6 +84,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         $pollTimeout = 1000,
         $timeout = -1,
         $cwd = '',
+        $envVariableList = array(),
         array &$builtCommandList = array()
     ) {
         $this->mockResultList = &$mockResultList;
@@ -86,6 +93,7 @@ class MockCommandBuilder implements CommandBuilderInterface
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
         $this->cwd = $cwd;
+        $this->envVariableList = $envVariableList;
         $this->builtCommandList = &$builtCommandList;
     }
 
@@ -106,6 +114,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -129,6 +138,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -151,6 +161,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -171,6 +182,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $timeout,
             $this->pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -191,6 +203,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -219,6 +232,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $this->pollTimeout,
             $this->cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -239,6 +253,7 @@ class MockCommandBuilder implements CommandBuilderInterface
             $this->timeout,
             $this->pollTimeout,
             $cwd,
+            $this->envVariableList,
             $this->builtCommandList
         );
     }
@@ -256,6 +271,23 @@ class MockCommandBuilder implements CommandBuilderInterface
     public function addProcessObserver(ProcessObserverInterface $processObserver)
     {
 
+    }
+
+    public function addEnvironmentVariable($key, $value)
+    {
+        $envVariableList = $this->envVariableList;
+        $envVariableList[$key] = $value;
+
+        return new MockCommandBuilder(
+            $this->mockResultList,
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $this->pollTimeout,
+            $this->cwd,
+            $envVariableList,
+            $this->builtCommandList
+        );
     }
 
     /**

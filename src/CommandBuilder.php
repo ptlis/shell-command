@@ -58,6 +58,11 @@ class CommandBuilder implements CommandBuilderInterface
     private $sudoUser;
 
     /**
+     * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
+     */
+    private $envVariableList = array();
+
+    /**
      * @var ProcessObserverInterface[] List of observers to attach to processes created by built Command.
      */
     private $observerList;
@@ -198,6 +203,20 @@ class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function addEnvironmentVariable($key, $value)
+    {
+        $envVariableList = $this->envVariableList;
+        $envVariableList[$key] = $value;
+
+        $newBuilder = clone $this;
+        $newBuilder->envVariableList = $envVariableList;
+
+        return $newBuilder;
+    }
+
 
     /**
      * @inheritDoc
@@ -219,6 +238,7 @@ class CommandBuilder implements CommandBuilderInterface
             $this->command,
             $this->argumentList,
             $cwd,
+            $this->envVariableList,
             $this->timeout,
             $this->pollTimeout,
             $this->sudoUser

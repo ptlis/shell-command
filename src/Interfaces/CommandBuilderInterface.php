@@ -79,6 +79,16 @@ interface CommandBuilderInterface
     public function addProcessObserver(ProcessObserverInterface $observer);
 
     /**
+     * Add an environment variable for use when running the command
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function addEnvironmentVariable($key, $value);
+
+    /**
      * Get the build command.
      *
      * @return CommandInterface

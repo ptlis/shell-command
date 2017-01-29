@@ -134,6 +134,33 @@ class UnixCommandTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testRunWithEnvVariable()
+    {
+        $this->skipIfNotUnix();
+
+        $path = './tests/commands/unix/echo_env';
+
+        $command = new Command(
+            new UnixEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            array(),
+            getcwd(),
+            array(
+                'TEST_VAR' => 'VALUE'
+            )
+        );
+
+        $this->assertEquals(
+            new ProcessOutput(
+                0,
+                'VALUE' . PHP_EOL,
+                ''
+            ),
+            $command->runSynchronous()
+        );
+    }
+
     public function testRunWithError()
     {
         $this->skipIfNotUnix();
