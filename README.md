@@ -141,6 +141,20 @@ Commands can be run with elevated privileges:
 
 
 
+#### Set Environment Variables
+
+Environment variables can be set when running a command:
+
+```php
+    $builder
+        ->addEnvironmentVariable(
+            'TEST_VARIABLE',
+            '123'
+        )
+```
+
+
+
 #### Add Process Observers
 
 Finally we may attach any observers we wish to be executed by our running processes. In this case we add a simple logger:
