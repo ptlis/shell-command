@@ -138,7 +138,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
     {
         $this->skipIfNotUnix();
 
-        $path = './tests/commands/unix/echo_env';
+        $path = './tests/commands/unix/echo_env_binary';
 
         $command = new Command(
             new UnixEnvironment(),
