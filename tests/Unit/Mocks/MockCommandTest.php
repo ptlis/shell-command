@@ -23,10 +23,13 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $command = new MockCommand(
             $path,
             array('foo'),
-            new ProcessOutput(0, array('hello world'), '')
+            new ProcessOutput(0, array('hello world'), ''),
+            1,
+            1,
+            ['Foo' => 'bar']
         );
 
-        $this->assertEquals($path . ' \'foo\'', $command->__toString());
+        $this->assertEquals('FOO=\'bar\' ' . $path . ' \'foo\'', $command->__toString());
 
         $this->assertEquals(
             new ProcessOutput(0, array('hello world'), ''),

@@ -43,6 +43,11 @@ class MockCommand implements CommandInterface
      */
     private $pid;
 
+    /**
+     * @var string[] Array of environment variables to set. Key is variable name and value is the variable value.
+     */
+    private $envVariables;
+
 
     /**
      * Constructor
@@ -52,19 +57,22 @@ class MockCommand implements CommandInterface
      * @param ProcessOutputInterface $result
      * @param int $runningTime
      * @param int $pid
+     * @param string[] $envVariables
      */
     public function __construct(
         $command,
         array $argumentList,
         ProcessOutputInterface $result,
         $runningTime = 314,
-        $pid = 31415
+        $pid = 31415,
+        array $envVariables = []
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->result = $result;
         $this->runningTime = $runningTime;
         $this->pid = $pid;
+        $this->envVariables = $envVariables;
     }
 
     /**
@@ -80,6 +88,7 @@ class MockCommand implements CommandInterface
      */
     public function runAsynchronous()
     {
+        // TODO: Implement this missing class!
         return new MockProcess(
             $this->result->getExitCode(),
             $this->result->getStdOut(),
@@ -94,13 +103,16 @@ class MockCommand implements CommandInterface
      */
     public function __toString()
     {
-        return array_reduce(
-            $this->argumentList,
-            function ($string, $argument) {
-                // Note we always use single quotes for escaping - in reality this will be OS-dependant
-                return $string . ' \'' . str_replace('"', ' ', $argument) . '\'';
-            },
-            $this->command
-        );
+        $envVariables = '';
+        foreach ($this->envVariables as $envVarName => $envVarValue) {
+            $envVariables .= $envVarName . '=\'' . $envVarValue . '\' ';
+        }
+
+        $arguments = '';
+        foreach ($this->argumentList as $argument) {
+            $arguments .= ' \'' . $argument . '\'';
+        }
+
+        return $envVariables . $this->command . $arguments;
     }
 }
