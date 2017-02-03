@@ -26,7 +26,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(0, array('hello world'), ''),
             1,
             1,
-            ['Foo' => 'bar']
+            array('FOO' => 'bar')
         );
 
         $this->assertEquals('FOO=\'bar\' ' . $path . ' \'foo\'', $command->__toString());

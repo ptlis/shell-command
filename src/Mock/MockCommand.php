@@ -65,7 +65,7 @@ class MockCommand implements CommandInterface
         ProcessOutputInterface $result,
         $runningTime = 314,
         $pid = 31415,
-        array $envVariables = []
+        array $envVariables = array()
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
