@@ -266,6 +266,35 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testAddEnvironment()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $arguments = array(
+            '--foo bar',
+            'baz'
+        );
+        $builder = new MockCommandBuilder();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->addEnvironmentVariable('VARIABLE', 'value');
+
+        $results = array();
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $results,
+                $path,
+                $arguments,
+                -1,
+                1000,
+                '',
+                array('VARIABLE' => 'value')
+            ),
+            $partialBuilder
+        );
+    }
+
     public function testInvalidBinary()
     {
         $this->setExpectedException(

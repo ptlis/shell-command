@@ -310,7 +310,8 @@ class MockCommandBuilder implements CommandBuilderInterface
         $command = new MockCommand(
             $this->command,
             $this->argumentList,
-            $result
+            $result,
+            $this->envVariableList
         );
         $this->builtCommandList[] = $command;
 

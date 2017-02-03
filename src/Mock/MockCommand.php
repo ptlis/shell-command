@@ -34,6 +34,11 @@ class MockCommand implements CommandInterface
     private $result;
 
     /**
+     * @var string[] Array of environment variables to set. Key is variable name and value is the variable value.
+     */
+    private $envVariables;
+
+    /**
      * @var int (microseconds) The amount of time to simulate the process running for.
      */
     private $runningTime;
@@ -42,11 +47,6 @@ class MockCommand implements CommandInterface
      * @var int The simulated process id.
      */
     private $pid;
-
-    /**
-     * @var string[] Array of environment variables to set. Key is variable name and value is the variable value.
-     */
-    private $envVariables;
 
 
     /**
@@ -63,16 +63,16 @@ class MockCommand implements CommandInterface
         $command,
         array $argumentList,
         ProcessOutputInterface $result,
+        array $envVariables = array(),
         $runningTime = 314,
-        $pid = 31415,
-        array $envVariables = array()
+        $pid = 31415
     ) {
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->result = $result;
+        $this->envVariables = $envVariables;
         $this->runningTime = $runningTime;
         $this->pid = $pid;
-        $this->envVariables = $envVariables;
     }
 
     /**

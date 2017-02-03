@@ -24,8 +24,6 @@ class MockCommandTest extends ptlisShellCommandTestcase
             $path,
             array('foo'),
             new ProcessOutput(0, array('hello world'), ''),
-            1,
-            1,
             array('FOO' => 'bar')
         );
 
