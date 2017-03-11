@@ -17,7 +17,7 @@ use Psr\Log\LogLevel;
 /**
  * Logs error data from the process (stderr and exit code if not 0).
  */
-class ErrorLogger extends NullProcessObserver
+final class ErrorLogger extends NullProcessObserver
 {
     /**
      * @var LoggerInterface

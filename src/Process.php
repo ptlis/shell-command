@@ -16,7 +16,7 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 /**
  * Class encapsulating the lifetime of a process.
  */
-class Process implements ProcessInterface
+final class Process implements ProcessInterface
 {
     /**
      * @var EnvironmentInterface The environment to execute the command in.

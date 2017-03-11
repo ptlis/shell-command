@@ -17,7 +17,7 @@ use ptlis\ShellCommand\Logger\NullProcessObserver;
 /**
  * Immutable builder, used to create Commands.
  */
-class CommandBuilder implements CommandBuilderInterface
+final class CommandBuilder implements CommandBuilderInterface
 {
     /**
      * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.

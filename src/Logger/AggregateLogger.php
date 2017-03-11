@@ -16,7 +16,7 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 /**
  * Aggregates several loggers.
  */
-class AggregateLogger implements ProcessObserverInterface
+final class AggregateLogger implements ProcessObserverInterface
 {
     /**
      * @var ProcessObserverInterface[]

@@ -15,7 +15,7 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
  */
-class Command implements CommandInterface
+final class Command implements CommandInterface
 {
     /**
      * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.

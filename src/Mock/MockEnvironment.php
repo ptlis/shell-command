@@ -16,7 +16,7 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 /**
  * Mock environment.
  */
-class MockEnvironment implements EnvironmentInterface
+final class MockEnvironment implements EnvironmentInterface
 {
     /**
      * Accepts a command (without arguments) and verifies whether or not it can be executed.

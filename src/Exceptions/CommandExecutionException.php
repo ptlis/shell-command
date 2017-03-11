@@ -11,6 +11,6 @@ namespace ptlis\ShellCommand\Exceptions;
 /**
  * Exception thrown when an error occurs executing a command.
  */
-class CommandExecutionException extends \RuntimeException
+final class CommandExecutionException extends \RuntimeException
 {
 }

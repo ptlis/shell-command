@@ -18,7 +18,7 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 /**
  * Logs all information about the process.
  */
-class AllLogger implements ProcessObserverInterface
+final class AllLogger implements ProcessObserverInterface
 {
     /**
      * @var LoggerInterface

@@ -17,7 +17,7 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 /**
  * Implementation of a UNIX environment.
  */
-class UnixEnvironment implements EnvironmentInterface
+final class UnixEnvironment implements EnvironmentInterface
 {
     /**
      * Use the paths stored here in place of the system paths.

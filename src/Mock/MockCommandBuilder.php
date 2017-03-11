@@ -17,7 +17,7 @@ use ptlis\ShellCommand\ProcessOutput;
 /**
  * Mock implementation of the command builder interface.
  */
-class MockCommandBuilder implements CommandBuilderInterface
+final class MockCommandBuilder implements CommandBuilderInterface
 {
     /**
      * @var string The command to execute.

@@ -14,7 +14,7 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 /**
  * Mock implementation of CommandInterface provided to simplify testing.
  */
-class MockCommand implements CommandInterface
+final class MockCommand implements CommandInterface
 {
     /**
      * @var string The command to execute.

@@ -13,7 +13,7 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 /**
  * Stores the output of a terminated process.
  */
-class ProcessOutput implements ProcessOutputInterface
+final class ProcessOutput implements ProcessOutputInterface
 {
     /**
      * @var int The exit code emitted by the command.
