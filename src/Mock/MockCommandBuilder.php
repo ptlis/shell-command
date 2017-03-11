@@ -305,8 +305,10 @@ final class MockCommandBuilder implements CommandBuilderInterface
 
         $result = array_shift($this->mockResultList);
 
+        $environment = new MockEnvironment();
+
         $command = new MockCommand(
-            $this->command,
+            $environment->applyEnvironmentVariables($this->command, $this->envVariableList),
             $this->argumentList,
             $result,
             $this->envVariableList

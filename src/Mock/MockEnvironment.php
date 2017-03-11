@@ -111,4 +111,14 @@ final class MockEnvironment implements EnvironmentInterface
     {
         return $path;
     }
+
+    public function applyEnvironmentVariables($command, array $envVariableList)
+    {
+        $envPrefix = '';
+        foreach ($envVariableList as $variable => $value) {
+            $envPrefix .= $variable . '=\'' . $value . '\'' . ' ';
+        }
+
+        return $envPrefix . $command;
+    }
 }

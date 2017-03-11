@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\ShellCommand;
+namespace ptlis\ShellCommand\Test\Unit\ShellCommand;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockEnvironment;

@@ -57,4 +57,14 @@ interface EnvironmentInterface
      * @return string
      */
     public function expandPath($path);
+
+    /**
+     * Prepares the command to be run with the specified environment variables.
+     *
+     * @param string $command
+     * @param string[] $envVariableList
+     *
+     * @return string
+     */
+    public function applyEnvironmentVariables($command, array $envVariableList);
 }

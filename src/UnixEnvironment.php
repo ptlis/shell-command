@@ -250,4 +250,17 @@ final class UnixEnvironment implements EnvironmentInterface
     {
         return escapeshellarg($arg);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyEnvironmentVariables($command, array $envVariableList)
+    {
+        $envVariablePrefix = '';
+        foreach ($envVariableList as $key => $value) {
+            $envVariablePrefix .= $key . '=' . $this->escapeShellArg($value) . ' ';
+        }
+
+        return $envVariablePrefix . ' ' . $command;
+    }
 }

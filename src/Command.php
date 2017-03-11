@@ -134,22 +134,14 @@ final class Command implements CommandInterface
      */
     public function __toString()
     {
-        $environment = $this->environment;
-
-        // TODO: Move to UNIX Environment!
-        $stringCommand = '';
-        foreach ($this->envVariableList as $key => $value) {
-            $stringCommand .= $key . '=' . $environment->escapeShellArg($value) . ' ';
-        }
-
-        $stringCommand .= array_reduce(
+        $stringCommand = array_reduce(
             $this->argumentList,
-            function ($string, $argument) use ($environment) {
-                return $string . ' ' . $environment->escapeShellArg($argument);
+            function ($string, $argument) {
+                return $string . ' ' . $this->environment->escapeShellArg($argument);
             },
             $this->command
         );
 
-        return $stringCommand;
+        return $this->environment->applyEnvironmentVariables($stringCommand, $this->envVariableList);
     }
 }
