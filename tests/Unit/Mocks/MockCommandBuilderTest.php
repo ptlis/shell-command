@@ -39,6 +39,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 'if=/bar',
                 'wop'
             ],
+            [],
             new ProcessOutput(0, 'hello world', '')
         );
 
@@ -78,6 +79,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             new MockEnvironment(),
             'bar',
             ['baz', 'bat'],
+            [],
             new ProcessOutput(1, 'hurray!', ''),
             ['key' => 'value']
         );
@@ -117,6 +119,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             new MockEnvironment(),
             'bar',
             [],
+            [],
             new ProcessOutput(1, 'hurray!', '')
         );
 
@@ -134,6 +137,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectCommand2 = new MockCommand(
             new MockEnvironment(),
             'baz',
+            [],
             [],
             new ProcessOutput(0, 'success', '')
         );
@@ -165,6 +169,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             new MockEnvironment(),
             'bar',
             [],
+            [],
             new ProcessOutput(1, 'hurray!', '')
         );
 
@@ -181,6 +186,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectCommand2 = new MockCommand(
             new MockEnvironment(),
             'baz',
+            [],
             [],
             new ProcessOutput(0, 'success', '')
         );

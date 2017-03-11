@@ -23,11 +23,12 @@ class MockCommandTest extends ptlisShellCommandTestcase
             new MockEnvironment(),
             $path,
             ['foo'],
+            ['--test=\'123\''],
             new ProcessOutput(0, ['hello world'], ''),
             ['FOO' => 'bar']
         );
 
-        $this->assertEquals('FOO=\'bar\' ' . $path . ' \'foo\'', $command->__toString());
+        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
 
         $this->assertEquals(
             new ProcessOutput(0, ['hello world'], ''),

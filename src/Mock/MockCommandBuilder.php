@@ -295,6 +295,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
             new MockEnvironment(),
             $this->command,
             $this->argumentList,
+            $this->rawArgumentList,
             $result,
             $this->envVariableList
         );

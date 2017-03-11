@@ -28,9 +28,14 @@ final class MockCommand implements CommandInterface
     private $command;
 
     /**
-     * @var string[] Array of arguments to pass with the command.
+     * @var string[] Array of arguments to pass to the command.
      */
     private $argumentList;
+
+    /**
+     * @var string[] Array of raw arguments to pass to the command.
+     */
+    private $rawArgumentList;
 
     /**
      * @var ProcessOutputInterface The mocked result of this operation.
@@ -68,6 +73,7 @@ final class MockCommand implements CommandInterface
         EnvironmentInterface $environment,
         $command,
         array $argumentList,
+        array $rawArgumentList,
         ProcessOutputInterface $result,
         array $envVariables = [],
         $runningTime = 314,
@@ -76,6 +82,7 @@ final class MockCommand implements CommandInterface
         $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentList;
+        $this->rawArgumentList = $rawArgumentList;
         $this->result = $result;
         $this->envVariables = $envVariables;
         $this->runningTime = $runningTime;
@@ -113,6 +120,10 @@ final class MockCommand implements CommandInterface
         $arguments = '';
         foreach ($this->argumentList as $argument) {
             $arguments .= ' \'' . $argument . '\'';
+        }
+
+        foreach ($this->rawArgumentList as $rawArgument) {
+            $arguments .= ' ' . $rawArgument;
         }
 
         return $this->environment->applyEnvironmentVariables($this->command . $arguments, $this->envVariables);
