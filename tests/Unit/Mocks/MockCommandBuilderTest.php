@@ -202,8 +202,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 $results,
                 $path,
                 $arguments,
-                -1,
-                1000000
+                1000000,
+                -1
             ),
             $partialBuilder
         );
@@ -229,8 +229,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 $results,
                 $path,
                 $arguments,
-                60 * 1000 * 1000,
-                1000
+                1000,
+                60 * 1000 * 1000
             ),
             $partialBuilder
         );
@@ -256,8 +256,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 $results,
                 $path,
                 $arguments,
-                -1,
                 1000,
+                -1,
                 '/foo/bar'
             ),
             $partialBuilder
@@ -284,8 +284,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 $results,
                 $path,
                 $arguments,
-                -1,
                 1000,
+                -1,
                 '',
                 ['VARIABLE' => 'value']
             ),

@@ -46,6 +46,11 @@ final class MockCommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
+     * @var ProcessObserverInterface[]
+     */
+    private $observerList = [];
+
+    /**
      * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
      */
     private $envVariableList = [];
@@ -64,8 +69,6 @@ final class MockCommandBuilder implements CommandBuilderInterface
     /**
      * Constructor.
      *
-     * @todo Deal with odd implications of mockResultList being passed in by reference.
-     *
      * @param ProcessOutputInterface[] $mockResultList
      * @param string $command
      * @param string[] $argumentsList
@@ -76,7 +79,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
      * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
-        array &$mockResultList = [],
+        array $mockResultList = [],
         $command = '',
         array $argumentsList = [],
         $pollTimeout = 1000,
@@ -85,7 +88,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $envVariableList = [],
         array &$builtCommandList = []
     ) {
-        $this->mockResultList = &$mockResultList;
+        $this->mockResultList = $mockResultList;
         $this->command = $command;
         $this->argumentList = $argumentsList;
         $this->timeout = $timeout;
@@ -105,16 +108,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
      */
     public function setCommand($command)
     {
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->command = $command;
+
+        return $newBuilder;
     }
 
     /**
@@ -129,16 +128,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $argumentList = $this->argumentList;
         $argumentList[] = $argument;
 
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->argumentList = $argumentList;
+
+        return $newBuilder;
     }
 
     /**
@@ -150,18 +145,15 @@ final class MockCommandBuilder implements CommandBuilderInterface
      */
     public function addArguments(array $argumentList)
     {
+        /** @var string[] $argumentList */
         $argumentList = array_merge($this->argumentList, $argumentList);
 
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->argumentList = $argumentList;
+
+        return $newBuilder;
     }
 
     /**
@@ -173,16 +165,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
      */
     public function setTimeout($timeout)
     {
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $this->argumentList,
-            $timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->timeout = $timeout;
+
+        return $newBuilder;
     }
 
     /**
@@ -194,45 +182,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
      */
     public function setPollTimeout($pollTimeout)
     {
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
-    }
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->pollTimeout = $pollTimeout;
 
-    /**
-     * Add a mock result (to be returned in order of execution).
-     *
-     * @todo Removing this method and switching to constructor injection would allow us to remove the pass-by-references
-     *   into constructor and make this class truly immutable.
-     *
-     * @param int $exitCode
-     * @param string $stdOut
-     * @param string $stdErr
-     *
-     * @return $this
-     */
-    public function addMockResult($exitCode, $stdOut, $stdErr)
-    {
-        $mockResultList = $this->mockResultList;
-        $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr);
-
-        return new MockCommandBuilder(
-            $mockResultList,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        return $newBuilder;
     }
 
     /**
@@ -244,16 +199,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
      */
     public function setCwd($cwd)
     {
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $cwd,
-            $this->envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->cwd = $cwd;
+
+        return $newBuilder;
     }
 
     /**
@@ -266,9 +217,17 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $this->builtCommandList;
     }
 
-    public function addProcessObserver(ProcessObserverInterface $processObserver)
+    public function addProcessObserver(ProcessObserverInterface $observer)
     {
+        $observerList = $this->observerList;
+        $observerList[] = $observer;
 
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->observerList = $observerList;
+
+        return $newBuilder;
     }
 
     public function addEnvironmentVariable($key, $value)
@@ -276,16 +235,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $envVariableList = $this->envVariableList;
         $envVariableList[$key] = $value;
 
-        return new MockCommandBuilder(
-            $this->mockResultList,
-            $this->command,
-            $this->argumentList,
-            $this->timeout,
-            $this->pollTimeout,
-            $this->cwd,
-            $envVariableList,
-            $this->builtCommandList
-        );
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->envVariableList = $envVariableList;
+
+        return $newBuilder;
     }
 
     /**
@@ -316,5 +271,34 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $this->builtCommandList[] = $command;
 
         return $command;
+    }
+
+    /**
+     * Add a mock result (to be returned in order of execution).
+     *
+     * @todo Removing this method and switching to constructor injection would allow us to remove the pass-by-references
+     *   into constructor and make this class truly immutable.
+     *
+     * @param int $exitCode
+     * @param string $stdOut
+     * @param string $stdErr
+     *
+     * @return $this
+     */
+    public function addMockResult($exitCode, $stdOut, $stdErr)
+    {
+        $mockResultList = $this->mockResultList;
+        $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr);
+
+        return new MockCommandBuilder(
+            $mockResultList,
+            $this->command,
+            $this->argumentList,
+            $this->timeout,
+            $this->pollTimeout,
+            $this->cwd,
+            $this->envVariableList,
+            $this->builtCommandList
+        );
     }
 }
