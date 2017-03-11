@@ -12,7 +12,7 @@ There were several requirements that inspired the creation of this package:
 * Integration of PSR-3 logging instrumentation.
 
 
-[![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Build status](https://ci.appveyor.com/api/projects/status/pn5ci78yrkb5at06?svg=true)](https://ci.appveyor.com/project/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
+[![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
 
 
 ## Install
@@ -55,7 +55,7 @@ The package ships with a command builder, providing a simple and safe method to 
     $builder = new CommandBuilder();
 ```
 
-The builder will attempt to determine your environment (UNIX or Windows) when constructed, you can override this by specifying an environment as the first argument:
+The builder will attempt to determine your environment when constructed, you can override this by specifying an environment as the first argument:
 
 ```php
 
@@ -218,4 +218,4 @@ You can contribute by submitting an Issue to the [issue tracker](https://github.
 
 ## Known limitations
 
-* Currently supports UNIX environments only, pull requests welcomed for Windows (or other platforms).
+* Currently supports UNIX environments only.

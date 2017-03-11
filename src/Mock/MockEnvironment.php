@@ -73,7 +73,7 @@ class MockEnvironment implements EnvironmentInterface
      */
     public function getSupportedList()
     {
-        // Support just about anything
+        // Support just about anything unixy
         return [
             'CYGWIN_NT-5.1',
             'Darwin',
@@ -84,10 +84,7 @@ class MockEnvironment implements EnvironmentInterface
             'NetBSD',
             'OpenBSD',
             'SunOS',
-            'Unix',
-            'WIN32',
-            'WINNT',
-            'Windows'
+            'Unix'
         ];
     }
 

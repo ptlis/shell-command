@@ -277,8 +277,7 @@ class CommandBuilder implements CommandBuilderInterface
     public function getEnvironment($operatingSystem)
     {
         $environmentList = [
-            new UnixEnvironment(),
-            new WindowsEnvironment()
+            new UnixEnvironment()
         ];
 
         /** @var EnvironmentInterface $environment */

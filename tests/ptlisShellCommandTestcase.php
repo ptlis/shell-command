@@ -12,9 +12,6 @@
 namespace ptlis\ShellCommand\Test;
 
 
-use ptlis\ShellCommand\UnixEnvironment;
-use ptlis\ShellCommand\WindowsEnvironment;
-
 class ptlisShellCommandTestcase extends \PHPUnit_Framework_TestCase
 {
     public function assertLogsMatch(array $expectedLogList, array $actualLogList)
@@ -32,24 +29,6 @@ class ptlisShellCommandTestcase extends \PHPUnit_Framework_TestCase
             }
 
             $this->assertEquals(true, $hasMatch, 'Element with index ' . $index . ' not found');
-        }
-    }
-
-    public function skipIfNotUnix()
-    {
-        $env = new UnixEnvironment();
-
-        if (!in_array(PHP_OS, $env->getSupportedList())) {
-            $this->markTestSkipped('Tests requires Unix operating system');
-        }
-    }
-
-    public function skipIfNotWindows()
-    {
-        $env = new WindowsEnvironment();
-
-        if (!in_array(PHP_OS, $env->getSupportedList())) {
-            $this->markTestSkipped('Tests requires Windows operating system');
         }
     }
 }
