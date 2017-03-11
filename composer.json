@@ -27,8 +27,5 @@
             "ptlis\\ShellCommand\\": "src/",
             "ptlis\\ShellCommand\\Test\\": "tests/"
         }
-    },
-    "config": {
-        "bin-dir": "bin"
     }
 }
