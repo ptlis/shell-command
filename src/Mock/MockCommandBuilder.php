@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -29,7 +27,7 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * @var string[] Array of arguments to pass to the command.
      */
-    private $argumentList = array();
+    private $argumentList = [];
 
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
@@ -50,17 +48,17 @@ class MockCommandBuilder implements CommandBuilderInterface
     /**
      * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
      */
-    private $envVariableList = array();
+    private $envVariableList = [];
 
     /**
      * @var ProcessOutput[] Pre-populated list of results to return.
      */
-    private $mockResultList = array();
+    private $mockResultList = [];
 
     /**
      * @var MockCommand[] Array of commands built with this builder.
      */
-    private $builtCommandList = array();
+    private $builtCommandList = [];
 
 
     /**
@@ -78,14 +76,14 @@ class MockCommandBuilder implements CommandBuilderInterface
      * @param CommandInterface[] $builtCommandList
      */
     public function __construct(
-        array &$mockResultList = array(),
+        array &$mockResultList = [],
         $command = '',
-        array $argumentsList = array(),
+        array $argumentsList = [],
         $pollTimeout = 1000,
         $timeout = -1,
         $cwd = '',
-        $envVariableList = array(),
-        array &$builtCommandList = array()
+        $envVariableList = [],
+        array &$builtCommandList = []
     ) {
         $this->mockResultList = &$mockResultList;
         $this->command = $command;

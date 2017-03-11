@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -97,7 +95,7 @@ class ProcessOutput implements ProcessOutputInterface
     {
         $lines = preg_split('/\R/', $string);
         if (1 === count($lines) && '' === $lines[0]) {
-            $lines = array();
+            $lines = [];
         }
 
         return $lines;

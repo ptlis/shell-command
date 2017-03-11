@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright   (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author      brian ridley <ptlis@ptlis.net>
  * @license     http://opensource.org/licenses/MIT MIT
  *
@@ -43,29 +41,29 @@ class UnixAllLoggerTest extends ptlisShellCommandTestcase
         $process->wait();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
-                    'context' => array(
+                    'context' => [
                         'command' => './tests/commands/unix/test_binary'
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Read from stdout',
-                    'context' => array(
+                    'context' => [
                         'stdout' => 'Test command' . PHP_EOL . PHP_EOL
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => 0
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $mockLogger->getLogs()
         );
     }

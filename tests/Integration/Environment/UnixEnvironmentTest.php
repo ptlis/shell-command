@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -111,9 +109,9 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
     {
         $this->skipIfNotUnix();
 
-        $paths = array(
+        $paths = [
             realpath(getcwd() . '/tests/commands/unix')
-        );
+        ];
 
         $env = new UnixEnvironment($paths);
 

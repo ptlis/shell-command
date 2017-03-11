@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright   (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author      brian ridley <ptlis@ptlis.net>
  * @license     http://opensource.org/licenses/MIT MIT
  *
@@ -35,7 +33,7 @@ class WindowsEnvironment implements EnvironmentInterface
      *
      * @param string[] $pathsOverride
      */
-    public function __construct(array $pathsOverride = array())
+    public function __construct(array $pathsOverride = [])
     {
         $this->setPaths($pathsOverride);
     }
@@ -82,11 +80,11 @@ class WindowsEnvironment implements EnvironmentInterface
      */
     public function getSupportedList()
     {
-        return array(
+        return [
             'Windows',
             'WINNT',
             'WIN32'
-        );
+        ];
     }
 
     /**

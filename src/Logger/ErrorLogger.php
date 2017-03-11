@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright   (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author      brian ridley <ptlis@ptlis.net>
  * @license     http://opensource.org/licenses/MIT MIT
  *
@@ -50,7 +48,7 @@ class ErrorLogger extends NullProcessObserver
      * @param string $message
      * @param array $context
      */
-    protected function log($message, array $context = array())
+    protected function log($message, array $context = [])
     {
         $this->logger->log($this->logLevel, $message, $context);
     }
@@ -62,7 +60,7 @@ class ErrorLogger extends NullProcessObserver
      */
     public function stdErrRead($stdErr)
     {
-        $this->log('Read from stderr', array('stderr' => $stdErr));
+        $this->log('Read from stderr', ['stderr' => $stdErr]);
     }
 
     /**
@@ -72,6 +70,6 @@ class ErrorLogger extends NullProcessObserver
      */
     public function processExited($exitCode)
     {
-        $this->log('Process exited', array('exit_code' => $exitCode));
+        $this->log('Process exited', ['exit_code' => $exitCode]);
     }
 }

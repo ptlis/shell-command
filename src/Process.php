@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -59,7 +57,7 @@ class Process implements ProcessInterface
     /**
      * @var array Pipes populated by proc_open.
      */
-    private $pipeList = array();
+    private $pipeList = [];
 
     /**
      * @var resource Process resource returned by proc_open.
@@ -97,10 +95,10 @@ class Process implements ProcessInterface
 
         $this->process = proc_open(
             $command,
-            array(
-                self::STDOUT => array('pipe', 'w'),
-                self::STDERR => array('pipe', 'w')
-            ),
+            [
+                self::STDOUT => ['pipe', 'w'],
+                self::STDERR => ['pipe', 'w']
+            ],
             $this->pipeList
         );
         $this->startTime = microtime(true);

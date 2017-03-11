@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -28,9 +26,9 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd()
         );
 
@@ -60,9 +58,9 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd()
         );
 
@@ -94,7 +92,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(),
+            [],
             '~/'
         );
 
@@ -120,7 +118,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(),
+            [],
             getcwd()
         );
 
@@ -144,11 +142,11 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(),
+            [],
             getcwd(),
-            array(
+            [
                 'TEST_VAR' => 'VALUE'
-            )
+            ]
         );
 
         $this->assertEquals(
@@ -171,7 +169,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(),
+            [],
             getcwd()
         );
 

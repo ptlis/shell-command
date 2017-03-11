@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -34,7 +32,7 @@ class CommandBuilder implements CommandBuilderInterface
     /**
      * @var string[] Array of arguments to pass to the command.
      */
-    private $argumentList = array();
+    private $argumentList = [];
 
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
@@ -60,7 +58,7 @@ class CommandBuilder implements CommandBuilderInterface
     /**
      * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
      */
-    private $envVariableList = array();
+    private $envVariableList = [];
 
     /**
      * @var ProcessObserverInterface[] List of observers to attach to processes created by built Command.
@@ -85,11 +83,11 @@ class CommandBuilder implements CommandBuilderInterface
     public function __construct(
         EnvironmentInterface $environment = null,
         $command = '',
-        array $argumentsList = array(),
+        array $argumentsList = [],
         $timeout = -1,
         $pollTimeout = 1000,
         $cwd = '',
-        array $observerList = array()
+        array $observerList = []
     ) {
         $this->command = $command;
         $this->argumentList = $argumentsList;
@@ -278,10 +276,10 @@ class CommandBuilder implements CommandBuilderInterface
      */
     public function getEnvironment($operatingSystem)
     {
-        $environmentList = array(
+        $environmentList = [
             new UnixEnvironment(),
             new WindowsEnvironment()
-        );
+        ];
 
         /** @var EnvironmentInterface $environment */
         $environment = array_reduce(

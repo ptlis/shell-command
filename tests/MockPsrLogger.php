@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright   (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author      brian ridley <ptlis@ptlis.net>
  * @license     http://opensource.org/licenses/MIT MIT
  *
@@ -21,12 +19,12 @@ class MockPsrLogger implements LoggerInterface
     /**
      * @var array Logs created.
      */
-    private $logs = array();
+    private $logs = [];
 
     /**
      * {@inheritDoc}
      */
-    public function emergency($message, array $context = array())
+    public function emergency($message, array $context = [])
     {
         $this->log(
             LogLevel::EMERGENCY,
@@ -38,7 +36,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function alert($message, array $context = array())
+    public function alert($message, array $context = [])
     {
         $this->log(
             LogLevel::ALERT,
@@ -50,7 +48,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function critical($message, array $context = array())
+    public function critical($message, array $context = [])
     {
         $this->log(
             LogLevel::CRITICAL,
@@ -62,7 +60,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
         $this->log(
             LogLevel::ERROR,
@@ -74,7 +72,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function warning($message, array $context = array())
+    public function warning($message, array $context = [])
     {
         $this->log(
             LogLevel::WARNING,
@@ -86,7 +84,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function notice($message, array $context = array())
+    public function notice($message, array $context = [])
     {
         $this->log(
             LogLevel::NOTICE,
@@ -98,7 +96,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
         $this->log(
             LogLevel::INFO,
@@ -110,7 +108,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function debug($message, array $context = array())
+    public function debug($message, array $context = [])
     {
         $this->log(
             LogLevel::DEBUG,
@@ -122,7 +120,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         if (array_key_exists('stderr', $context) && !strlen($context['stderr'])) {
             return;
@@ -132,11 +130,11 @@ class MockPsrLogger implements LoggerInterface
             return;
         }
 
-        $this->logs[] = array(
+        $this->logs[] = [
             'level' => $level,
             'message' => $message,
             'context' => $context
-        );
+        ];
     }
 
     /**

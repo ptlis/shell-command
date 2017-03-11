@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -22,15 +20,15 @@ class MockCommandTest extends ptlisShellCommandTestcase
 
         $command = new MockCommand(
             $path,
-            array('foo'),
-            new ProcessOutput(0, array('hello world'), ''),
-            array('FOO' => 'bar')
+            ['foo'],
+            new ProcessOutput(0, ['hello world'], ''),
+            ['FOO' => 'bar']
         );
 
         $this->assertEquals('FOO=\'bar\' ' . $path . ' \'foo\'', $command->__toString());
 
         $this->assertEquals(
-            new ProcessOutput(0, array('hello world'), ''),
+            new ProcessOutput(0, ['hello world'], ''),
             $command->runSynchronous()
         );
     }

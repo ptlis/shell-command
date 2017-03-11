@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright   (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author      brian ridley <ptlis@ptlis.net>
  * @license     http://opensource.org/licenses/MIT MIT
  *
@@ -43,22 +41,22 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
         $process->wait();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::ERROR,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => 5
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::ERROR,
                     'message' => 'Read from stderr',
-                    'context' => array(
+                    'context' => [
                         'stderr' => 'Fatal Error' . PHP_EOL
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $mockLogger->getLogs()
         );
     }
@@ -85,22 +83,22 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
         $process->wait();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::CRITICAL,
                     'message' => 'Read from stderr',
-                    'context' => array(
+                    'context' => [
                         'stderr' => 'Fatal Error' . PHP_EOL
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::CRITICAL,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => 5
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $mockLogger->getLogs()
         );
     }
@@ -126,15 +124,15 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
         $process->stop();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::ERROR,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => -1
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $mockLogger->getLogs()
         );
     }

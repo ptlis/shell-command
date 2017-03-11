@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -25,9 +23,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 '-s bar'
-            ),
+            ],
             getcwd()
         );
 
@@ -45,9 +43,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 '--filter=hide-empty'
-            ),
+            ],
             getcwd()
         );
 
@@ -65,9 +63,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'my_files/'
-            ),
+            ],
             getcwd()
         );
 
@@ -85,9 +83,9 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd()
         );
 
@@ -105,11 +103,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd(),
-            array('MY_VAR' => 'VALUE')
+            ['MY_VAR' => 'VALUE']
         );
 
         $this->assertSame(
@@ -126,11 +124,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd(),
-            array(),
+            [],
             -1,
             1000,
             new SudoUser('', 'testpass')
@@ -150,11 +148,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             new MockEnvironment(),
             new NullProcessObserver(),
             $path,
-            array(
+            [
                 'if=/dev/sha1 of=/dev/sdb2'
-            ),
+            ],
             getcwd(),
-            array(),
+            [],
             -1,
             1000,
             new SudoUser('testuser', 'testpass')

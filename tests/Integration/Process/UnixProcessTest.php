@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -150,29 +148,29 @@ class UnixProcessTest extends ptlisShellCommandTestcase
         $process->stop();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
-                    'context' => array(
+                    'context' => [
                         'command' => './tests/commands/unix/sleep_binary'
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
-                    'context' => array(
+                    'context' => [
                         'signal' => ProcessInterface::SIGTERM
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => -1
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $logger->getLogs()
         );
     }
@@ -197,29 +195,29 @@ class UnixProcessTest extends ptlisShellCommandTestcase
         $process->wait();
 
         $this->assertLogsMatch(
-            array(
-                array(
+            [
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
-                    'context' => array(
+                    'context' => [
                         'command' => './tests/commands/unix/long_sleep_binary'
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
-                    'context' => array(
+                    'context' => [
                         'signal' => ProcessInterface::SIGTERM
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
-                    'context' => array(
+                    'context' => [
                         'exit_code' => -1
-                    )
-                )
-            ),
+                    ]
+                ]
+            ],
             $logger->getLogs()
         );
     }

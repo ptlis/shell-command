@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -50,7 +48,7 @@ namespace ptlis\ShellCommand\Test\Integration\Process {
 namespace ptlis\ShellCommand {
     $mockProcOpenFail = false;
 
-    function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = array()) {
+    function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = []) {
         global $mockProcOpenFail;
 
         if ($mockProcOpenFail) {

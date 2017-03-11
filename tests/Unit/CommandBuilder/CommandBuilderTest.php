@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -60,10 +58,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         $command = $builder
             ->setCommand($path)
             ->addArguments(
-                array(
+                [
                     '--foo bar',
                     'baz'
-                )
+                ]
             )
             ->buildCommand();
 
@@ -76,10 +74,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
     public function testPollTimeout()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
@@ -97,10 +95,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
     public function testSetCwd()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
@@ -118,10 +116,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
     public function testTimeout()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
@@ -140,10 +138,10 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
     public function testEnvironmentVariables()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new CommandBuilder(new MockEnvironment());
 
         $command = $builder
@@ -155,7 +153,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->buildCommand();
 
         $this->assertSame(
-            array('TEST' => 'VALUE'),
+            ['TEST' => 'VALUE'],
             \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
         );
     }

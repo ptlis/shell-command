@@ -1,9 +1,7 @@
 <?php
 
 /**
- * PHP Version 5.3
- *
- * @copyright (c) 2015 brian ridley
+ * @copyright (c) 2015-2017 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
@@ -33,12 +31,12 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectCommand = new MockCommand(
             'foo',
-            array(
+            [
                 '--foo bar',
                 '-d 10',
                 'if=/bar',
                 'wop'
-            ),
+            ],
             new ProcessOutput(0, 'hello world', '')
         );
 
@@ -48,7 +46,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            array($expectCommand),
+            [$expectCommand],
             $builder->getBuiltCommands()
         );
 
@@ -65,17 +63,17 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $builtCommand = $builder
             ->setCommand('bar')
             ->addArguments(
-                array(
+                [
                     'baz',
                     'bat'
-                )
+                ]
             )
             ->addMockResult(1, 'hurray!', '')
             ->buildCommand();
 
         $expectCommand = new MockCommand(
             'bar',
-            array('baz', 'bat'),
+            ['baz', 'bat'],
             new ProcessOutput(1, 'hurray!', '')
         );
 
@@ -85,7 +83,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            array($expectCommand),
+            [$expectCommand],
             $builder->getBuiltCommands()
         );
 
@@ -107,7 +105,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
             'bar',
-            array(),
+            [],
             new ProcessOutput(1, 'hurray!', '')
         );
 
@@ -124,7 +122,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
             'baz',
-            array(),
+            [],
             new ProcessOutput(0, 'success', '')
         );
 
@@ -134,7 +132,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            array($expectCommand1, $expectCommand2),
+            [$expectCommand1, $expectCommand2],
             $builder->getBuiltCommands()
         );
     }
@@ -153,7 +151,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
             'bar',
-            array(),
+            [],
             new ProcessOutput(1, 'hurray!', '')
         );
 
@@ -169,7 +167,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
             'baz',
-            array(),
+            [],
             new ProcessOutput(0, 'success', '')
         );
 
@@ -179,7 +177,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            array($expectCommand1, $expectCommand2),
+            [$expectCommand1, $expectCommand2],
             $builder->getBuiltCommands()
         );
     }
@@ -187,10 +185,10 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
     public function testPollTimeout()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new MockCommandBuilder();
 
         $partialBuilder = $builder
@@ -198,7 +196,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->addArguments($arguments)
             ->setPollTimeout(1000000);
 
-        $results = array();
+        $results = [];
         $this->assertEquals(
             new MockCommandBuilder(
                 $results,
@@ -214,10 +212,10 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
     public function testTimeout()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new MockCommandBuilder();
 
         $partialBuilder = $builder
@@ -225,7 +223,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->addArguments($arguments)
             ->setTimeout(60 * 1000 * 1000);
 
-        $results = array();
+        $results = [];
         $this->assertEquals(
             new MockCommandBuilder(
                 $results,
@@ -241,10 +239,10 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
     public function testSetCwd()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new MockCommandBuilder();
 
         $partialBuilder = $builder
@@ -252,7 +250,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->addArguments($arguments)
             ->setCwd('/foo/bar');
 
-        $results = array();
+        $results = [];
         $this->assertEquals(
             new MockCommandBuilder(
                 $results,
@@ -269,10 +267,10 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
     public function testAddEnvironment()
     {
         $path = './tests/commands/unix/test_binary';
-        $arguments = array(
+        $arguments = [
             '--foo bar',
             'baz'
-        );
+        ];
         $builder = new MockCommandBuilder();
 
         $partialBuilder = $builder
@@ -280,7 +278,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->addArguments($arguments)
             ->addEnvironmentVariable('VARIABLE', 'value');
 
-        $results = array();
+        $results = [];
         $this->assertEquals(
             new MockCommandBuilder(
                 $results,
@@ -289,7 +287,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 -1,
                 1000,
                 '',
-                array('VARIABLE' => 'value')
+                ['VARIABLE' => 'value']
             ),
             $partialBuilder
         );
@@ -326,7 +324,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $command = $builder
             ->setCommand('foo')
             ->addArgument('--test')
-            ->addMockResult(0, array('bar'), array())
+            ->addMockResult(0, ['bar'], [])
             ->buildCommand();
 
         $this->assertEquals(
