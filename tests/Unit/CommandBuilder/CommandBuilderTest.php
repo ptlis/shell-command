@@ -158,62 +158,6 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testCommandWithSudoPassword()
-    {
-        $path = './tests/commands/unix/test_binary';
-        $builder = new CommandBuilder(new MockEnvironment());
-
-        $command = $builder
-            ->setSudo(true, 'testpass')
-            ->setCommand($path)
-            ->buildCommand();
-
-        $sudoUser = \PHPUnit_Framework_TestCase::readAttribute($command, 'sudoUser');
-
-        $this->assertNotNull(
-            true,
-            $sudoUser
-        );
-
-        $this->assertSame(
-            'testpass',
-            \PHPUnit_Framework_TestCase::readAttribute($sudoUser, 'password')
-        );
-
-        $this->assertSame(
-            '',
-            \PHPUnit_Framework_TestCase::readAttribute($sudoUser, 'username')
-        );
-    }
-
-    public function testCommandWithSudoPasswordAndUsername()
-    {
-        $path = './tests/commands/unix/test_binary';
-        $builder = new CommandBuilder(new MockEnvironment());
-
-        $command = $builder
-            ->setSudo(true, 'testpass', 'testuser')
-            ->setCommand($path)
-            ->buildCommand();
-
-        $sudoUser = \PHPUnit_Framework_TestCase::readAttribute($command, 'sudoUser');
-
-        $this->assertNotNull(
-            true,
-            $sudoUser
-        );
-
-        $this->assertSame(
-            'testpass',
-            \PHPUnit_Framework_TestCase::readAttribute($sudoUser, 'password')
-        );
-
-        $this->assertSame(
-            'testuser',
-            \PHPUnit_Framework_TestCase::readAttribute($sudoUser, 'username')
-        );
-    }
-
     public function testAddSingleLogger()
     {
         $builder = new CommandBuilder(new MockEnvironment());

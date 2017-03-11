@@ -126,21 +126,6 @@ Or in bulk:
 
 
 
-#### Run as sudo
-
-Commands can be run with elevated privileges:
-
-```php
-    $builder
-        ->setSudo(
-            true,
-            'password',
-            'optional username'
-        )
-```
-
-
-
 #### Set Environment Variables
 
 Environment variables can be set when running a command:

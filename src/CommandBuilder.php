@@ -51,11 +51,6 @@ class CommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
-     * @var SudoUser The sudo user to run the command as.
-     */
-    private $sudoUser;
-
-    /**
      * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
      */
     private $envVariableList = [];
@@ -110,18 +105,6 @@ class CommandBuilder implements CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->command = $command;
-
-        return $newBuilder;
-    }
-
-    public function setSudo($sudoEnabled, $sudoPassword = '', $sudoUsername = '')
-    {
-        $newBuilder = clone $this;
-
-        $newBuilder->sudoUser = null;
-        if ($sudoEnabled) {
-            $newBuilder->sudoUser = new SudoUser($sudoUsername, $sudoPassword);
-        }
 
         return $newBuilder;
     }
@@ -238,8 +221,7 @@ class CommandBuilder implements CommandBuilderInterface
             $cwd,
             $this->envVariableList,
             $this->timeout,
-            $this->pollTimeout,
-            $this->sudoUser
+            $this->pollTimeout
         );
     }
 
