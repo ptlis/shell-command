@@ -10,6 +10,7 @@ namespace ptlis\ShellCommand\Test\Mocks;
 
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
+use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
@@ -30,6 +31,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $builtCommand = $builder->buildCommand();
 
         $expectCommand = new MockCommand(
+            new MockEnvironment(),
             'foo',
             [
                 '--foo bar',
@@ -69,12 +71,15 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
                 ]
             )
             ->addMockResult(1, 'hurray!', '')
+            ->addEnvironmentVariable('key', 'value')
             ->buildCommand();
 
         $expectCommand = new MockCommand(
+            new MockEnvironment(),
             'bar',
             ['baz', 'bat'],
-            new ProcessOutput(1, 'hurray!', '')
+            new ProcessOutput(1, 'hurray!', ''),
+            ['key' => 'value']
         );
 
         $this->assertEquals(
@@ -91,6 +96,11 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             new ProcessOutput(1, 'hurray!', ''),
             $builtCommand->runSynchronous()
         );
+
+        $this->assertEquals(
+            'key=\'value\' bar \'baz\' \'bat\'',
+            $builtCommand->__toString()
+        );
     }
 
     public function testMockCommandMultiUseOne()
@@ -104,6 +114,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
+            new MockEnvironment(),
             'bar',
             [],
             new ProcessOutput(1, 'hurray!', '')
@@ -121,6 +132,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
+            new MockEnvironment(),
             'baz',
             [],
             new ProcessOutput(0, 'success', '')
@@ -150,6 +162,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
+            new MockEnvironment(),
             'bar',
             [],
             new ProcessOutput(1, 'hurray!', '')
@@ -166,6 +179,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
+            new MockEnvironment(),
             'baz',
             [],
             new ProcessOutput(0, 'success', '')

@@ -9,6 +9,7 @@
 namespace ptlis\ShellCommand\Test\Mocks;
 
 use ptlis\ShellCommand\Mock\MockCommand;
+use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
@@ -19,6 +20,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
+            new MockEnvironment(),
             $path,
             ['foo'],
             new ProcessOutput(0, ['hello world'], ''),

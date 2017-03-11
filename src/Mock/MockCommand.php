@@ -9,6 +9,7 @@
 namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
+use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
@@ -16,6 +17,11 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class MockCommand implements CommandInterface
 {
+    /**
+     * @var EnvironmentInterface
+     */
+    private $environment;
+
     /**
      * @var string The command to execute.
      */
@@ -50,6 +56,7 @@ final class MockCommand implements CommandInterface
     /**
      * Constructor
      *
+     * @param EnvironmentInterface $environment
      * @param string $command
      * @param string[] $argumentList
      * @param ProcessOutputInterface $result
@@ -58,6 +65,7 @@ final class MockCommand implements CommandInterface
      * @param string[] $envVariables
      */
     public function __construct(
+        EnvironmentInterface $environment,
         $command,
         array $argumentList,
         ProcessOutputInterface $result,
@@ -65,6 +73,7 @@ final class MockCommand implements CommandInterface
         $runningTime = 314,
         $pid = 31415
     ) {
+        $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->result = $result;
@@ -101,16 +110,11 @@ final class MockCommand implements CommandInterface
      */
     public function __toString()
     {
-        $envVariables = '';
-        foreach ($this->envVariables as $envVarName => $envVarValue) {
-            $envVariables .= $envVarName . '=\'' . $envVarValue . '\' ';
-        }
-
         $arguments = '';
         foreach ($this->argumentList as $argument) {
             $arguments .= ' \'' . $argument . '\'';
         }
 
-        return $envVariables . $this->command . $arguments;
+        return $this->environment->applyEnvironmentVariables($this->command . $arguments, $this->envVariables);
     }
 }
