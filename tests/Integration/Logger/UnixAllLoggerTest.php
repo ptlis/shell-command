@@ -22,8 +22,6 @@ class UnixAllLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();

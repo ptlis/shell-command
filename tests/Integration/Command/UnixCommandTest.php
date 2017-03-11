@@ -18,8 +18,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 {
     public function testRun()
     {
-        $this->skipIfNotUnix();
-
         $path = './tests/commands/unix/test_binary';
 
         $command = new Command(
@@ -44,8 +42,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
     public function testRunFromHome()
     {
-        $this->skipIfNotUnix();
-
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -78,8 +74,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
     public function testRunHomeCwd()
     {
-        $this->skipIfNotUnix();
-
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -110,8 +104,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithSleep()
     {
-        $this->skipIfNotUnix();
-
         $path = './tests/commands/unix/sleep_binary';
 
         $command = new Command(
@@ -134,8 +126,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithEnvVariable()
     {
-        $this->skipIfNotUnix();
-
         $path = './tests/commands/unix/echo_env_binary';
 
         $command = new Command(
@@ -161,8 +151,6 @@ class UnixCommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithError()
     {
-        $this->skipIfNotUnix();
-
         $path = './tests/commands/unix/error_binary';
 
         $command = new Command(

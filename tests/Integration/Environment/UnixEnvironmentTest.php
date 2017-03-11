@@ -15,8 +15,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {
-        $this->skipIfNotUnix();
-
         $command = __DIR__ . '/../../commands/unix/test_binary';
 
         $env = new UnixEnvironment();
@@ -28,8 +26,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testRelative()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/test_binary';
 
         $env = new UnixEnvironment();
@@ -42,8 +38,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testGlobal()
     {
-        $this->skipIfNotUnix();
-
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -61,8 +55,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testFromHome()
     {
-        $this->skipIfNotUnix();
-
         $originalPath = getenv('PATH');
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
@@ -80,8 +72,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testNotFound()
     {
-        $this->skipIfNotUnix();
-
         $command = 'bob_1_2_3';
 
         $env = new UnixEnvironment();
@@ -93,8 +83,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testCwdOverride()
     {
-        $this->skipIfNotUnix();
-
         $command = './commands/unix/test_binary';
         $cwd = getcwd() . DIRECTORY_SEPARATOR . 'tests';
 
@@ -107,8 +95,6 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testPathOverride()
     {
-        $this->skipIfNotUnix();
-
         $paths = [
             realpath(getcwd() . '/tests/commands/unix')
         ];

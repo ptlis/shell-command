@@ -19,8 +19,6 @@ class UnixProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();

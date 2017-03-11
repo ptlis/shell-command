@@ -22,8 +22,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/test_binary';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
@@ -42,8 +40,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testWaitWithClosure()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/test_binary';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
@@ -59,8 +55,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testHandleCommandError()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/error_binary';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
@@ -85,8 +79,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testErrorGetExitCodeWhileRunning()
     {
-        $this->skipIfNotUnix();
-
         $this->setExpectedException(
             'RuntimeException',
             'Cannot get exit code of still-running process.'
@@ -100,8 +92,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPid()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/sleep_binary';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
@@ -113,8 +103,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testErrorGetPidNotRunning()
     {
-        $this->skipIfNotUnix();
-
         $this->setExpectedException(
             'RuntimeException',
             'Cannot get the process id of a process that has already exited.'
@@ -130,8 +118,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testStopRunning()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/sleep_binary';
 
         $logger = new MockPsrLogger();
@@ -177,8 +163,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testTimeoutLongRunning()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/long_sleep_binary';
 
         $logger = new MockPsrLogger();
@@ -224,8 +208,6 @@ class UnixProcessTest extends ptlisShellCommandTestcase
 
     public function testSendInvalidSignal()
     {
-        $this->skipIfNotUnix();
-
         $this->setExpectedException(
             '\ptlis\ShellCommand\Exceptions\CommandExecutionException',
             'Unknown signal "wibble" provided'

@@ -22,8 +22,6 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -63,8 +61,6 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testCalledWithCustomLogLevel()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/error_binary';
 
         $mockLogger = new MockPsrLogger();
@@ -105,8 +101,6 @@ class UnixErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testSendSignal()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/sleep_binary';
 
         $mockLogger = new MockPsrLogger();

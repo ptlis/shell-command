@@ -29,8 +29,6 @@ namespace ptlis\ShellCommand\Test\Integration\Process {
 
         public function testProcOpenFail()
         {
-            $this->skipIfNotUnix();
-
             $this->setExpectedException(
                 'ptlis\ShellCommand\Exceptions\CommandExecutionException',
                 'Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.'

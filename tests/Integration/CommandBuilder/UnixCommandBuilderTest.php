@@ -16,8 +16,6 @@ class UnixCommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testInvalidCommand()
     {
-        $this->skipIfNotUnix();
-
         $this->setExpectedException(
             '\RuntimeException',
             'Invalid command "foobar" provided to ptlis\ShellCommand\CommandBuilder.'

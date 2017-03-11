@@ -24,8 +24,6 @@ class UnixAggregateLoggerTest extends ptlisShellCommandTestcase
 {
     public function testAggregateLogger()
     {
-        $this->skipIfNotUnix();
-
         $command = './tests/commands/unix/long_sleep_binary';
 
         $mockLogger = new MockPsrLogger();
