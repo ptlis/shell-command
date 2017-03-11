@@ -25,6 +25,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             [
                 '-s bar'
             ],
+            [],
             getcwd()
         );
 
@@ -45,6 +46,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             [
                 '--filter=hide-empty'
             ],
+            [],
             getcwd()
         );
 
@@ -65,6 +67,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             [
                 'my_files/'
             ],
+            [],
             getcwd()
         );
 
@@ -85,6 +88,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             [
                 'if=/dev/sha1 of=/dev/sdb2'
             ],
+            [],
             getcwd()
         );
 
@@ -105,6 +109,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
             [
                 'if=/dev/sha1 of=/dev/sdb2'
             ],
+            [],
             getcwd(),
             ['MY_VAR' => 'VALUE']
         );

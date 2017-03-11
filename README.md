@@ -104,7 +104,9 @@ If the process execution time exceeds this value a SIGTERM will be sent; if the 
 
 #### Add Arguments
 
-Next we may provide any arguments to the command, either chained:
+Next we may provide arguments to the command, these arguments will be escaped.
+ 
+Either chained:
 
 ```php
     $builder
@@ -121,6 +123,27 @@ Or in bulk:
             '--foo=bar',
             '-xzcf',
             'if=/dev/sda of=/dev/sdb'
+        ))
+```
+
+
+
+#### Add Raw Arguments
+
+We may also provide arguments that we want to be applied without escaping:
+
+```php
+    $builder
+        ->addRawArgument("--foo='bar'")
+```
+
+Or in bulk:
+
+```php
+    $builder
+        ->addRawArguments(array(
+            "--foo='bar'",
+            '-xzcf',
         ))
 ```
 

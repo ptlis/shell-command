@@ -27,6 +27,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             [
                 'if=/dev/sha1 of=/dev/sdb2'
             ],
+            [],
             getcwd()
         );
 
@@ -57,6 +58,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             [
                 'if=/dev/sha1 of=/dev/sdb2'
             ],
+            [],
             getcwd()
         );
 
@@ -87,6 +89,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
+            [],
             '~/'
         );
 
@@ -111,6 +114,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
+            [],
             getcwd()
         );
 
@@ -132,6 +136,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
+            [],
             [],
             getcwd(),
             [
@@ -157,6 +162,7 @@ class UnixCommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
+            [],
             [],
             getcwd()
         );

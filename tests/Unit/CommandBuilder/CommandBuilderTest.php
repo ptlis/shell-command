@@ -71,6 +71,43 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testRawArgument()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new MockEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArgument('--foo \'bar\'')
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' --foo \'bar\'',
+            $command->__toString()
+        );
+    }
+
+    public function testRawArgumentList()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new MockEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArguments(
+                [
+                    '--foo bar',
+                    'baz'
+                ]
+            )
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' --foo bar baz',
+            $command->__toString()
+        );
+    }
+
     public function testPollTimeout()
     {
         $path = './tests/commands/unix/test_binary';

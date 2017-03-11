@@ -33,6 +33,11 @@ final class Command implements CommandInterface
     private $argumentList;
 
     /**
+     * @var string[] Array of arguments to pass with the command without escaping.
+     */
+    private $rawArgumentList;
+
+    /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
      */
     private $timeout;
@@ -66,6 +71,7 @@ final class Command implements CommandInterface
      * @param ProcessObserverInterface $processObserver
      * @param string $command
      * @param string[] $argumentList
+     * @param string[] $rawArgumentList
      * @param string $cwd
      * @param string[] $envVariableList
      * @param int $timeout
@@ -76,6 +82,7 @@ final class Command implements CommandInterface
         ProcessObserverInterface $processObserver,
         $command,
         array $argumentList,
+        array $rawArgumentList,
         $cwd,
         $envVariableList = [],
         $timeout = -1,
@@ -85,6 +92,7 @@ final class Command implements CommandInterface
         $this->processObserver = $processObserver;
         $this->command = $command;
         $this->argumentList = $argumentList;
+        $this->rawArgumentList = $rawArgumentList;
         $this->timeout = $timeout;
         $this->envVariableList = $envVariableList;
         $this->pollTimeout = $pollTimeout;
@@ -140,6 +148,14 @@ final class Command implements CommandInterface
                 return $string . ' ' . $this->environment->escapeShellArg($argument);
             },
             $this->command
+        );
+
+        $stringCommand = array_reduce(
+            $this->rawArgumentList,
+            function ($string, $argument) {
+                return $string . ' ' . $argument;
+            },
+            $stringCommand
         );
 
         return $this->environment->applyEnvironmentVariables($stringCommand, $this->envVariableList);

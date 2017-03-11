@@ -35,6 +35,11 @@ final class CommandBuilder implements CommandBuilderInterface
     private $argumentList = [];
 
     /**
+     * @var string[] Array of arguments to pass to the command without escaping.
+     */
+    private $rawArgumentList = [];
+
+    /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
      */
     private $timeout;
@@ -140,6 +145,34 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
+    public function addRawArgument($rawArgument)
+    {
+        $rawArgumentList = $this->rawArgumentList;
+        $rawArgumentList[] = $rawArgument;
+
+        $newBuilder = clone $this;
+        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        return $newBuilder;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addRawArguments(array $rawArgumentList)
+    {
+        /** @var string[] $argumentList */
+        $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
+
+        $newBuilder = clone $this;
+        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        return $newBuilder;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setTimeout($timeout)
     {
         $newBuilder = clone $this;
@@ -218,6 +251,7 @@ final class CommandBuilder implements CommandBuilderInterface
             $this->getObserver(),
             $this->command,
             $this->argumentList,
+            $this->rawArgumentList,
             $cwd,
             $this->envVariableList,
             $this->timeout,

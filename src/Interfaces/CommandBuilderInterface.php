@@ -41,6 +41,30 @@ interface CommandBuilderInterface
     public function addArguments(array $argumentList);
 
     /**
+     * Add an argument to the command that will be applied without escaping.
+     *
+     * **WARNING** Be very careful about allowing user-submitted data to be passed in here - this could be easily used
+     *             to run an arbitrary command.
+     *
+     * @param string $rawArgument
+     *
+     * @return $this
+     */
+    public function addRawArgument($rawArgument);
+
+    /**
+     * Add one or more arguments to the command that will be applied without escaping.
+     *
+     * **WARNING** Be very careful about allowing user-submitted data to be passed in here - this could be easily used
+     *             to run an arbitrary command.
+     *
+     * @param string[] $rawArgumentList
+     *
+     * @return $this
+     */
+    public function addRawArguments(array $rawArgumentList);
+
+    /**
      * Set the timeout
      *
      * @param int $timeout (microseconds) How long to wait for a command to finish executing.
