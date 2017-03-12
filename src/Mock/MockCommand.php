@@ -102,11 +102,9 @@ final class MockCommand implements CommandInterface
      */
     public function runAsynchronous()
     {
-        // TODO: Implement this missing class!
         return new MockProcess(
-            $this->result->getExitCode(),
-            $this->result->getStdOut(),
-            $this->result->getStdErr(),
+            $this->command,
+            $this->result,
             $this->runningTime,
             $this->pid
         );
