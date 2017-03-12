@@ -32,27 +32,6 @@ final class MockEnvironment implements EnvironmentInterface
     }
 
     /**
-     * Accepts a command and a polling timeout and returns an object implementing RunningProcessInterface.
-     *
-     * @param CommandInterface $command
-     * @param string $cwd
-     * @param ProcessObserverInterface $processObserver
-     * @param int $timeout
-     * @param int $pollTimeout
-     *
-     * @return ProcessInterface
-     */
-    public function buildProcess(
-        CommandInterface $command,
-        $cwd,
-        ProcessObserverInterface $processObserver,
-        $timeout = -1,
-        $pollTimeout = 1000
-    ) {
-        // TODO: Implement buildProcess() method - should return MockRunningProcess?
-    }
-
-    /**
      * Send the specified signal to the process.
      *
      * @param resource $process
