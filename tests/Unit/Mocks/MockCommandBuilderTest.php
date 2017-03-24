@@ -73,7 +73,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             )
             ->addMockResult(1, 'hurray!', '')
             ->addEnvironmentVariable('key', 'value')
-            ->addEnvironmentVariables(['test', 'message'])
+            ->addEnvironmentVariables(['test' => 'message'])
             ->buildCommand();
 
         $expectCommand = new MockCommand(
@@ -101,7 +101,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            'key=\'value\' bar \'baz\' \'bat\'',
+            'key=\'value\' test=\'message\' bar \'baz\' \'bat\'',
             $builtCommand->__toString()
         );
     }
