@@ -231,6 +231,18 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function addEnvironmentVariables(array $envVars)
+    {
+        $envVariableList = array_merge($this->envVariableList, $envVars);
+
+        $newBuilder = clone $this;
+        $newBuilder->envVariableList = $envVariableList;
+
+        return $newBuilder;
+    }
 
     /**
      * @inheritDoc

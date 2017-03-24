@@ -274,6 +274,18 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
+    public function addEnvironmentVariables(array $envVars)
+    {
+        $envVariableList = array_merge($this->envVariableList, $envVars);
+
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+        $newBuilder->envVariableList = $envVariableList;
+
+        return $newBuilder;
+    }
+
     /**
      * Get the build command.
      *

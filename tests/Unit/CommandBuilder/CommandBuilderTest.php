@@ -172,7 +172,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEnvironmentVariables()
+    public function testEnvironmentVariable()
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -191,6 +191,35 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             ['TEST' => 'VALUE'],
+            \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
+        );
+    }
+
+    public function testEnvironmentVariable2()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $arguments = [
+            '--foo bar',
+            'baz'
+        ];
+        $builder = new CommandBuilder(new MockEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->addEnvironmentVariables([
+                'ABC' => '123',
+                'TEST' => 'VALUE'
+            ])
+            ->setPollTimeout(1000 * 1000)
+            ->setTimeout(60 * 1000 * 1000)
+            ->buildCommand();
+
+        $this->assertSame(
+            [
+                'ABC' => '123',
+                'TEST' => 'VALUE'
+            ],
             \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
         );
     }

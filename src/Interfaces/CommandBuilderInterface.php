@@ -111,6 +111,15 @@ interface CommandBuilderInterface
     public function addEnvironmentVariable($key, $value);
 
     /**
+     * Add an array of environment variables for use when running the command
+     *
+     * @param string[] $envVars
+     *
+     * @return $this
+     */
+    public function addEnvironmentVariables(array $envVars);
+
+    /**
      * Get the build command.
      *
      * @return CommandInterface
