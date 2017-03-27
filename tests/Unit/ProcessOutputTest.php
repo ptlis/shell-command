@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\ProcessOutput;
+namespace ptlis\ShellCommand\Test;
 
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;

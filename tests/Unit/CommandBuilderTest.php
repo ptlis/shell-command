@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Unit\CommandBuilder;
+namespace ptlis\ShellCommand\Test\Unit;
 
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
