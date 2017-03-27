@@ -95,24 +95,20 @@ If the command is not locatable a ```RuntimeException``` is thrown.
 Setting the timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
 
 ```php
-    $builder->setTimeout(30000000)          // Wait 30 seconds
+    $builder->setTimeout(30 * 1000 * 1000)          // Wait 30 seconds
 ```
 
-If the process execution time exceeds this value a SIGTERM will be sent; if the process doesn't terminate after 1 second then a SIGKILL is sent.
+If the process execution time exceeds this value a SIGTERM will be sent; if the process then doesn't terminate after a further 1 second wait then a SIGKILL is sent.
 
 
 
 #### Add Arguments
 
-Next we may provide arguments to the command, these arguments will be escaped.
- 
-Either chained:
+Add arguments to invoke the command with (all arguments are escaped):
 
 ```php
     $builder
         ->addArgument('--foo=bar')
-        ->addArgument('-xzcf')
-        ->addArgument('if=/dev/sda of=/dev/sdb')
 ```
 
 Or in bulk:
@@ -130,7 +126,9 @@ Or in bulk:
 
 #### Add Raw Arguments
 
-We may also provide arguments that we want to be applied without escaping:
+**WARNING**: Do not pass user-provided data to these methods! Malicious users could easily execute arbitrary shell commands. 
+
+Arguments can also be applied without escaping:
 
 ```php
     $builder
@@ -148,7 +146,6 @@ Or in bulk:
 ```
 
 
-
 #### Set Environment Variables
 
 Environment variables can be set when running a command:
@@ -161,11 +158,21 @@ Environment variables can be set when running a command:
         )
 ```
 
+Or in bulk:
+
+```php
+    $builder
+        ->addEnvironmentVariables([
+            'TEST_VARIABLE' => '123',
+            'FOO' => 'bar'
+        ])
+```
+
 
 
 #### Add Process Observers
 
-Finally we may attach any observers we wish to be executed by our running processes. In this case we add a simple logger:
+Observers can be attached to spawned processes. In this case we add a simple logger:
 
 ```php
     $builder
@@ -192,11 +199,13 @@ One the builder has been configured, the command can be retrieved for execution:
 
 ### Synchronous Execution
 
-Executing the command is done using the ```runSynchronous``` method which returns an object implementing the ```CommandResultInterface```.
+To run a command synchronously use the ```runSynchronous``` method. This returns an object implementing ```CommandResultInterface```, encoding the result of the command.
 
 ```php
     $result = $command->runSynchronous(); 
 ```
+
+When you need to re-run the same command multiple times you can simply invoke ```runSynchronous``` repeatedly; each call will run the command returning the result to your application.
 
 The exit code & output of the command are available as methods on this object:
 
@@ -206,6 +215,72 @@ The exit code & output of the command are available as methods on this object:
     $result->getStdOutLines();  // The contents of stdout (as an array of lines)
     $result->getStdErr();       // The contents of stderr (as a string)
     $result->getStdErrLines();  // The contents of stderr (as an array of lines)
+```
+
+
+
+### Asynchronous execution
+
+Commands can also be executed asynchronously, allowing your program to continue executing while waiting for the result.
+
+This is done using the ```runAsynchronous``` method. This returns an object implementing the ```ProcessInterface``` which provides methods to monitor the state of a process.
+
+```php
+    $process = $command->runAsynchronous();
+```
+
+As with the synchronouse API, when you need to re-run the same command multiple times you can simply invoke ```runAsynchronous``` repeatedly; each call will run the command returning the object representing the process to your application.
+
+```ProcessInterface``` provides the methods required to monitor the state and lifecycle of a process.
+
+Check whether the process has completed:
+
+```php
+    if (!$process->isisRunning()) {
+        echo 'done' . PHP_EOL;
+    }
+```
+
+Force the process to stop:
+
+```php
+    $process->stop();
+```
+
+Wait for the process to stop (this blocks execution of your script, effectively making this synchronous):
+
+```php
+    $process->wait();
+```
+
+Get the process id (throws a ```\RuntimeException``` if the process has ended):
+
+```php
+    $process->getPid();
+```
+
+Read output from a stream:
+
+```php
+    $stdOut = $process->readStream(ProcessInterface::STDOUT);
+```
+
+Get the exit code (throws a ```\RuntimeException``` if the process is still running):
+
+```php
+    $exitCode = $process->getExitCode();
+```
+
+Send a signal (SIGTERM or SIGKILL) to the process:
+
+```php
+    $process->sendSignal(ProcessInterface::SIGTERM);
+```
+
+Get the string representation of the running command:
+
+```php
+    $commandString = $process->getCommand();
 ```
 
 
