@@ -12,7 +12,10 @@ use ptlis\ShellCommand\CommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class UnixCommandBuilderTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\CommandBuilder
+ */
+class CommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testInvalidCommand()
     {

@@ -8,52 +8,57 @@
 
 namespace ptlis\ShellCommand\Test\Integration\Process {
 
+    use ptlis\ShellCommand\Interfaces\ProcessInterface;
     use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
     use ptlis\ShellCommand\UnixEnvironment;
     use ptlis\ShellCommand\Process;
 
-    class UnixProcessStartFailureTest extends ptlisShellCommandTestcase
+    /**
+     * @covers \ptlis\ShellCommand\Process
+     */
+    class ProcessStopFailureTest extends ptlisShellCommandTestcase
     {
         public function setUp()
         {
-            global $mockProcOpenFail;
-            $mockProcOpenFail = true;
+            global $mockProcTerminateFail;
+            $mockProcTerminateFail = true;
         }
 
         public function tearDown()
         {
-            global $mockProcOpenFail;
-            $mockProcOpenFail = false;
+            global $mockProcTerminateFail;
+            $mockProcTerminateFail = false;
         }
 
         public function testProcOpenFail()
         {
             $this->setExpectedException(
                 'ptlis\ShellCommand\Exceptions\CommandExecutionException',
-                'Call to proc_open failed for unknown reason.'
+                'Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.'
             );
 
             $command = './tests/commands/unix/test_binary';
 
             $process = new Process(new UnixEnvironment(), $command, getcwd());
+            $process->stop();
         }
     }
 }
 
 /**
- * Mock the proc_open command failing.
+ * Mock the proc_terminate command failing.
  */
 namespace ptlis\ShellCommand {
-    $mockProcOpenFail = false;
+    $mockProcTerminateFail = false;
 
-    function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = []) {
-        global $mockProcOpenFail;
+    function proc_terminate($signal) {
+        global $mockProcTerminateFail;
 
-        if ($mockProcOpenFail) {
+        if ($mockProcTerminateFail) {
             return false;
 
         } else {
-            return \proc_open($cmd, $descriptorspec, $pipes, $cwd, $env, $other_options);
+            return \proc_terminate($signal);
         }
     }
 }

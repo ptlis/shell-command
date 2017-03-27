@@ -12,13 +12,15 @@ use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
-use ptlis\ShellCommand\Logger\SignalSentLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\Process;
 
-class UnixProcessTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\Process
+ */
+class ProcessTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {

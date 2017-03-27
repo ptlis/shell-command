@@ -11,6 +11,9 @@ namespace ptlis\ShellCommand\Test\ProcessOutput;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
+/**
+ * @covers \ptlis\ShellCommand\ProcessOutput
+ */
 class ProcessOutputTest extends ptlisShellCommandTestcase
 {
     public function testProcessOutput()

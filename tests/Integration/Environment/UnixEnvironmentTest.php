@@ -11,6 +11,9 @@ namespace ptlis\ShellCommand\Test\Integration\Environment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
+/**
+ * @covers \ptlis\ShellCommand\UnixEnvironment
+ */
 class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()

@@ -14,7 +14,10 @@ use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class UnixCommandTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\Command
+ */
+class CommandTest extends ptlisShellCommandTestcase
 {
     public function testRun()
     {

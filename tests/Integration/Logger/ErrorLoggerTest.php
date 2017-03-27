@@ -18,7 +18,10 @@ use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\Process;
 
-class UnixErrorLoggerTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\Logger\ErrorLogger
+ */
+class ErrorLoggerTest extends ptlisShellCommandTestcase
 {
     public function testCalled()
     {

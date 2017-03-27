@@ -10,15 +10,41 @@ namespace ptlis\ShellCommand\Test\Unit\CommandBuilder;
 
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
-use ptlis\ShellCommand\Logger\ProcessExitedLogger;
-use ptlis\ShellCommand\Logger\ProcessStartedLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\CommandBuilder;
+use ptlis\ShellCommand\UnixEnvironment;
 
+/**
+ * @covers \ptlis\ShellCommand\CommandBuilder
+ */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
+    public function testDetectEnvironmentSuccess()
+    {
+        $builder = new CommandBuilder();
+
+        $environment = $builder->getEnvironment('Linux');
+
+        $this->assertEquals(
+            new UnixEnvironment(),
+            $environment
+        );
+    }
+
+    public function testDetectEnvironmentError()
+    {
+        $this->setExpectedException(
+            '\RuntimeException',
+            'Unable to find Environment for OS "foobar".'
+        );
+
+        $builder = new CommandBuilder();
+
+        $builder->getEnvironment('foobar');
+    }
+
     public function testBasic()
     {
         $path = './tests/commands/unix/test_binary';

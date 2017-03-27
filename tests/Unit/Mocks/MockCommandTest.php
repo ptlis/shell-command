@@ -13,6 +13,9 @@ use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
+/**
+ * @covers \ptlis\ShellCommand\Mock\MockCommand
+ */
 class MockCommandTest extends ptlisShellCommandTestcase
 {
     public function testMockCommand()

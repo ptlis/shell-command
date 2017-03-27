@@ -12,22 +12,22 @@
 namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
-use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\AllLogger;
-use ptlis\ShellCommand\Logger\NullProcessObserver;
-use ptlis\ShellCommand\Process;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
+use ptlis\ShellCommand\Process;
 
-class UnixAggregateLoggerTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\Logger\AllLogger
+ */
+class AllLoggerTest extends ptlisShellCommandTestcase
 {
-    public function testAggregateLogger()
+    public function testCalled()
     {
-        $command = './tests/commands/unix/long_sleep_binary';
+        $command = './tests/commands/unix/test_binary';
 
         $mockLogger = new MockPsrLogger();
-        $allLogger = new AllLogger($mockLogger);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -35,13 +35,10 @@ class UnixAggregateLoggerTest extends ptlisShellCommandTestcase
             getcwd(),
             -1,
             1000,
-            new AggregateLogger([
-                $allLogger,
-                new NullProcessObserver()
-            ])
+            new AllLogger(
+                $mockLogger
+            )
         );
-
-        $process->sendSignal(Process::SIGTERM);
         $process->wait();
 
         $this->assertLogsMatch(
@@ -50,21 +47,21 @@ class UnixAggregateLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
-                        'command' => './tests/commands/unix/long_sleep_binary'
+                        'command' => './tests/commands/unix/test_binary'
                     ]
                 ],
                 [
                     'level' => LogLevel::DEBUG,
-                    'message' => 'Signal sent',
+                    'message' => 'Read from stdout',
                     'context' => [
-                        'signal' => 'SIGTERM'
+                        'stdout' => 'Test command' . PHP_EOL . PHP_EOL
                     ]
                 ],
                 [
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
-                        'exit_code' => -1
+                        'exit_code' => 0
                     ]
                 ]
             ],

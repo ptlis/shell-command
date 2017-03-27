@@ -14,6 +14,9 @@ use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 
+/**
+ * @covers \ptlis\ShellCommand\Mock\MockCommandBuilder
+ */
 class MockCommandBuilderTest extends ptlisShellCommandTestcase
 {
     public function testMockCommandBuilderOne()

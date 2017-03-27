@@ -15,7 +15,10 @@ use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\UnixEnvironment;
 
-class UnixProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
+/**
+ * @covers \ptlis\ShellCommand\Process
+ */
+class ProcessSigTermIgnoredTest extends ptlisShellCommandTestcase
 {
     public function testRunProcess()
     {
