@@ -8,8 +8,7 @@ There were several requirements that inspired the creation of this package:
     * Can be safely passed around the application before spawning a process.
     * Can spawn multiple concurrently-running processes.
     * Are stateless
-* Desire for easily mockable interfaces & provision of default mocks.
-* Integration of PSR-3 logging instrumentation.
+* Clean, simple APIs for both synchronous and asynchronous usage.
 
 
 [![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
