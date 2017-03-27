@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Integration\Environment;
+namespace ptlis\ShellCommand\Test\Integration;
 
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -18,7 +18,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
     public function testFullyQualified()
     {
-        $command = __DIR__ . '/../../commands/unix/test_binary';
+        $command = __DIR__ . '/../commands/unix/test_binary';
 
         $env = new UnixEnvironment();
 

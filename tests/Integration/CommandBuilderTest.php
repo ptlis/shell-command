@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Integration\CommandBuilder;
+namespace ptlis\ShellCommand\Test\Integration;
 
 use ptlis\ShellCommand\CommandBuilder;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
