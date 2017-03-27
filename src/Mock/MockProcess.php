@@ -109,7 +109,8 @@ class MockProcess implements ProcessInterface
      */
     public function sendSignal($signal)
     {
-        // Do nothing
+        // Can only be one of SIGTERM or SIGKILL, force process to stop
+        $this->stopped = true;
     }
 
     /**

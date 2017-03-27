@@ -8,6 +8,7 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Mock\MockProcess;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
@@ -38,10 +39,25 @@ class MockProcessTest extends ptlisShellCommandTestcase
         $this->assertFalse($process->isRunning());
     }
 
+    public function testSignal()
+    {
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 100000);
+        $this->assertTrue($process->isRunning());
+
+        $process->sendSignal(ProcessInterface::SIGTERM);
+        $this->assertFalse($process->isRunning());
+    }
+
     public function testGetPid()
     {
         $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000, 9999);
         $this->assertEquals(9999, $process->getPid());
+    }
+
+    public function testGetCommand()
+    {
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000, 9999);
+        $this->assertEquals('test-command', $process->getCommand());
     }
 
     public function testGetPidStopped()
@@ -59,6 +75,18 @@ class MockProcessTest extends ptlisShellCommandTestcase
         $process->stop();
 
         $this->assertEquals(15, $process->getExitCode());
+    }
+
+    public function testReadStdOut()
+    {
+        $process = new MockProcess('test-command', new ProcessOutput(0, 'abc123', ''), 1000, 9999);
+        $this->assertEquals('abc123', $process->readOutput(ProcessInterface::STDOUT));
+    }
+
+    public function testReadStdErr()
+    {
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
+        $this->assertEquals('foo bar baz', $process->readOutput(ProcessInterface::STDERR));
     }
 
     public function testGetExitCodeRunning()
