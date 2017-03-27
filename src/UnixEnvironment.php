@@ -261,6 +261,6 @@ final class UnixEnvironment implements EnvironmentInterface
             $envVariablePrefix .= $key . '=' . $this->escapeShellArg($value) . ' ';
         }
 
-        return $envVariablePrefix . ' ' . $command;
+        return $envVariablePrefix . $command;
     }
 }
