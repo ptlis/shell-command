@@ -28,7 +28,9 @@ class ProcessTest extends ptlisShellCommandTestcase
         $mockProcOpen = false;
 
         global $mockProcTerminate;
+        global $mockProcTerminateRetval;
         $mockProcTerminate = false;
+        $mockProcTerminateRetval = false;
     }
 
     public function testRunProcess()
@@ -167,6 +169,57 @@ class ProcessTest extends ptlisShellCommandTestcase
                         'exit_code' => -1
                     ]
                 ]
+            ],
+            $logger->getLogs()
+        );
+    }
+
+    public function testStopRunningRequiresSigkill()
+    {
+        global $mockProcTerminate;
+        $mockProcTerminate = true;
+
+        global $mockProcTerminateRetval;
+        $mockProcTerminateRetval = true;
+
+        $command = './tests/commands/unix/sleep_binary';
+
+        $logger = new MockPsrLogger();
+
+        $process = new Process(
+            new UnixEnvironment(),
+            $command,
+            getcwd(),
+            -1,
+            1000,
+            new AllLogger($logger)
+        );
+
+        $process->stop();
+
+        $this->assertLogsMatch(
+            [
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => [
+                        'command' => './tests/commands/unix/sleep_binary'
+                    ]
+                ],
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => [
+                        'signal' => ProcessInterface::SIGTERM
+                    ]
+                ],
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => [
+                        'signal' => ProcessInterface::SIGKILL
+                    ]
+                ],
             ],
             $logger->getLogs()
         );
