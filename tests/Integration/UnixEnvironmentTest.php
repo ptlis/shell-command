@@ -126,4 +126,9 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
         $mockIsExecutable = false;
     }
+
+    public function testSendSignal()
+    {
+
+    }
 }

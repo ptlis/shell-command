@@ -9,12 +9,14 @@ namespace ptlis\ShellCommand {
     /**
      * Mock proc_open failing.
      */
-    $mockProcOpenFail = false;
+    $mockProcOpen = false;
+    $mockProcOpenRetval = false;
     function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = []) {
-        global $mockProcOpenFail;
+        global $mockProcOpen;
+        global $mockProcOpenRetval;
 
-        if ($mockProcOpenFail) {
-            return false;
+        if ($mockProcOpen) {
+            return $mockProcOpenRetval;
 
         } else {
             return \proc_open($cmd, $descriptorspec, $pipes, $cwd, $env, $other_options);
@@ -25,15 +27,17 @@ namespace ptlis\ShellCommand {
     /**
      * Mock proc_terminate failing.
      */
-    $mockProcTerminateFail = false;
-    function proc_terminate($signal) {
-        global $mockProcTerminateFail;
+    $mockProcTerminate = false;
+    $mockProcTerminateRetval = false;
+    function proc_terminate($process, $signal) {
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
 
-        if ($mockProcTerminateFail) {
-            return false;
+        if ($mockProcTerminate) {
+            return $mockProcTerminateRetval;
 
         } else {
-            return \proc_terminate($signal);
+            return \proc_terminate($process, $signal);
         }
     }
 
@@ -42,11 +46,13 @@ namespace ptlis\ShellCommand {
      * Mock the is_executable to allow faked directories to appear real.
      */
     $mockIsExecutable = false;
+    $mockIsExecutableRetval = true;
     function is_executable($path) {
         global $mockIsExecutable;
+        global $mockIsExecutableRetval;
 
         if ($mockIsExecutable) {
-            return true;
+            return $mockIsExecutableRetval;
 
         } else {
             return \is_executable($path);

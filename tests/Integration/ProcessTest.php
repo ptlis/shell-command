@@ -24,12 +24,13 @@ class ProcessTest extends ptlisShellCommandTestcase
 {
     public function tearDown()
     {
-        global $mockProcOpenFail;
-        $mockProcOpenFail = false;
+        global $mockProcOpen;
+        $mockProcOpen = false;
 
-        global $mockProcTerminateFail;
-        $mockProcTerminateFail = false;
+        global $mockProcTerminate;
+        $mockProcTerminate = false;
     }
+
     public function testRunProcess()
     {
         $command = './tests/commands/unix/test_binary';
@@ -239,8 +240,8 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testProcOpenFail()
     {
-        global $mockProcOpenFail;
-        $mockProcOpenFail = true;
+        global $mockProcOpen;
+        $mockProcOpen = true;
 
         $this->setExpectedException(
             'ptlis\ShellCommand\Exceptions\CommandExecutionException',
@@ -254,8 +255,8 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testProcTerminateFail()
     {
-        global $mockProcTerminateFail;
-        $mockProcTerminateFail = true;
+        global $mockProcTerminate;
+        $mockProcTerminate = true;
 
         $this->setExpectedException(
             'ptlis\ShellCommand\Exceptions\CommandExecutionException',
