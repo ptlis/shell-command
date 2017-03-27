@@ -68,4 +68,50 @@ class AllLoggerTest extends ptlisShellCommandTestcase
             $mockLogger->getLogs()
         );
     }
+
+    public function testSendSignal()
+    {
+        $command = './tests/commands/unix/sleep_binary';
+
+        $mockLogger = new MockPsrLogger();
+
+        $process = new Process(
+            new UnixEnvironment(),
+            $command,
+            getcwd(),
+            -1,
+            1000,
+            new AllLogger(
+                $mockLogger
+            )
+        );
+        $process->stop();
+
+        $this->assertLogsMatch(
+            [
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process created',
+                    'context' => [
+                        'command' => './tests/commands/unix/sleep_binary'
+                    ]
+                ],
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Signal sent',
+                    'context' => [
+                        'signal' => 'SIGTERM'
+                    ]
+                ],
+                [
+                    'level' => LogLevel::DEBUG,
+                    'message' => 'Process exited',
+                    'context' => [
+                        'exit_code' => -1
+                    ]
+                ]
+            ],
+            $mockLogger->getLogs()
+        );
+    }
 }
