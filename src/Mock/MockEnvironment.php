@@ -8,10 +8,7 @@
 
 namespace ptlis\ShellCommand\Mock;
 
-use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
-use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\Interfaces\ProcessInterface;
 
 /**
  * Mock environment.

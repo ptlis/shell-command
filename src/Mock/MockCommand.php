@@ -64,6 +64,7 @@ final class MockCommand implements CommandInterface
      * @param EnvironmentInterface $environment
      * @param string $command
      * @param string[] $argumentList
+     * @param string[] $rawArgumentList
      * @param ProcessOutputInterface $result
      * @param int $runningTime
      * @param int $pid

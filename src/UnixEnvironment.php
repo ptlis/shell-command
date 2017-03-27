@@ -9,9 +9,7 @@
 namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
-use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
-use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 
 /**
@@ -38,7 +36,7 @@ final class UnixEnvironment implements EnvironmentInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function validateCommand($command, $cwdOverride = '')
     {
