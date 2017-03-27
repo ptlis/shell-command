@@ -8,6 +8,7 @@
 
 namespace ptlis\ShellCommand\Test\Integration;
 
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
@@ -16,6 +17,15 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
+    public function tearDown()
+    {
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
+
+        $mockProcTerminate = false;
+        $mockProcTerminateRetval = false;
+    }
+
     public function testFullyQualified()
     {
         $command = __DIR__ . '/../commands/unix/test_binary';
@@ -127,8 +137,55 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $mockIsExecutable = false;
     }
 
-    public function testSendSignal()
+    public function testSendSigTerm()
     {
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
 
+        $mockProcTerminate = true;
+        $mockProcTerminateRetval = true;
+
+        $environment = new UnixEnvironment();
+        $environment->sendSignal(null, ProcessInterface::SIGTERM);
+    }
+
+    public function testSendSigKill()
+    {
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
+
+        $mockProcTerminate = true;
+        $mockProcTerminateRetval = true;
+
+        $environment = new UnixEnvironment();
+        $environment->sendSignal(null, ProcessInterface::SIGKILL);
+    }
+
+    public function testSendInvalidSignal()
+    {
+        $this->setExpectedException('\RuntimeException');
+
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
+
+        $mockProcTerminate = true;
+        $mockProcTerminateRetval = true;
+
+        $environment = new UnixEnvironment();
+        $environment->sendSignal(null, 'FOOBAR');
+    }
+
+    public function testSignalError()
+    {
+        $this->setExpectedException('\RuntimeException');
+
+        global $mockProcTerminate;
+        global $mockProcTerminateRetval;
+
+        $mockProcTerminate = true;
+        $mockProcTerminateRetval = false;
+
+        $environment = new UnixEnvironment();
+        $environment->sendSignal(null, ProcessInterface::SIGTERM);
     }
 }
