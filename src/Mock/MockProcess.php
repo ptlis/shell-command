@@ -74,6 +74,10 @@ class MockProcess implements ProcessInterface
         while ($this->isRunning()) {
             usleep(50);
         }
+
+        if ($callback) {
+            $callback($this->result->getStdOut(), $this->result->getStdErr());
+        }
     }
 
     /**

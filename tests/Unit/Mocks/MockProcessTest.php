@@ -27,10 +27,15 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testWait()
     {
+        $callbackCalled = false;
+
         $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 100);
-        $process->wait();
+        $process->wait(function() use (&$callbackCalled) {
+            $callbackCalled = true;
+        });
 
         $this->assertFalse($process->isRunning());
+        $this->assertTrue($callbackCalled);
     }
 
     public function testStop()
