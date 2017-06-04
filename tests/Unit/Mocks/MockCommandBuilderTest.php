@@ -8,11 +8,12 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
-use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
+use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * @covers \ptlis\ShellCommand\Mock\MockCommandBuilder
@@ -34,7 +35,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $builtCommand = $builder->buildCommand();
 
         $expectCommand = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'foo',
             [
                 '--foo bar',
@@ -80,7 +81,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->buildCommand();
 
         $expectCommand = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'bar',
             ['baz', 'bat'],
             [],
@@ -120,7 +121,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'bar',
             [],
             [],
@@ -139,7 +140,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'baz',
             [],
             [],
@@ -170,7 +171,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '');
         $expectCommand1 = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'bar',
             [],
             [],
@@ -188,7 +189,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '');
         $expectCommand2 = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             'baz',
             [],
             [],
@@ -370,5 +371,89 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand('foo')
             ->addArgument('--test')
             ->buildCommand();
+    }
+
+    public function testAddRawArgument()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new MockCommandBuilder();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addRawArgument('--foo');
+
+        $results = [];
+        $builtCommandList = [];
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $results,
+                $path,
+                [],
+                1000,
+                -1,
+                '',
+                [],
+                $builtCommandList,
+                ['--foo']
+            ),
+            $partialBuilder
+        );
+    }
+
+    public function testAddRawArguments()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new MockCommandBuilder();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addRawArguments(['--foo', '--bar']);
+
+        $results = [];
+        $builtCommandList = [];
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $results,
+                $path,
+                [],
+                1000,
+                -1,
+                '',
+                [],
+                $builtCommandList,
+                ['--foo', '--bar']
+            ),
+            $partialBuilder
+        );
+    }
+
+    public function testAddProcessObserver()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new MockCommandBuilder();
+
+        $observer = new NullProcessObserver();
+
+        $partialBuilder = $builder
+            ->setCommand($path)
+            ->addProcessObserver($observer);
+
+        $results = [];
+        $builtCommandList = [];
+        $this->assertEquals(
+            new MockCommandBuilder(
+                $results,
+                $path,
+                [],
+                1000,
+                -1,
+                '',
+                [],
+                $builtCommandList,
+                [],
+                [$observer]
+            ),
+            $partialBuilder
+        );
     }
 }

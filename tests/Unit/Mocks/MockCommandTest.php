@@ -8,11 +8,10 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
-use GuzzleHttp\Promise\RejectionException;
 use ptlis\ShellCommand\Mock\MockCommand;
-use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
+use ptlis\ShellCommand\UnixEnvironment;
 use React\EventLoop\Factory;
 
 /**
@@ -25,7 +24,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],
@@ -46,7 +45,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],
@@ -92,7 +91,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],

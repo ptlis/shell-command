@@ -13,6 +13,7 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\ProcessOutput;
+use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * Mock implementation of the command builder interface.
@@ -82,6 +83,8 @@ final class MockCommandBuilder implements CommandBuilderInterface
      * @param string $cwd
      * @param string[] $envVariableList
      * @param CommandInterface[] $builtCommandList
+     * @param string[] $rawArgumentList
+     * @param ProcessObserverInterface[] $observerList
      */
     public function __construct(
         array $mockResultList = [],
@@ -91,7 +94,9 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $timeout = -1,
         $cwd = '',
         $envVariableList = [],
-        array &$builtCommandList = []
+        array &$builtCommandList = [],
+        array $rawArgumentList = [],
+        array $observerList = []
     ) {
         $this->mockResultList = $mockResultList;
         $this->command = $command;
@@ -101,6 +106,8 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $this->cwd = $cwd;
         $this->envVariableList = $envVariableList;
         $this->builtCommandList = &$builtCommandList;
+        $this->rawArgumentList = $rawArgumentList;
+        $this->observerList = $observerList;
     }
 
 
@@ -304,7 +311,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $result = array_shift($this->mockResultList);
 
         $command = new MockCommand(
-            new MockEnvironment(),
+            new UnixEnvironment(),
             $this->command,
             $this->argumentList,
             $this->rawArgumentList,
