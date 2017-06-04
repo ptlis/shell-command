@@ -10,7 +10,12 @@ namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
+use React\Promise\Deferred;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
@@ -135,6 +140,53 @@ final class Command implements CommandInterface
             $this->pollTimeout,
             $this->processObserver
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function runPromise(LoopInterface $eventLoop)
+    {
+        $fullStdOut = '';
+        $fullStdErr = '';
+
+        $deferred = new Deferred();
+
+        $process = $this->runAsynchronous();
+
+        $eventLoop->addPeriodicTimer(
+            0.1,
+            function(TimerInterface $timer) use ($eventLoop, $deferred, $process, &$fullStdOut, &$fullStdErr) {
+                $fullStdOut = $process->readOutput(ProcessInterface::STDOUT);
+                $fullStdErr = $process->readOutput(ProcessInterface::STDERR);
+
+                // Process has terminated
+                if (!$process->isRunning()) {
+                    $eventLoop->cancelTimer($timer);
+                    $output = new ProcessOutput($process->getExitCode(), $fullStdOut, $fullStdErr);
+                    $this->resolveOrRejectPromise($deferred, $output);
+                }
+            }
+        );
+
+        return $deferred->promise();
+    }
+
+    /**
+     * Either resolve or reject the promise depending on the result of the mock operation.
+     *
+     * @param Deferred $deferred
+     * @param ProcessOutputInterface $processOutput
+     */
+    private function resolveOrRejectPromise(
+        Deferred $deferred,
+        ProcessOutputInterface $processOutput
+    ) {
+        if (0 === $processOutput->getExitCode()) {
+            $deferred->resolve($processOutput);
+        } else {
+            $deferred->reject($processOutput);
+        }
     }
 
     /**

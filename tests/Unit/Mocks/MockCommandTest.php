@@ -8,17 +8,19 @@
 
 namespace ptlis\ShellCommand\Test\Mocks;
 
+use GuzzleHttp\Promise\RejectionException;
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockEnvironment;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
+use React\EventLoop\Factory;
 
 /**
  * @covers \ptlis\ShellCommand\Mock\MockCommand
  */
 class MockCommandTest extends ptlisShellCommandTestcase
 {
-    public function testMockCommand()
+    public function testRunSynchronous()
     {
         $path = 'binary';
 
@@ -27,15 +29,107 @@ class MockCommandTest extends ptlisShellCommandTestcase
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(0, ['hello world'], ''),
+            new ProcessOutput(0, 'hello world', ''),
             ['FOO' => 'bar']
         );
 
         $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
 
         $this->assertEquals(
-            new ProcessOutput(0, ['hello world'], ''),
+            new ProcessOutput(0, 'hello world', ''),
             $command->runSynchronous()
         );
+    }
+
+    public function testRunPromiseSuccess()
+    {
+        $path = 'binary';
+
+        $command = new MockCommand(
+            new MockEnvironment(),
+            $path,
+            ['foo'],
+            ['--test=\'123\''],
+            new ProcessOutput(0, 'hello world', ''),
+            ['FOO' => 'bar']
+        );
+
+        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
+
+        $eventLoop = Factory::create();
+        $promise = $command->runPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+
+        $promise
+            ->then(
+                function(ProcessOutput $result) use (&$successCalled) {
+                    $successCalled = true;
+                    $this->assertEquals(
+                        new ProcessOutput(0, 'hello world', ''),
+                        $result
+                    );
+                },
+                function(ProcessOutput $result) use (&$failureCalled) {
+                    $failureCalled = true;
+                }
+            );
+
+        $eventLoop->run();
+
+        $this->assertEquals(
+            new ProcessOutput(0, 'hello world', ''),
+            $command->runSynchronous()
+        );
+
+        $this->assertTrue($successCalled);
+        $this->assertFalse($failureCalled);
+    }
+
+    public function testRunPromiseFailure()
+    {
+        $path = 'binary';
+
+        $command = new MockCommand(
+            new MockEnvironment(),
+            $path,
+            ['foo'],
+            ['--test=\'123\''],
+            new ProcessOutput(1, 'error', ''),
+            ['FOO' => 'bar']
+        );
+
+        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
+
+        $eventLoop = Factory::create();
+        $promise = $command->runPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+
+        $promise
+            ->then(
+                function(ProcessOutput $result) use (&$successCalled) {
+                    $successCalled = true;
+                },
+                function(ProcessOutput $result) use (&$failureCalled) {
+                    $failureCalled = true;
+                    $this->assertEquals(
+                        new ProcessOutput(1, 'error', ''),
+                        $result
+                    );
+                }
+            );
+
+        $eventLoop->run();
+
+        $this->assertEquals(
+            new ProcessOutput(1, 'error', ''),
+            $command->runSynchronous()
+        );
+
+        $this->assertFalse($successCalled);
+        $this->assertTrue($failureCalled);
     }
 }

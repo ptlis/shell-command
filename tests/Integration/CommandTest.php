@@ -8,11 +8,13 @@
 
 namespace ptlis\ShellCommand\Test\Integration;
 
+use GuzzleHttp\Promise\RejectionException;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
+use React\EventLoop\Factory;
 
 /**
  * @covers \ptlis\ShellCommand\Command
@@ -178,5 +180,110 @@ class CommandTest extends ptlisShellCommandTestcase
             ),
             $command->runSynchronous()
         );
+    }
+
+    public function testRunAsPromiseSuccess()
+    {
+        $eventLoop = Factory::create();
+
+        $path = './tests/commands/unix/test_binary';
+
+        $command = new Command(
+            new UnixEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            [],
+            [],
+            getcwd()
+        );
+
+        $promise = $command->runPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+
+        $promise->then(
+            function() use (&$successCalled) {
+                $successCalled = true;
+            },
+            function() use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertTrue($successCalled);
+        $this->assertFalse($failureCalled);
+    }
+
+    public function testRunSleepAsPromiseSuccess()
+    {
+        $eventLoop = Factory::create();
+
+        $path = './tests/commands/unix/sleep_binary';
+
+        $command = new Command(
+            new UnixEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            [],
+            [],
+            getcwd()
+        );
+
+        $promise = $command->runPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+
+        $promise->then(
+            function() use (&$successCalled) {
+                $successCalled = true;
+            },
+            function() use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertTrue($successCalled);
+        $this->assertFalse($failureCalled);
+    }
+
+    public function testRunAsPromiseFailure()
+    {
+        $eventLoop = Factory::create();
+
+        $path = './tests/commands/unix/error_binary';
+
+        $command = new Command(
+            new UnixEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            [],
+            [],
+            getcwd()
+        );
+
+        $promise = $command->runPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+
+        $promise->then(
+            function() use (&$successCalled) {
+                $successCalled = true;
+            },
+            function() use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertFalse($successCalled);
+        $this->assertTrue($failureCalled);
     }
 }

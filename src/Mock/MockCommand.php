@@ -11,6 +11,9 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
+use React\Promise\Deferred;
 
 /**
  * Mock implementation of CommandInterface provided to simplify testing.
@@ -109,6 +112,47 @@ final class MockCommand implements CommandInterface
             $this->runningTime,
             $this->pid
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function runPromise(LoopInterface $eventLoop)
+    {
+        $process = $this->runAsynchronous();
+
+        $deferred = new Deferred();
+
+        $eventLoop->addPeriodicTimer(
+            0.1,
+            function(TimerInterface $timer) use ($eventLoop, $deferred, $process) {
+
+                // Process has terminated
+                if (!$process->isRunning()) {
+                    $eventLoop->cancelTimer($timer);
+                    $this->resolveOrRejectPromise($deferred, $this->result);
+                }
+            }
+        );
+
+        return $deferred->promise();
+    }
+
+    /**
+     * Either resolve or reject the promise depending on the result of the mock operation.
+     *
+     * @param Deferred $deferred
+     * @param ProcessOutputInterface $processOutput
+     */
+    private function resolveOrRejectPromise(
+        Deferred $deferred,
+        ProcessOutputInterface $processOutput
+    ) {
+        if (0 === $processOutput->getExitCode()) {
+            $deferred->resolve($processOutput);
+        } else {
+            $deferred->reject($processOutput);
+        }
     }
 
     /**
