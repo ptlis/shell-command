@@ -152,20 +152,29 @@ final class Command implements CommandInterface
 
         $deferred = new Deferred();
 
-        $process = $this->runAsynchronous();
+        // Delay beginning execution until the EventLoop::run method is invoked
+        $eventLoop->addTimer(
+            0,
+            function() use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
 
-        $eventLoop->addPeriodicTimer(
-            0.1,
-            function(TimerInterface $timer) use ($eventLoop, $deferred, $process, &$fullStdOut, &$fullStdErr) {
-                $fullStdOut = $process->readOutput(ProcessInterface::STDOUT);
-                $fullStdErr = $process->readOutput(ProcessInterface::STDERR);
+                $process = $this->runAsynchronous();
 
-                // Process has terminated
-                if (!$process->isRunning()) {
-                    $eventLoop->cancelTimer($timer);
-                    $output = new ProcessOutput($process->getExitCode(), $fullStdOut, $fullStdErr);
-                    $this->resolveOrRejectPromise($deferred, $output);
-                }
+                // Poll the process periodically awaiting completion
+                // TODO: Allow specification of poll time
+                $eventLoop->addPeriodicTimer(
+                    0.1,
+                    function(TimerInterface $timer) use ($eventLoop, $deferred, $process, &$fullStdOut, &$fullStdErr) {
+                        $fullStdOut = $process->readOutput(ProcessInterface::STDOUT);
+                        $fullStdErr = $process->readOutput(ProcessInterface::STDERR);
+
+                        // Process has terminated
+                        if (!$process->isRunning()) {
+                            $eventLoop->cancelTimer($timer);
+                            $output = new ProcessOutput($process->getExitCode(), $fullStdOut, $fullStdErr);
+                            $this->resolveOrRejectPromise($deferred, $output);
+                        }
+                    }
+                );
             }
         );
 
