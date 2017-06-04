@@ -2,13 +2,13 @@
 
 A developer-friendly wrapper around execution of shell commands.
 
-There were several requirements that inspired the creation of this package:
-* Separation of running process state from command specification.
-* Need for 'command specifications' that
-    * Can be safely passed around the application before spawning a process.
-    * Can spawn multiple concurrently-running processes.
-    * Are stateless
-* Clean, simple APIs for both synchronous and asynchronous usage.
+There were several goals that inspired the creation of this package:
+
+* Use the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) to encapsulate the data required to execute a shell command to allow it to be passed around and executed later.
+* Maintain a stateless object graph allowing (for example) the spawning of multiple running processes from a single command.
+* Provide clean APIs for synchronous and asynchronous usage.
+* Running processes can be wrapped in promises to allow for easy composition.
+
 
 
 [![Build Status](https://travis-ci.org/ptlis/shell-command.png?branch=master)](https://travis-ci.org/ptlis/shell-command) [![Code Coverage](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/ptlis/shell-command/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ptlis/shell-command/) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
@@ -16,28 +16,10 @@ There were several requirements that inspired the creation of this package:
 
 ## Install
 
-Either from the console:
+From the terminal:
 
 ```shell
-    $ composer require ptlis/shell-command:"~0.11"
-```
-
-Or by Editing composer.json:
-
-```javascript
-    {
-        "require": {
-            ...
-            "ptlis/shell-command": "~0.11",
-            ...
-        }
-    }
-```
-
-Followed by a composer update:
-
-```shell
-    $ composer update
+    $ composer require ptlis/shell-command
 ```
 
 
