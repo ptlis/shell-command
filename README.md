@@ -222,7 +222,35 @@ The exit code & output of the command are available as methods on this object:
 
 Commands can also be executed asynchronously, allowing your program to continue executing while waiting for the result.
 
-This is done using the ```runAsynchronous``` method. This returns an object implementing the ```ProcessInterface``` which provides methods to monitor the state of a process.
+
+
+#### Command::runPromise
+
+Monitoring of shell command execution can be wrapped in a [ReactPHP Promise](https://github.com/reactphp/promise). This gives us a flexible execution model, allowing chaining (with [Promise::then](https://github.com/reactphp/promise#promiseinterfacethen)) and aggregation using methods like [Promise::all](https://github.com/reactphp/promise#all), [Promise::some](https://github.com/reactphp/promise#some), [Promise::race](https://github.com/reactphp/promise#race) and their friends.
+ 
+Building promise to execute a command can be done with the ```runPromise``` method. This returns an instance of ```\React\Promise\Promise```:
+
+```php
+    $eventLoop = \React\EventLoop\Factory::create();
+
+    $promise = $command->runPromise($eventLoop);
+```
+
+The [ReactPHP EventLoop](https://github.com/reactphp/event-loop) component is used to periodically poll the running process to see if it has terminated yet; once it has the promise is either resolved or rejected depending on the exit code of the executed command.
+
+The effect of this implementation is that once you've created your promises, chains and aggregates you must invoke ```EventLoop::run```:
+
+```php
+    $eventLoop->run();
+```
+
+This will block further execution until the promises are resolved/rejected.
+
+
+
+#### Command::runAsynchronous
+
+The ```runAsynchronous``` method returns an object implementing the ```ProcessInterface``` which provides methods to monitor the state of a process.
 
 ```php
     $process = $command->runAsynchronous();
