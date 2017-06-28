@@ -143,45 +143,6 @@ final class Command implements CommandInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function runPromise(LoopInterface $eventLoop)
-    {
-        $fullStdOut = '';
-        $fullStdErr = '';
-
-        $deferred = new Deferred();
-
-        // Delay beginning execution until the EventLoop::run method is invoked
-        $eventLoop->addTimer(
-            0,
-            function() use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
-
-                $process = $this->runAsynchronous();
-
-                // Poll the process periodically awaiting completion
-                // TODO: Allow specification of poll time
-                $eventLoop->addPeriodicTimer(
-                    0.1,
-                    function(TimerInterface $timer) use ($eventLoop, $deferred, $process, &$fullStdOut, &$fullStdErr) {
-                        $fullStdOut .= $process->readOutput(ProcessInterface::STDOUT);
-                        $fullStdErr .= $process->readOutput(ProcessInterface::STDERR);
-
-                        // Process has terminated
-                        if (!$process->isRunning()) {
-                            $eventLoop->cancelTimer($timer);
-                            $output = new ProcessOutput($process->getExitCode(), $fullStdOut, $fullStdErr);
-                            $this->resolveOrRejectPromise($deferred, $output);
-                        }
-                    }
-                );
-            }
-        );
-
-        return $deferred->promise();
-    }
-
-    /**
      * Either resolve or reject the promise depending on the result of the mock operation.
      *
      * @param Deferred $deferred

@@ -8,9 +8,6 @@
 
 namespace ptlis\ShellCommand\Interfaces;
 
-use GuzzleHttp\Promise\PromiseInterface;
-use React\EventLoop\LoopInterface;
-
 /**
  * Interface class that commands must implement.
  */
@@ -29,14 +26,6 @@ interface CommandInterface
      * @return ProcessInterface
      */
     public function runAsynchronous();
-
-    /**
-     * Returns a promise representing the result of the executed command.
-     *
-     * @param LoopInterface $eventLoop
-     * @return PromiseInterface
-     */
-    public function runPromise(LoopInterface $eventLoop);
 
     /**
      * Gets the string representation of the command.

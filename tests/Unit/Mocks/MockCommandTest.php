@@ -56,7 +56,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
 
         $eventLoop = Factory::create();
-        $promise = $command->runPromise($eventLoop);
+        $promise = $command->runAsynchronous()->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;
@@ -102,7 +102,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
 
         $eventLoop = Factory::create();
-        $promise = $command->runPromise($eventLoop);
+        $promise = $command->runAsynchronous()->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;

@@ -8,6 +8,9 @@
 
 namespace ptlis\ShellCommand\Interfaces;
 
+use React\EventLoop\LoopInterface;
+use React\Promise\Promise;
+
 /**
  * Interface defining a class to monitor process lifetimes.
  */
@@ -85,4 +88,11 @@ interface ProcessInterface
      * @return string
      */
     public function getCommand();
+
+    /**
+     * Return a promise representing the running process.
+     *
+     * @return Promise
+     */
+    public function getPromise(LoopInterface $eventLoop);
 }

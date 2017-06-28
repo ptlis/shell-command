@@ -11,6 +11,11 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 use ptlis\ShellCommand\Process;
+use ptlis\ShellCommand\ProcessOutput;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
+use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * Mock running process. Waits for the specified time before completing.
@@ -147,5 +152,38 @@ class MockProcess implements ProcessInterface
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPromise(LoopInterface $eventLoop)
+    {
+        $deferred = new Deferred();
+
+        // Poll the process for completion
+        $eventLoop->addPeriodicTimer(
+            0.1,
+            function(TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
+                $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
+                $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
+
+                // Process has terminated
+                if (!$this->isRunning()) {
+                    $eventLoop->cancelTimer($timer);
+                    $output = new ProcessOutput($this->getExitCode(), $fullStdOut, $fullStdErr);
+
+                    // Resolve or reject promise
+                    if (0 === $output->getExitCode()) {
+                        $deferred->resolve($output);
+                    } else {
+                        $deferred->reject($output);
+                    }
+                }
+            }
+        );
+
+
+        return $deferred->promise();
     }
 }

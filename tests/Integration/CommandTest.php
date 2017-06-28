@@ -197,7 +197,7 @@ class CommandTest extends ptlisShellCommandTestcase
             getcwd()
         );
 
-        $promise = $command->runPromise($eventLoop);
+        $promise = $command->runAsynchronous()->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;
@@ -232,7 +232,7 @@ class CommandTest extends ptlisShellCommandTestcase
             getcwd()
         );
 
-        $promise = $command->runPromise($eventLoop);
+        $promise = $command->runAsynchronous()->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;
@@ -267,7 +267,7 @@ class CommandTest extends ptlisShellCommandTestcase
             getcwd()
         );
 
-        $promise = $command->runPromise($eventLoop);
+        $promise = $command->runAsynchronous()->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;

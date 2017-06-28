@@ -12,6 +12,10 @@ use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\Timer\TimerInterface;
+use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * Class encapsulating the lifetime of a process.
@@ -229,6 +233,39 @@ final class Process implements ProcessInterface
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPromise(LoopInterface $eventLoop)
+    {
+        $deferred = new Deferred();
+
+        // Poll the process for completion
+        $eventLoop->addPeriodicTimer(
+            0.1,
+            function(TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
+                $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
+                $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
+
+                // Process has terminated
+                if (!$this->isRunning()) {
+                    $eventLoop->cancelTimer($timer);
+                    $output = new ProcessOutput($this->getExitCode(), $fullStdOut, $fullStdErr);
+
+                    // Resolve or reject promise
+                    if (0 === $output->getExitCode()) {
+                        $deferred->resolve($output);
+                    } else {
+                        $deferred->reject($output);
+                    }
+                }
+            }
+        );
+
+
+        return $deferred->promise();
     }
 
     /**

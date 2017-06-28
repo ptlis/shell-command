@@ -117,47 +117,6 @@ final class MockCommand implements CommandInterface
     /**
      * {@inheritDoc}
      */
-    public function runPromise(LoopInterface $eventLoop)
-    {
-        $process = $this->runAsynchronous();
-
-        $deferred = new Deferred();
-
-        $eventLoop->addPeriodicTimer(
-            0.1,
-            function(TimerInterface $timer) use ($eventLoop, $deferred, $process) {
-
-                // Process has terminated
-                if (!$process->isRunning()) {
-                    $eventLoop->cancelTimer($timer);
-                    $this->resolveOrRejectPromise($deferred, $this->result);
-                }
-            }
-        );
-
-        return $deferred->promise();
-    }
-
-    /**
-     * Either resolve or reject the promise depending on the result of the mock operation.
-     *
-     * @param Deferred $deferred
-     * @param ProcessOutputInterface $processOutput
-     */
-    private function resolveOrRejectPromise(
-        Deferred $deferred,
-        ProcessOutputInterface $processOutput
-    ) {
-        if (0 === $processOutput->getExitCode()) {
-            $deferred->resolve($processOutput);
-        } else {
-            $deferred->reject($processOutput);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function __toString()
     {
         $arguments = '';
