@@ -164,8 +164,8 @@ final class Command implements CommandInterface
                 $eventLoop->addPeriodicTimer(
                     0.1,
                     function(TimerInterface $timer) use ($eventLoop, $deferred, $process, &$fullStdOut, &$fullStdErr) {
-                        $fullStdOut = $process->readOutput(ProcessInterface::STDOUT);
-                        $fullStdErr = $process->readOutput(ProcessInterface::STDERR);
+                        $fullStdOut .= $process->readOutput(ProcessInterface::STDOUT);
+                        $fullStdErr .= $process->readOutput(ProcessInterface::STDERR);
 
                         // Process has terminated
                         if (!$process->isRunning()) {
