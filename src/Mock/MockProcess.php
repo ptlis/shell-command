@@ -157,16 +157,22 @@ class MockProcess implements ProcessInterface
     /**
      * {@inheritdoc}
      */
-    public function getPromise(LoopInterface $eventLoop)
+    public function getPromise(LoopInterface $eventLoop, \Closure $progress = null)
     {
         $deferred = new Deferred();
 
         // Poll the process for completion
         $eventLoop->addPeriodicTimer(
             0.1,
-            function(TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
-                $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
-                $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
+            function(TimerInterface $timer) use ($eventLoop, $progress, $deferred, &$fullStdOut, &$fullStdErr) {
+                $stdOut = $this->readOutput(ProcessInterface::STDOUT);
+                $stdErr = $this->readOutput(ProcessInterface::STDERR);
+                $fullStdOut .= $stdOut;
+                $fullStdErr .= $stdErr;
+
+                if (!is_null($progress)) {
+                    $progress($stdOut, $stdErr);
+                }
 
                 // Process has terminated
                 if (!$this->isRunning()) {
