@@ -23,23 +23,15 @@ interface CommandBuilderInterface
     public function setCommand($command);
 
     /**
-     * Add an argument to the command.
-     *
-     * @param string $argument
-     *
-     * @return $this
-     */
-    public function addArgument($argument);
-
-    /**
-     * Add an argument to the command if $conditionalResult is true.
+     * Add an argument to the command if $conditionalResult is true. If the $conditionalResult parameter isn't passed it
+     * will always add that argument.
      *
      * @param string $argument
      * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function conditionalAddArgument($argument, $conditionalResult);
+    public function addArgument($argument, $conditionalResult = true);
 
         /**
      * Add one or more arguments to the command.

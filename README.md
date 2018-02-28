@@ -92,6 +92,13 @@ Add arguments to invoke the command with (all arguments are escaped):
         ->addArgument('--foo=bar')
 ```
 
+Conditionally depending on the result of an expression:
+
+```php
+    $builder
+        ->addArgument('--foo=bar', $myVar == 5)
+```
+
 Or in bulk:
 
 ```php
@@ -103,6 +110,7 @@ Or in bulk:
         ))
 ```
 
+Note: Arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
 
 
 #### Add Raw Arguments

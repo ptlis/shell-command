@@ -82,7 +82,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $command = $builder
             ->setCommand($path)
-            ->conditionalAddArgument('--foo bar', false)
+            ->addArgument('--foo bar', false)
             ->buildCommand();
 
         $this->assertEquals(
@@ -98,7 +98,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $command = $builder
             ->setCommand($path)
-            ->conditionalAddArgument('--foo bar', true)
+            ->addArgument('--foo bar', true)
             ->buildCommand();
 
         $this->assertEquals(
