@@ -40,28 +40,14 @@ final class UnixEnvironment implements EnvironmentInterface
      */
     public function validateCommand($command, $cwdOverride = '')
     {
-        $valid = false;
-
         $cwd = $this->normalizeCwd($cwdOverride);
 
-        // Fully-qualified path
-        if ($this->isValidFullPath($command)) {
-            $valid = true;
-
-        // In users home directory
-        } elseif ($this->isValidHomeDirectory($command)) {
-            $valid = true;
-
-        // From current directory
-        } elseif ($this->isValidRelativePath($command, $cwd)) {
-            $valid = true;
-
-        // In path
-        } elseif ($this->isValidGlobalCommand($command)) {
-            $valid = true;
-        }
-
-        return $valid;
+        return (
+            $this->isValidFullPath($command)
+            || $this->isValidHomeDirectory($command)
+            || $this->isValidRelativePath($command, $cwd)
+            || $this->isValidGlobalCommand($command)
+        );
     }
 
     /**
