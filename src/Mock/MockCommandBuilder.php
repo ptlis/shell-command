@@ -155,44 +155,51 @@ final class MockCommandBuilder implements CommandBuilderInterface
      * Add one or more arguments to the command.
      *
      * @param string[] $argumentList
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addArguments(array $argumentList)
+    public function addArguments(array $argumentList, $conditionalResult = true)
     {
-        /** @var string[] $argumentList */
-        $argumentList = array_merge($this->argumentList, $argumentList);
-
         $newBuilder = clone $this;
-        $newBuilder->builtCommandList = &$this->builtCommandList;
-        $newBuilder->mockResultList = &$this->mockResultList;
-        $newBuilder->argumentList = $argumentList;
+
+        if ($conditionalResult) {
+            /** @var string[] $argumentList */
+            $argumentList = array_merge($this->argumentList, $argumentList);
+            $newBuilder->builtCommandList = &$this->builtCommandList;
+            $newBuilder->mockResultList = &$this->mockResultList;
+            $newBuilder->argumentList = $argumentList;
+        }
 
         return $newBuilder;
     }
 
-    public function addRawArgument($rawArgument)
+    public function addRawArgument($rawArgument, $conditionalResult = true)
     {
-        $rawArgumentList = $this->rawArgumentList;
-        $rawArgumentList[] = $rawArgument;
-
         $newBuilder = clone $this;
-        $newBuilder->builtCommandList = &$this->builtCommandList;
-        $newBuilder->mockResultList = &$this->mockResultList;
-        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        if ($conditionalResult) {
+            $rawArgumentList = $this->rawArgumentList;
+            $rawArgumentList[] = $rawArgument;
+            $newBuilder->builtCommandList = &$this->builtCommandList;
+            $newBuilder->mockResultList = &$this->mockResultList;
+            $newBuilder->rawArgumentList = $rawArgumentList;
+        }
 
         return $newBuilder;
     }
 
-    public function addRawArguments(array $rawArgumentList)
+    public function addRawArguments(array $rawArgumentList, $conditionalResult = true)
     {
-        /** @var string[] $argumentList */
-        $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
-
         $newBuilder = clone $this;
-        $newBuilder->builtCommandList = &$this->builtCommandList;
-        $newBuilder->mockResultList = &$this->mockResultList;
-        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        if ($conditionalResult) {
+            /** @var string[] $argumentList */
+            $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
+            $newBuilder->builtCommandList = &$this->builtCommandList;
+            $newBuilder->mockResultList = &$this->mockResultList;
+            $newBuilder->rawArgumentList = $rawArgumentList;
+        }
 
         return $newBuilder;
     }
@@ -271,27 +278,31 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addEnvironmentVariable($key, $value)
+    public function addEnvironmentVariable($key, $value, $conditionalResult = true)
     {
-        $envVariableList = $this->envVariableList;
-        $envVariableList[$key] = $value;
-
         $newBuilder = clone $this;
-        $newBuilder->builtCommandList = &$this->builtCommandList;
-        $newBuilder->mockResultList = &$this->mockResultList;
-        $newBuilder->envVariableList = $envVariableList;
+
+        if ($conditionalResult) {
+            $envVariableList = $this->envVariableList;
+            $envVariableList[$key] = $value;
+            $newBuilder->builtCommandList = &$this->builtCommandList;
+            $newBuilder->mockResultList = &$this->mockResultList;
+            $newBuilder->envVariableList = $envVariableList;
+        }
 
         return $newBuilder;
     }
 
-    public function addEnvironmentVariables(array $envVars)
+    public function addEnvironmentVariables(array $envVars, $conditionalResult = true)
     {
-        $envVariableList = array_merge($this->envVariableList, $envVars);
-
         $newBuilder = clone $this;
-        $newBuilder->builtCommandList = &$this->builtCommandList;
-        $newBuilder->mockResultList = &$this->mockResultList;
-        $newBuilder->envVariableList = $envVariableList;
+
+        if ($conditionalResult) {
+            $envVariableList = array_merge($this->envVariableList, $envVars);
+            $newBuilder->builtCommandList = &$this->builtCommandList;
+            $newBuilder->mockResultList = &$this->mockResultList;
+            $newBuilder->envVariableList = $envVariableList;
+        }
 
         return $newBuilder;
     }

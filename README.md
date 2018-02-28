@@ -92,22 +92,33 @@ Add arguments to invoke the command with (all arguments are escaped):
         ->addArgument('--foo=bar')
 ```
 
-Conditionally depending on the result of an expression:
+Conditionally, depending on the result of an expression:
 
 ```php
     $builder
-        ->addArgument('--foo=bar', $myVar == 5)
+        ->addArgument('--foo=bar', $myVar === 5)
 ```
 
-Or in bulk:
+In bulk:
 
 ```php
     $builder
-        ->addArguments(array(
+        ->addArguments([
             '--foo=bar',
             '-xzcf',
             'if=/dev/sda of=/dev/sdb'
-        ))
+        ])
+```
+
+Conditionally in bulk depending on the result of an expression:
+
+```php
+    $builder
+        ->addArguments([
+            '--foo=bar',
+            '-xzcf',
+            'if=/dev/sda of=/dev/sdb'
+        ], $myVar === 5)
 ```
 
 Note: Arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
@@ -124,6 +135,13 @@ Arguments can also be applied without escaping:
         ->addRawArgument("--foo='bar'")
 ```
 
+Conditionally, depending on the result of an expression:
+
+```php
+    $builder
+        ->addRawArgument('--foo=bar', $myVar === 5)
+```
+
 Or in bulk:
 
 ```php
@@ -132,6 +150,17 @@ Or in bulk:
             "--foo='bar'",
             '-xzcf',
         ))
+```
+
+Conditionally in bulk depending on the result of an expression:
+
+```php
+    $builder
+        ->addArguments([
+            '--foo=bar',
+            '-xzcf',
+            'if=/dev/sda of=/dev/sdb'
+        ], $myVar === 5)
 ```
 
 
@@ -147,6 +176,15 @@ Environment variables can be set when running a command:
         )
 ```
 
+```php
+    $builder
+        ->addEnvironmentVariable(
+            'TEST_VARIABLE',
+            '123',
+             $myVar === 5
+         )
+```
+
 Or in bulk:
 
 ```php
@@ -155,6 +193,16 @@ Or in bulk:
             'TEST_VARIABLE' => '123',
             'FOO' => 'bar'
         ])
+```
+
+Conditionally in bulk depending on the result of an expression:
+
+```php
+    $builder
+        ->addEnvironmentVariables([
+            'TEST_VARIABLE' => '123',
+            'FOO' => 'bar'
+        ], $foo === 5)
 ```
 
 

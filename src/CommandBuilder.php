@@ -133,13 +133,16 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
-    public function addArguments(array $argumentList)
+    public function addArguments(array $argumentList, $conditionalResult = true)
     {
-        /** @var string[] $argumentList */
-        $argumentList = array_merge($this->argumentList, $argumentList);
-
         $newBuilder = clone $this;
-        $newBuilder->argumentList = $argumentList;
+
+        if ($conditionalResult) {
+            /** @var string[] $argumentList */
+            $argumentList = array_merge($this->argumentList, $argumentList);
+
+            $newBuilder->argumentList = $argumentList;
+        }
 
         return $newBuilder;
     }
@@ -147,13 +150,15 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
-    public function addRawArgument($rawArgument)
+    public function addRawArgument($rawArgument, $conditionalResult = true)
     {
-        $rawArgumentList = $this->rawArgumentList;
-        $rawArgumentList[] = $rawArgument;
-
         $newBuilder = clone $this;
-        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        if ($conditionalResult) {
+            $rawArgumentList = $this->rawArgumentList;
+            $rawArgumentList[] = $rawArgument;
+            $newBuilder->rawArgumentList = $rawArgumentList;
+        }
 
         return $newBuilder;
     }
@@ -161,13 +166,16 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
-    public function addRawArguments(array $rawArgumentList)
+    public function addRawArguments(array $rawArgumentList, $conditionalResult = true)
     {
-        /** @var string[] $argumentList */
-        $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
-
         $newBuilder = clone $this;
-        $newBuilder->rawArgumentList = $rawArgumentList;
+
+        if ($conditionalResult) {
+            /** @var string[] $argumentList */
+            $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
+            $newBuilder->rawArgumentList = $rawArgumentList;
+        }
+
 
         return $newBuilder;
     }
@@ -222,13 +230,15 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
-    public function addEnvironmentVariable($key, $value)
+    public function addEnvironmentVariable($key, $value, $conditionalResult = true)
     {
-        $envVariableList = $this->envVariableList;
-        $envVariableList[$key] = $value;
-
         $newBuilder = clone $this;
-        $newBuilder->envVariableList = $envVariableList;
+
+        if ($conditionalResult) {
+            $envVariableList = $this->envVariableList;
+            $envVariableList[$key] = $value;
+            $newBuilder->envVariableList = $envVariableList;
+        }
 
         return $newBuilder;
     }
@@ -236,12 +246,14 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
-    public function addEnvironmentVariables(array $envVars)
+    public function addEnvironmentVariables(array $envVars, $conditionalResult = true)
     {
-        $envVariableList = array_merge($this->envVariableList, $envVars);
-
         $newBuilder = clone $this;
-        $newBuilder->envVariableList = $envVariableList;
+
+        if ($conditionalResult) {
+            $envVariableList = array_merge($this->envVariableList, $envVars);
+            $newBuilder->envVariableList = $envVariableList;
+        }
 
         return $newBuilder;
     }

@@ -33,14 +33,15 @@ interface CommandBuilderInterface
      */
     public function addArgument($argument, $conditionalResult = true);
 
-        /**
+    /**
      * Add one or more arguments to the command.
      *
      * @param string[] $argumentList
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addArguments(array $argumentList);
+    public function addArguments(array $argumentList, $conditionalResult = true);
 
     /**
      * Add an argument to the command that will be applied without escaping.
@@ -49,10 +50,11 @@ interface CommandBuilderInterface
      *             to run an arbitrary command.
      *
      * @param string $rawArgument
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addRawArgument($rawArgument);
+    public function addRawArgument($rawArgument, $conditionalResult = true);
 
     /**
      * Add one or more arguments to the command that will be applied without escaping.
@@ -61,10 +63,11 @@ interface CommandBuilderInterface
      *             to run an arbitrary command.
      *
      * @param string[] $rawArgumentList
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addRawArguments(array $rawArgumentList);
+    public function addRawArguments(array $rawArgumentList, $conditionalResult = true);
 
     /**
      * Set the timeout
@@ -107,19 +110,21 @@ interface CommandBuilderInterface
      *
      * @param string $key
      * @param string $value
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addEnvironmentVariable($key, $value);
+    public function addEnvironmentVariable($key, $value, $conditionalResult = true);
 
     /**
      * Add an array of environment variables for use when running the command
      *
      * @param string[] $envVars
+     * @param bool $conditionalResult
      *
      * @return $this
      */
-    public function addEnvironmentVariables(array $envVars);
+    public function addEnvironmentVariables(array $envVars, $conditionalResult = true);
 
     /**
      * Get the build command.

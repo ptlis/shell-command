@@ -128,6 +128,50 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testConditionalArgumentListFalse()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments(
+                [
+                    '--foo bar',
+                    'baz'
+                ],
+                false
+            )
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path,
+            $command->__toString()
+        );
+    }
+
+    public function testConditionalArgumentListTrue()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments(
+                [
+                    '--foo bar',
+                    'baz'
+                ],
+                true
+            )
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' \'--foo bar\' \'baz\'',
+            $command->__toString()
+        );
+    }
+
     public function testRawArgument()
     {
         $path = './tests/commands/unix/test_binary';
@@ -136,6 +180,38 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         $command = $builder
             ->setCommand($path)
             ->addRawArgument('--foo \'bar\'')
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' --foo \'bar\'',
+            $command->__toString()
+        );
+    }
+
+    public function testConditionalRawArgumentFalse()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArgument('--foo \'bar\'', false)
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path,
+            $command->__toString()
+        );
+    }
+
+    public function testConditionalRawArgumentTrue()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArgument('--foo \'bar\'', true)
             ->buildCommand();
 
         $this->assertEquals(
@@ -156,6 +232,50 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
                     '--foo bar',
                     'baz'
                 ]
+            )
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' --foo bar baz',
+            $command->__toString()
+        );
+    }
+
+    public function testRawArgumentFalse()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArguments(
+                [
+                    '--foo bar',
+                    'baz'
+                ],
+                false
+            )
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path,
+            $command->__toString()
+        );
+    }
+
+    public function testRawArgumentTrue()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addRawArguments(
+                [
+                    '--foo bar',
+                    'baz'
+                ],
+                true
             )
             ->buildCommand();
 
@@ -242,6 +362,52 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand($path)
             ->addArguments($arguments)
             ->addEnvironmentVariable('TEST', 'VALUE')
+            ->setPollTimeout(1000 * 1000)
+            ->setTimeout(60 * 1000 * 1000)
+            ->buildCommand();
+
+        $this->assertSame(
+            ['TEST' => 'VALUE'],
+            \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
+        );
+    }
+
+    public function testEnvironmentVariableFalse()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $arguments = [
+            '--foo bar',
+            'baz'
+        ];
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->addEnvironmentVariable('TEST', 'VALUE', false)
+            ->setPollTimeout(1000 * 1000)
+            ->setTimeout(60 * 1000 * 1000)
+            ->buildCommand();
+
+        $this->assertSame(
+            [],
+            \PHPUnit_Framework_TestCase::readAttribute($command, 'envVariableList')
+        );
+    }
+
+    public function testEnvironmentVariableTrue()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $arguments = [
+            '--foo bar',
+            'baz'
+        ];
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->addArguments($arguments)
+            ->addEnvironmentVariable('TEST', 'VALUE', true)
             ->setPollTimeout(1000 * 1000)
             ->setTimeout(60 * 1000 * 1000)
             ->buildCommand();
