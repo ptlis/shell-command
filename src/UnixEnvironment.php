@@ -52,30 +52,22 @@ final class UnixEnvironment implements EnvironmentInterface
 
     /**
      * @inheritDoc
-     *
-     * @throws CommandExecutionException on error.
      */
     public function sendSignal($process, $signal)
     {
         switch ($signal) {
             case ProcessInterface::SIGTERM:
-                $mappedSignal = SIGTERM;
+                $this->safeSendSignal($process, $signal, SIGTERM);
                 break;
 
             case ProcessInterface::SIGKILL:
-                $mappedSignal = SIGKILL;
+                $this->safeSendSignal($process, $signal,SIGKILL);
                 break;
 
             default:
                 throw new CommandExecutionException(
                     'Unknown signal "' . $signal . '" provided.'
                 );
-        }
-
-        if (true !== proc_terminate($process, $mappedSignal)) {
-            throw new CommandExecutionException(
-                'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
-            );
         }
     }
 
@@ -89,6 +81,24 @@ final class UnixEnvironment implements EnvironmentInterface
         }
 
         return $path;
+    }
+
+    /**
+     * 'Safe' send signal method; throws an exception if the signal send fails for any reason.
+     *
+     * @param resource $process
+     * @param string $signal
+     * @param int $mappedSignal
+     *
+     * @throws CommandExecutionException on error.
+     */
+    private function safeSendSignal($process, $signal, $mappedSignal)
+    {
+        if (true !== proc_terminate($process, $mappedSignal)) {
+            throw new CommandExecutionException(
+                'Call to proc_terminate with signal "' . $signal . '" failed for unknown reason.'
+            );
+        }
     }
 
     /**
