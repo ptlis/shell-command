@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright (c) 2015-2017 brian ridley
+ * @copyright (c) 2015-2018 brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
