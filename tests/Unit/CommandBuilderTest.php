@@ -75,6 +75,38 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
+    public function testConditionalArgumentFalse()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->conditionalAddArgument('--foo bar', false)
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path,
+            $command->__toString()
+        );
+    }
+
+    public function testConditionalArgumentTrue()
+    {
+        $path = './tests/commands/unix/test_binary';
+        $builder = new CommandBuilder(new UnixEnvironment());
+
+        $command = $builder
+            ->setCommand($path)
+            ->conditionalAddArgument('--foo bar', true)
+            ->buildCommand();
+
+        $this->assertEquals(
+            $path . ' \'--foo bar\'',
+            $command->__toString()
+        );
+    }
+
     public function testArgumentList()
     {
         $path = './tests/commands/unix/test_binary';

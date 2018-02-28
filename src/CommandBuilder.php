@@ -131,6 +131,22 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @inheritDoc
      */
+    public function conditionalAddArgument($argument, $conditionalResult)
+    {
+        $newBuilder = clone $this;
+
+        if ($conditionalResult) {
+            $argumentList = $this->argumentList;
+            $argumentList[] = $argument;
+            $newBuilder->argumentList = $argumentList;
+        }
+
+        return $newBuilder;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function addArguments(array $argumentList)
     {
         /** @var string[] $argumentList */

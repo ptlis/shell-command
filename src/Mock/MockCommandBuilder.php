@@ -149,6 +149,24 @@ final class MockCommandBuilder implements CommandBuilderInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function conditionalAddArgument($argument, $conditionalResult)
+    {
+        $newBuilder = clone $this;
+        $newBuilder->builtCommandList = &$this->builtCommandList;
+        $newBuilder->mockResultList = &$this->mockResultList;
+
+        if ($conditionalResult) {
+            $argumentList = $this->argumentList;
+            $argumentList[] = $argument;
+            $newBuilder->argumentList = $argumentList;
+        }
+
+        return $newBuilder;
+    }
+
+    /**
      * Add one or more arguments to the command.
      *
      * @param string[] $argumentList

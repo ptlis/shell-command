@@ -32,6 +32,16 @@ interface CommandBuilderInterface
     public function addArgument($argument);
 
     /**
+     * Add an argument to the command if $conditionalResult is true.
+     *
+     * @param string $argument
+     * @param bool $conditionalResult
+     *
+     * @return $this
+     */
+    public function conditionalAddArgument($argument, $conditionalResult);
+
+        /**
      * Add one or more arguments to the command.
      *
      * @param string[] $argumentList
