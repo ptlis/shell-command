@@ -18,6 +18,7 @@ There were several goals that inspired the creation of this package:
      * [The Builder](#the-builder)
         * [Add Command](#add-command)
         * [Set Timeout](#set-timeout)
+        * [Set Working Directory](#set-working-directory)
         * [Add Arguments](#add-arguments)
         * [Add Raw Arguments](#add-raw-arguments)
         * [Set Environment Variables](#set-environment-variables)
@@ -100,6 +101,14 @@ Setting the timeout (in microseconds) sets how long the library will wait on a p
 
 If the process execution time exceeds this value a SIGTERM will be sent; if the process then doesn't terminate after a further 1 second wait then a SIGKILL is sent.
 
+
+#### Set Working Directory
+
+It is possible to change the working directory for a command:
+
+```php
+    $builder->setCwd('/path/to/working/directory/')
+```
 
 
 #### Add Arguments
