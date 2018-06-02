@@ -60,7 +60,7 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @var ProcessObserverInterface[] List of observers to attach to processes created by built Command.
      */
-    private $observerList;
+    private $observerList = [];
 
 
     /**
