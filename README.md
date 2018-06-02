@@ -4,7 +4,7 @@ A developer-friendly wrapper around execution of shell commands.
 
 There were several goals that inspired the creation of this package:
 
-* Use the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) to encapsulate the data required to execute a shell command to allow it to be passed around and executed later.
+* Use the [command pattern](https://en.wikipedia.org/wiki/Command_pattern) to encapsulate the data required to execute a shell command, allowing the command to be passed around and executed later.
 * Maintain a stateless object graph allowing (for example) the spawning of multiple running processes from a single command.
 * Provide clean APIs for synchronous and asynchronous usage.
 * Running processes can be wrapped in promises to allow for easy composition.
@@ -66,7 +66,7 @@ The builder will attempt to determine your environment when constructed, you can
     $builder = new CommandBuilder(new UnixEnvironment());
 ```
 
-Note this builder is immutable - method calls must be chained and terminated with a call to ```buildCommand``` like so:
+**Note:** this builder is immutable - method calls must be chained and terminated with a call to ```buildCommand``` like so:
  
 ```php
     $command = $builder
@@ -76,16 +76,18 @@ Note this builder is immutable - method calls must be chained and terminated wit
 ``` 
 
 
-#### Add Command
+#### Set Command
 
 First we must provide the command to execute:
 
 ```php
-    $builder->setCommand('git')             // Command in $PATH
+    $builder->setCommand('git')             // Executable in $PATH
         
     $builder->setCommand('./local/bin/git') // Relative to current working directory
         
-    $builder->setCommand('/usr/bin/git')    // Fully qualified path to binary
+    $builder->setCommand('/usr/bin/git')    // Fully qualified path
+    
+    $build->setCommand('~/.script.sh')      // Path relative to $HOME
 ```
 
 If the command is not locatable a ```RuntimeException``` is thrown.
@@ -93,10 +95,11 @@ If the command is not locatable a ```RuntimeException``` is thrown.
 
 #### Set Timeout
 
-Setting the timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
+The timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
 
 ```php
-    $builder->setTimeout(30 * 1000 * 1000)          // Wait 30 seconds
+    $builder
+        ->setTimeout(30 * 1000 * 1000)          // Wait 30 seconds
 ```
 
 If the process execution time exceeds this value a SIGTERM will be sent; if the process then doesn't terminate after a further 1 second wait then a SIGKILL is sent.
@@ -104,10 +107,11 @@ If the process execution time exceeds this value a SIGTERM will be sent; if the 
 
 #### Set Working Directory
 
-It is possible to change the working directory for a command:
+You can set the working directory for a command:
 
 ```php
-    $builder->setCwd('/path/to/working/directory/')
+    $builder
+        ->setCwd('/path/to/working/directory/')
 ```
 
 
@@ -120,14 +124,14 @@ Add arguments to invoke the command with (all arguments are escaped):
         ->addArgument('--foo=bar')
 ```
 
-Conditionally, depending on the result of an expression:
+Conditionally add, depending on the result of an expression:
 
 ```php
     $builder
         ->addArgument('--foo=bar', $myVar === 5)
 ```
 
-In bulk:
+Add several arguments:
 
 ```php
     $builder
@@ -138,7 +142,7 @@ In bulk:
         ])
 ```
 
-Conditionally in bulk depending on the result of an expression:
+Conditionally add, depending on the result of an expression:
 
 ```php
     $builder
@@ -149,7 +153,7 @@ Conditionally in bulk depending on the result of an expression:
         ], $myVar === 5)
 ```
 
-Note: Arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
+**Note:** Arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
 
 
 #### Add Raw Arguments
@@ -170,17 +174,17 @@ Conditionally, depending on the result of an expression:
         ->addRawArgument('--foo=bar', $myVar === 5)
 ```
 
-Or in bulk:
+Add several raw arguments:
 
 ```php
     $builder
-        ->addRawArguments(array(
+        ->addRawArguments([
             "--foo='bar'",
             '-xzcf',
-        ))
+        ])
 ```
 
-Conditionally in bulk depending on the result of an expression:
+Conditionally, depending on the result of an expression:
 
 ```php
     $builder
@@ -198,22 +202,17 @@ Environment variables can be set when running a command:
 
 ```php
     $builder
-        ->addEnvironmentVariable(
-            'TEST_VARIABLE',
-            '123'
-        )
+        ->addEnvironmentVariable('TEST_VARIABLE', '123')
 ```
+
+Conditionally, depending on the result of an expression:
 
 ```php
     $builder
-        ->addEnvironmentVariable(
-            'TEST_VARIABLE',
-            '123',
-             $myVar === 5
-         )
+        ->addEnvironmentVariable('TEST_VARIABLE', '123', $myVar === 5)
 ```
 
-Or in bulk:
+Add several environment variables:
 
 ```php
     $builder
@@ -223,7 +222,7 @@ Or in bulk:
         ])
 ```
 
-Conditionally in bulk depending on the result of an expression:
+Conditionally, depending on the result of an expression:
 
 ```php
     $builder
@@ -256,10 +255,21 @@ One the builder has been configured, the command can be retrieved for execution:
 
 ```php
     $command = $builder
-        // Command configuration...
+        // ...
         ->buildCommand();
 ```
 
+
+
+#### Set Poll Timeout
+
+Set how long to wait (in milliseconds) between polling the status of processes. Defaults to 1000 (1 second).
+
+```php
+    $builder
+        ->setPollTimeout(30 * 1000 * 1000)          // Wait 30 seconds
+
+```
 
 
 ### Synchronous Execution
@@ -267,7 +277,8 @@ One the builder has been configured, the command can be retrieved for execution:
 To run a command synchronously use the ```runSynchronous``` method. This returns an object implementing ```CommandResultInterface```, encoding the result of the command.
 
 ```php
-    $result = $command->runSynchronous(); 
+    $result = $command
+        ->runSynchronous(); 
 ```
 
 When you need to re-run the same command multiple times you can simply invoke ```runSynchronous``` repeatedly; each call will run the command returning the result to your application.
@@ -355,7 +366,7 @@ Get the string representation of the running command:
 
 #### Process::getPromise
 
-Monitoring of shell command execution can be wrapped in a [ReactPHP Promise](https://github.com/reactphp/promise). This gives us a flexible execution model, allowing chaining (with [Promise::then](https://github.com/reactphp/promise#promiseinterfacethen)) and aggregation using methods like [Promise::all](https://github.com/reactphp/promise#all), [Promise::some](https://github.com/reactphp/promise#some), [Promise::race](https://github.com/reactphp/promise#race) and their friends.
+Monitoring of shell command execution can be wrapped in a [ReactPHP Promise](https://github.com/reactphp/promise). This gives us a flexible execution model, allowing chaining (with [Promise::then](https://github.com/reactphp/promise#promiseinterfacethen)) and aggregation using [Promise::all](https://github.com/reactphp/promise#all), [Promise::some](https://github.com/reactphp/promise#some), [Promise::race](https://github.com/reactphp/promise#race) and their friends.
  
 Building promise to execute a command can be done by calling the ```getPromise``` method from a ```Process``` instance. This returns an instance of ```\React\Promise\Promise```:
 
