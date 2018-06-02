@@ -148,7 +148,6 @@ final class CommandBuilder implements CommandBuilderInterface
             }
         }
 
-
         return $newBuilder;
     }
 
@@ -223,8 +222,7 @@ final class CommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            $envVariableList = array_merge($this->envVariableList, $envVars);
-            $newBuilder->envVariableList = $envVariableList;
+            $newBuilder->envVariableList = array_merge($newBuilder->envVariableList, $envVars);
         }
 
         return $newBuilder;
