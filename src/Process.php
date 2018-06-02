@@ -15,7 +15,6 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
-use React\Promise\Promise;
 
 /**
  * Class encapsulating the lifetime of a process.
@@ -245,7 +244,7 @@ final class Process implements ProcessInterface
         // Poll the process for completion
         $eventLoop->addPeriodicTimer(
             0.1,
-            function(TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
+            function (TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
                 $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
                 $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
 

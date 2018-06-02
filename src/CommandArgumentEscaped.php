@@ -28,6 +28,7 @@ final class CommandArgumentEscaped implements CommandArgumentInterface
 
     /**
      * @param string $argument
+     * @param EnvironmentInterface $environment
      */
     public function __construct(
         $argument,

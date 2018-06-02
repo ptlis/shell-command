@@ -11,12 +11,7 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
-use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
-use React\EventLoop\LoopInterface;
-use React\EventLoop\Timer\TimerInterface;
-use React\Promise\Deferred;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
@@ -108,7 +103,7 @@ final class Command implements CommandInterface
         $fullStdErr = '';
 
         // Accumulate output as we wait
-        $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
+        $process->wait(function ($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
             $fullStdOut .= $stdOut;
             $fullStdErr .= $stdErr;
         });
@@ -142,7 +137,7 @@ final class Command implements CommandInterface
     {
         $stringCommand = array_reduce(
             $this->argumentList,
-            function ($string, $argument) {
+            function ($string, CommandArgumentInterface $argument) {
                 return $string . ' ' . $argument->encode();
             },
             $this->command

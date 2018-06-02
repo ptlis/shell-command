@@ -8,7 +8,6 @@
 
 namespace ptlis\ShellCommand;
 
-use ptlis\ShellCommand\CommandArgumentRaw;
 use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
@@ -53,7 +52,7 @@ final class CommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /**
-     * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
+     * @var string|int[] Array of environment variables. Array key is the variable name and array value is the env value.
      */
     private $envVariableList = [];
 
@@ -268,10 +267,8 @@ final class CommandBuilder implements CommandBuilderInterface
     {
         if (1 === count($this->observerList)) {
             $observer = $this->observerList[0];
-
         } elseif (count($this->observerList)) {
             $observer = new AggregateLogger($this->observerList);
-
         } else {
             $observer = new NullProcessObserver();
         }

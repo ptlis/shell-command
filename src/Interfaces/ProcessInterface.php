@@ -92,6 +92,7 @@ interface ProcessInterface
     /**
      * Return a promise representing the running process.
      *
+     * @param LoopInterface $eventLoop
      * @return Promise
      */
     public function getPromise(LoopInterface $eventLoop);

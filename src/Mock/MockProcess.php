@@ -15,7 +15,6 @@ use ptlis\ShellCommand\ProcessOutput;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
-use React\Promise\Promise;
 
 /**
  * Mock running process. Waits for the specified time before completing.
@@ -37,7 +36,7 @@ class MockProcess implements ProcessInterface
     /** @var bool */
     private $stopped = false;
 
-    /** @var int */
+    /** @var float */
     private $startTime;
 
 
@@ -164,7 +163,7 @@ class MockProcess implements ProcessInterface
         // Poll the process for completion
         $eventLoop->addPeriodicTimer(
             0.1,
-            function(TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
+            function (TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
                 $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
                 $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
 

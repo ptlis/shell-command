@@ -11,9 +11,6 @@ namespace ptlis\ShellCommand\Mock;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
-use React\EventLoop\LoopInterface;
-use React\EventLoop\Timer\TimerInterface;
-use React\Promise\Deferred;
 
 /**
  * Mock implementation of CommandInterface provided to simplify testing.

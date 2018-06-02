@@ -212,7 +212,6 @@ final class UnixEnvironment implements EnvironmentInterface
         $valid = false;
 
         if (strlen($command)) {
-
             // Check for command in path list
             foreach ($this->paths as $pathDir) {
                 $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $command;
