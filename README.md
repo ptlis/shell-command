@@ -24,6 +24,7 @@ There were several goals that inspired the creation of this package:
         * [Set Environment Variables](#set-environment-variables)
         * [Add Process Observers](#add-process-observers)
         * [Build the Command](#build-the-command)
+        * [Set Poll Timeout](#set-poll-timeout)
      * [Synchronous Execution](#synchronous-execution)
      * [Asynchronous execution](#asynchronous-execution)
         * [Command::runAsynchronous](#commandrunasynchronous)
