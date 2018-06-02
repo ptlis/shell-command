@@ -136,23 +136,6 @@ final class Command implements CommandInterface
     }
 
     /**
-     * Either resolve or reject the promise depending on the result of the mock operation.
-     *
-     * @param Deferred $deferred
-     * @param ProcessOutputInterface $processOutput
-     */
-    private function resolveOrRejectPromise(
-        Deferred $deferred,
-        ProcessOutputInterface $processOutput
-    ) {
-        if (0 === $processOutput->getExitCode()) {
-            $deferred->resolve($processOutput);
-        } else {
-            $deferred->reject($processOutput);
-        }
-    }
-
-    /**
      * @inheritDoc
      */
     public function __toString()
