@@ -8,6 +8,8 @@
 
 namespace ptlis\ShellCommand;
 
+use ptlis\ShellCommand\CommandArgumentRaw;
+use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
@@ -30,14 +32,9 @@ final class CommandBuilder implements CommandBuilderInterface
     private $command;
 
     /**
-     * @var string[] Array of arguments to pass to the command.
+     * @var CommandArgumentInterface[] Array of arguments to pass to the command.
      */
     private $argumentList = [];
-
-    /**
-     * @var string[] Array of arguments to pass to the command without escaping.
-     */
-    private $rawArgumentList = [];
 
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
@@ -73,29 +70,10 @@ final class CommandBuilder implements CommandBuilderInterface
      *
      * @param EnvironmentInterface|null $environment If not provided the builder will attempt to find the correct
      *      environment for the OS.
-     * @param string $command
-     * @param string[] $argumentsList
-     * @param int $timeout
-     * @param int $pollTimeout
-     * @param string $cwd
-     * @param ProcessObserverInterface[] $observerList
      */
     public function __construct(
-        EnvironmentInterface $environment = null,
-        $command = '',
-        array $argumentsList = [],
-        $timeout = -1,
-        $pollTimeout = 1000,
-        $cwd = '',
-        array $observerList = []
+        EnvironmentInterface $environment = null
     ) {
-        $this->command = $command;
-        $this->argumentList = $argumentsList;
-        $this->timeout = $timeout;
-        $this->pollTimeout = $pollTimeout;
-        $this->cwd = $cwd;
-        $this->observerList = $observerList;
-
         if (is_null($environment)) {
             $environment = $this->getEnvironment(PHP_OS);
         }
@@ -122,9 +100,7 @@ final class CommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            $argumentList = $this->argumentList;
-            $argumentList[] = $argument;
-            $newBuilder->argumentList = $argumentList;
+            $newBuilder->argumentList[] = new CommandArgumentEscaped($argument, $this->environment);
         }
 
         return $newBuilder;
@@ -138,10 +114,9 @@ final class CommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            /** @var string[] $argumentList */
-            $argumentList = array_merge($this->argumentList, $argumentList);
-
-            $newBuilder->argumentList = $argumentList;
+            foreach ($argumentList as $argument) {
+                $newBuilder->argumentList[] = new CommandArgumentEscaped($argument, $this->environment);
+            }
         }
 
         return $newBuilder;
@@ -155,9 +130,7 @@ final class CommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            $rawArgumentList = $this->rawArgumentList;
-            $rawArgumentList[] = $rawArgument;
-            $newBuilder->rawArgumentList = $rawArgumentList;
+            $newBuilder->argumentList[] = new CommandArgumentRaw($rawArgument);
         }
 
         return $newBuilder;
@@ -171,9 +144,9 @@ final class CommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            /** @var string[] $argumentList */
-            $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
-            $newBuilder->rawArgumentList = $rawArgumentList;
+            foreach ($rawArgumentList as $rawArgument) {
+                $newBuilder->argumentList[] = new CommandArgumentRaw($rawArgument);
+            }
         }
 
 
@@ -277,7 +250,6 @@ final class CommandBuilder implements CommandBuilderInterface
             $this->getObserver(),
             $this->command,
             $this->argumentList,
-            $this->rawArgumentList,
             $cwd,
             $this->envVariableList,
             $this->timeout,

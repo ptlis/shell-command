@@ -8,6 +8,8 @@
 
 namespace ptlis\ShellCommand\Test\Unit;
 
+use ptlis\ShellCommand\CommandArgumentEscaped;
+use ptlis\ShellCommand\CommandArgumentRaw;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -21,14 +23,14 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                '-s bar'
+                new CommandArgumentEscaped('-s bar', $environment)
             ],
-            [],
             getcwd()
         );
 
@@ -42,14 +44,14 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                '--filter=hide-empty'
+                new CommandArgumentEscaped('--filter=hide-empty', $environment)
             ],
-            [],
             getcwd()
         );
 
@@ -63,14 +65,15 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                'my_files/'
+                new CommandArgumentEscaped('my_files/', $environment)
+
             ],
-            [],
             getcwd()
         );
 
@@ -84,14 +87,14 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                'if=/dev/sha1 of=/dev/sdb2'
+                new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            [],
             getcwd()
         );
 
@@ -105,20 +108,44 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
             [
-                'if=/dev/sha1 of=/dev/sdb2'
+                new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            [],
             getcwd(),
             ['MY_VAR' => 'VALUE']
         );
 
         $this->assertSame(
             'MY_VAR=\'VALUE\' ' . $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $command->__toString()
+        );
+    }
+
+    public function testMixedArguments()
+    {
+        $path = './tests/commands/unix/test_binary';
+
+        $environment = new UnixEnvironment();
+        $command = new Command(
+            new UnixEnvironment(),
+            new NullProcessObserver(),
+            $path,
+            [
+                new CommandArgumentEscaped('--foo', $environment),
+                new CommandArgumentRaw('--bar'),
+                new CommandArgumentEscaped('--baz', $environment),
+                new CommandArgumentRaw('--bat')
+            ],
+            getcwd()
+        );
+
+        $this->assertSame(
+            $path . ' \'--foo\' --bar \'--baz\' --bat',
             $command->__toString()
         );
     }

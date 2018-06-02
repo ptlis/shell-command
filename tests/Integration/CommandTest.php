@@ -8,7 +8,7 @@
 
 namespace ptlis\ShellCommand\Test\Integration;
 
-use GuzzleHttp\Promise\RejectionException;
+use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Command;
@@ -25,14 +25,14 @@ class CommandTest extends ptlisShellCommandTestcase
     {
         $path = './tests/commands/unix/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                'if=/dev/sha1 of=/dev/sdb2'
+                new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            [],
             getcwd()
         );
 
@@ -56,14 +56,14 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $path = '~/test_binary';
 
+        $environment = new UnixEnvironment();
         $command = new Command(
-            new UnixEnvironment(),
+            $environment,
             new NullProcessObserver(),
             $path,
             [
-                'if=/dev/sha1 of=/dev/sdb2'
+                new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            [],
             getcwd()
         );
 
@@ -94,7 +94,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            [],
             '~/'
         );
 
@@ -119,7 +118,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            [],
             getcwd()
         );
 
@@ -141,7 +139,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            [],
             [],
             getcwd(),
             [
@@ -168,7 +165,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            [],
             getcwd()
         );
 
@@ -192,7 +188,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            [],
             [],
             getcwd()
         );
@@ -228,7 +223,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            [],
             getcwd()
         );
 
@@ -262,7 +256,6 @@ class CommandTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             new NullProcessObserver(),
             $path,
-            [],
             [],
             getcwd()
         );

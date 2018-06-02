@@ -154,7 +154,7 @@ Conditionally add, depending on the result of an expression:
         ], $myVar === 5)
 ```
 
-**Note:** Arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
+**Note:** Escaped and raw arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
 
 
 #### Add Raw Arguments
@@ -195,6 +195,8 @@ Conditionally, depending on the result of an expression:
             'if=/dev/sda of=/dev/sdb'
         ], $myVar === 5)
 ```
+
+**Note:** Escaped and raw arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
 
 
 #### Set Environment Variables

@@ -8,6 +8,7 @@
 
 namespace ptlis\ShellCommand;
 
+use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
@@ -33,14 +34,9 @@ final class Command implements CommandInterface
     private $command;
 
     /**
-     * @var string[] Array of arguments to pass with the command.
+     * @var CommandArgumentInterface[] Array of arguments to pass with the command.
      */
     private $argumentList;
-
-    /**
-     * @var string[] Array of arguments to pass with the command without escaping.
-     */
-    private $rawArgumentList;
 
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
@@ -75,8 +71,7 @@ final class Command implements CommandInterface
      * @param EnvironmentInterface $environment
      * @param ProcessObserverInterface $processObserver
      * @param string $command
-     * @param string[] $argumentList
-     * @param string[] $rawArgumentList
+     * @param CommandArgumentInterface[] $newArgumentList
      * @param string $cwd
      * @param string[] $envVariableList
      * @param int $timeout
@@ -86,8 +81,7 @@ final class Command implements CommandInterface
         EnvironmentInterface $environment,
         ProcessObserverInterface $processObserver,
         $command,
-        array $argumentList,
-        array $rawArgumentList,
+        array $newArgumentList,
         $cwd,
         $envVariableList = [],
         $timeout = -1,
@@ -96,8 +90,7 @@ final class Command implements CommandInterface
         $this->environment = $environment;
         $this->processObserver = $processObserver;
         $this->command = $command;
-        $this->argumentList = $argumentList;
-        $this->rawArgumentList = $rawArgumentList;
+        $this->argumentList = $newArgumentList;
         $this->timeout = $timeout;
         $this->envVariableList = $envVariableList;
         $this->pollTimeout = $pollTimeout;
@@ -167,17 +160,9 @@ final class Command implements CommandInterface
         $stringCommand = array_reduce(
             $this->argumentList,
             function ($string, $argument) {
-                return $string . ' ' . $this->environment->escapeShellArg($argument);
+                return $string . ' ' . $argument->encode();
             },
             $this->command
-        );
-
-        $stringCommand = array_reduce(
-            $this->rawArgumentList,
-            function ($string, $argument) {
-                return $string . ' ' . $argument;
-            },
-            $stringCommand
         );
 
         return $this->environment->applyEnvironmentVariables($stringCommand, $this->envVariableList);
