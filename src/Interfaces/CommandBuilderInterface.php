@@ -119,7 +119,7 @@ interface CommandBuilderInterface
     /**
      * Add an array of environment variables for use when running the command
      *
-     * @param string[] $envVars
+     * @param string|int[] $envVars
      * @param bool $conditionalResult
      *
      * @return $this
