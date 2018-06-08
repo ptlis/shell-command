@@ -22,10 +22,25 @@ class MockPsrLogger implements LoggerInterface
     private $logs = [];
 
     /**
+     * @var int Fake process ID to use when logging
+     */
+    private $fakePid;
+
+    /**
+     * @param int $fakePid Fake process ID to use when logging
+     */
+    public function __construct($fakePid = 999)
+    {
+        $this->fakePid = $fakePid;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public function emergency($message, array $context = [])
     {
+        $context['pid'] = $this->fakePid;
         $this->log(
             LogLevel::EMERGENCY,
             $message,
@@ -129,6 +144,8 @@ class MockPsrLogger implements LoggerInterface
         if (array_key_exists('stdout', $context) && !strlen($context['stdout'])) {
             return;
         }
+
+        $context['pid'] = $this->fakePid;
 
         $this->logs[] = [
             'level' => $level,

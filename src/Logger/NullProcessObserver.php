@@ -19,11 +19,9 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 class NullProcessObserver implements ProcessObserverInterface
 {
     /**
-     * The process has been created from the provided command.
-     *
-     * @param string $command
+     * {@inheritDoc}
      */
-    public function processCreated($command)
+    public function processCreated($pid, $command)
     {
         // Null observer, do nothing
     }
@@ -31,47 +29,39 @@ class NullProcessObserver implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
-    public function processPolled($runningTime)
+    public function processPolled($pid, $runningTime)
     {
         // Null observer, do nothing
     }
 
     /**
-     * The contents of the stdout buffer have been read.
-     *
-     * @param string $stdOut
+     * {@inheritDoc}
      */
-    public function stdOutRead($stdOut)
+    public function stdOutRead($pid, $stdOut)
     {
         // Null observer, do nothing
     }
 
     /**
-     * The contents of the stderr buffer have been read.
-     *
-     * @param string $stdErr
+     * {@inheritDoc}
      */
-    public function stdErrRead($stdErr)
+    public function stdErrRead($pid, $stdErr)
     {
         // Null observer, do nothing
     }
 
     /**
-     * A signal has been sent to the process.
-     *
-     * @param int $signal
+     * {@inheritDoc}
      */
-    public function sentSignal($signal)
+    public function sentSignal($pid, $signal)
     {
         // Null observer, do nothing
     }
 
     /**
-     * Process has completed and the exit code is available.
-     *
-     * @param int $exitCode
+     * {@inheritDoc}
      */
-    public function processExited($exitCode)
+    public function processExited($pid, $exitCode)
     {
         // Null observer, do nothing
     }

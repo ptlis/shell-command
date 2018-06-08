@@ -68,6 +68,11 @@ final class Process implements ProcessInterface
      */
     private $process = null;
 
+    /**
+     * @var Process ID of the running process.
+     */
+    private $pid;
+
 
     /**
      * Constructor.
@@ -108,6 +113,12 @@ final class Process implements ProcessInterface
             ],
             $this->pipeList
         );
+
+        if (!is_resource($this->process)) {
+            throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
+        }
+
+        $this->pid = $this->getStatus()['pid'];
         $this->startTime = microtime(true);
 
         // Mark pipe streams as non-blocking
@@ -116,14 +127,10 @@ final class Process implements ProcessInterface
         }
 
         // Notify observer of process creation.
-        $this->observer->processCreated($command);
+        $this->observer->processCreated($this->pid, $command);
 
         // Reset CWD to previous
         chdir($prevCwd);
-
-        if (!is_resource($this->process)) {
-            throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
-        }
 
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
@@ -136,7 +143,7 @@ final class Process implements ProcessInterface
     {
         $status = $this->getStatus();
 
-        $this->observer->processPolled(round(microtime(true) - $this->startTime) * 1000);
+        $this->observer->processPolled($this->pid, round(microtime(true) - $this->startTime) * 1000);
 
         return $status['running'];
     }
@@ -189,7 +196,7 @@ final class Process implements ProcessInterface
      */
     public function sendSignal($signal)
     {
-        $this->observer->sentSignal($signal);
+        $this->observer->sentSignal($this->pid, $signal);
 
         $this->environment->sendSignal($this->process, $signal);
     }
@@ -220,12 +227,7 @@ final class Process implements ProcessInterface
      */
     public function getPid()
     {
-        $status = $this->getStatus();
-        if (!$status['running']) {
-            throw new \RuntimeException('Cannot get the process id of a process that has already exited.');
-        }
-
-        return $status['pid'];
+        return $this->pid;
     }
 
     /**
@@ -296,7 +298,7 @@ final class Process implements ProcessInterface
         if (!$status['running'] && is_null($this->exitCode)) {
             $this->exitCode = $status['exitcode'];
 
-            $this->observer->processExited($this->exitCode);
+            $this->observer->processExited($this->pid, $this->exitCode);
         }
 
         return $status;
@@ -316,7 +318,7 @@ final class Process implements ProcessInterface
             $callback($stdOut, $stdErr);
         }
 
-        $this->observer->stdOutRead($stdOut);
-        $this->observer->stdErrRead($stdErr);
+        $this->observer->stdOutRead($this->pid, $stdOut);
+        $this->observer->stdErrRead($this->pid, $stdErr);
     }
 }

@@ -54,22 +54,18 @@ final class ErrorLogger extends NullProcessObserver
     }
 
     /**
-     * The contents of the stderr buffer have been read.
-     *
-     * @param string $stdErr
+     * {@inheritDoc}
      */
-    public function stdErrRead($stdErr)
+    public function stdErrRead($pid, $stdErr)
     {
-        $this->log('Read from stderr', ['stderr' => $stdErr]);
+        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
     }
 
     /**
-     * Process has completed and the exit code is available.
-     *
-     * @param int $exitCode
+     * {@inheritDoc}
      */
-    public function processExited($exitCode)
+    public function processExited($pid, $exitCode)
     {
-        $this->log('Process exited', ['exit_code' => $exitCode]);
+        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $exitCode]);
     }
 }

@@ -114,26 +114,11 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testErrorGetPidNotRunning()
-    {
-        $this->setExpectedException(
-            'RuntimeException',
-            'Cannot get the process id of a process that has already exited.'
-        );
-
-        $command = './tests/commands/unix/test_binary';
-
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
-        $process->wait();
-
-        $process->getPid();
-    }
-
     public function testStopRunning()
     {
         $command = './tests/commands/unix/sleep_binary';
 
-        $logger = new MockPsrLogger();
+        $logger = new MockPsrLogger(555);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -152,6 +137,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 555,
                         'command' => './tests/commands/unix/sleep_binary'
                     ]
                 ],
@@ -159,6 +145,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 555,
                         'signal' => ProcessInterface::SIGTERM
                     ]
                 ],
@@ -166,6 +153,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 555,
                         'exit_code' => -1
                     ]
                 ]
@@ -184,7 +172,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/sleep_binary';
 
-        $logger = new MockPsrLogger();
+        $logger = new MockPsrLogger(9999);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -203,6 +191,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 9999,
                         'command' => './tests/commands/unix/sleep_binary'
                     ]
                 ],
@@ -210,6 +199,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 9999,
                         'signal' => ProcessInterface::SIGTERM
                     ]
                 ],
@@ -217,6 +207,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 9999,
                         'signal' => ProcessInterface::SIGKILL
                     ]
                 ],
@@ -229,7 +220,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/long_sleep_binary';
 
-        $logger = new MockPsrLogger();
+        $logger = new MockPsrLogger(1234);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -248,6 +239,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 1234,
                         'command' => './tests/commands/unix/long_sleep_binary'
                     ]
                 ],
@@ -255,6 +247,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 1234,
                         'signal' => ProcessInterface::SIGTERM
                     ]
                 ],
@@ -262,6 +255,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 1234,
                         'exit_code' => -1
                     ]
                 ]

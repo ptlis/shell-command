@@ -27,7 +27,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/error_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(54321);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -47,6 +47,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::ERROR,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 54321,
                         'exit_code' => 5
                     ]
                 ],
@@ -54,6 +55,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::ERROR,
                     'message' => 'Read from stderr',
                     'context' => [
+                        'pid' => 54321,
                         'stderr' => 'Fatal Error' . PHP_EOL
                     ]
                 ]
@@ -66,7 +68,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/error_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(3344);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -87,6 +89,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::CRITICAL,
                     'message' => 'Read from stderr',
                     'context' => [
+                        'pid' => 3344,
                         'stderr' => 'Fatal Error' . PHP_EOL
                     ]
                 ],
@@ -94,6 +97,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::CRITICAL,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 3344,
                         'exit_code' => 5
                     ]
                 ]
@@ -106,7 +110,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/sleep_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(1111);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -126,6 +130,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::ERROR,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 1111,
                         'exit_code' => -1
                     ]
                 ]

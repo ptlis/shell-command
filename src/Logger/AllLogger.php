@@ -55,60 +55,50 @@ final class AllLogger implements ProcessObserverInterface
     }
 
     /**
-     * The process has been created from the provided command.
-     *
-     * @param string $command
+     * {@inheritDoc}
      */
-    public function processCreated($command)
+    public function processCreated($pid, $command)
     {
-        $this->log('Process created', ['command' => $command]);
+        $this->log('Process created', ['pid' => $pid, 'command' => $command]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function processPolled($runningTime)
+    public function processPolled($pid, $runningTime)
     {
-        $this->log('Process polled', ['running time' => $runningTime]);
+        $this->log('Process polled', ['pid' => $pid, 'running time' => $runningTime]);
     }
 
     /**
-     * The contents of the stdout buffer have been read.
-     *
-     * @param string $stdOut
+     * {@inheritDoc}
      */
-    public function stdOutRead($stdOut)
+    public function stdOutRead($pid, $stdOut)
     {
-        $this->log('Read from stdout', ['stdout' => $stdOut]);
+        $this->log('Read from stdout', ['pid' => $pid, 'stdout' => $stdOut]);
     }
 
     /**
-     * The contents of the stderr buffer have been read.
-     *
-     * @param string $stdErr
+     * {@inheritDoc}
      */
-    public function stdErrRead($stdErr)
+    public function stdErrRead($pid, $stdErr)
     {
-        $this->log('Read from stderr', ['stderr' => $stdErr]);
+        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
     }
 
     /**
-     * A signal has been sent to the process.
-     *
-     * @param int $signal
+     * {@inheritDoc}
      */
-    public function sentSignal($signal)
+    public function sentSignal($pid, $signal)
     {
-        $this->log('Signal sent', ['signal' => $signal]);
+        $this->log('Signal sent', ['pid' => $pid, 'signal' => $signal]);
     }
 
     /**
-     * Process has completed and the exit code is available.
-     *
-     * @param int $exitCode
+     * {@inheritDoc}
      */
-    public function processExited($exitCode)
+    public function processExited($pid, $exitCode)
     {
-        $this->log('Process exited', ['exit_code' => $exitCode]);
+        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $exitCode]);
     }
 }

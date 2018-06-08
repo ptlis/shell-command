@@ -27,7 +27,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/test_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(4523);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -47,6 +47,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 4523,
                         'command' => './tests/commands/unix/test_binary'
                     ]
                 ],
@@ -54,6 +55,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Read from stdout',
                     'context' => [
+                        'pid' => 4523,
                         'stdout' => 'Test command' . PHP_EOL . PHP_EOL
                     ]
                 ],
@@ -61,6 +63,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 4523,
                         'exit_code' => 0
                     ]
                 ]
@@ -73,7 +76,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/sleep_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(9241);
 
         $process = new Process(
             new UnixEnvironment(),
@@ -93,6 +96,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 9241,
                         'command' => './tests/commands/unix/sleep_binary'
                     ]
                 ],
@@ -100,6 +104,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 9241,
                         'signal' => 'SIGTERM'
                     ]
                 ],
@@ -107,6 +112,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 9241,
                         'exit_code' => -1
                     ]
                 ]

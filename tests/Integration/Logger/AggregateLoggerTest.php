@@ -29,7 +29,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/long_sleep_binary';
 
-        $mockLogger = new MockPsrLogger();
+        $mockLogger = new MockPsrLogger(1234);
         $allLogger = new AllLogger($mockLogger);
 
         $process = new Process(
@@ -53,6 +53,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process created',
                     'context' => [
+                        'pid' => 1234,
                         'command' => './tests/commands/unix/long_sleep_binary'
                     ]
                 ],
@@ -60,6 +61,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Signal sent',
                     'context' => [
+                        'pid' => 1234,
                         'signal' => 'SIGTERM'
                     ]
                 ],
@@ -67,6 +69,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
                     'level' => LogLevel::DEBUG,
                     'message' => 'Process exited',
                     'context' => [
+                        'pid' => 1234,
                         'exit_code' => -1
                     ]
                 ]

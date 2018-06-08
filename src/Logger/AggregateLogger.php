@@ -37,60 +37,60 @@ final class AggregateLogger implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
-    public function processCreated($command)
+    public function processCreated($pid, $command)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->processCreated($command);
+            $logger->processCreated($pid, $command);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function processPolled($runningTime)
+    public function processPolled($pid, $runningTime)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->processPolled($runningTime);
+            $logger->processPolled($pid, $runningTime);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function stdOutRead($stdOut)
+    public function stdOutRead($pid, $stdOut)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->stdOutRead($stdOut);
+            $logger->stdOutRead($pid, $stdOut);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function stdErrRead($stdErr)
+    public function stdErrRead($pid, $stdErr)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->stdErrRead($stdErr);
+            $logger->stdErrRead($pid, $stdErr);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function sentSignal($signal)
+    public function sentSignal($pid, $signal)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->sentSignal($signal);
+            $logger->sentSignal($pid, $signal);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function processExited($exitCode)
+    public function processExited($pid, $exitCode)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->processExited($exitCode);
+            $logger->processExited($pid, $exitCode);
         }
     }
 }
