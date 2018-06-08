@@ -12,6 +12,7 @@ use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use ptlis\ShellCommand\Logger\NullProcessObserver;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
@@ -91,6 +92,9 @@ final class Process implements ProcessInterface
         $this->environment = $environment;
         $this->command = $command;
         $this->observer = $observer;
+        if (is_null($this->observer)) {
+            $this->observer = new NullProcessObserver();
+        }
 
         // Store CWD, set to override
         $prevCwd = getcwd();
@@ -112,9 +116,7 @@ final class Process implements ProcessInterface
         }
 
         // Notify observer of process creation.
-        if (!is_null($observer)) {
-            $observer->processCreated($command);
-        }
+        $this->observer->processCreated($command);
 
         // Reset CWD to previous
         chdir($prevCwd);
@@ -134,9 +136,7 @@ final class Process implements ProcessInterface
     {
         $status = $this->getStatus();
 
-        if (!is_null($this->observer)) {
-            $this->observer->processPolled(round(microtime(true) - $this->startTime) * 1000);
-        }
+        $this->observer->processPolled(round(microtime(true) - $this->startTime) * 1000);
 
         return $status['running'];
     }
@@ -189,9 +189,7 @@ final class Process implements ProcessInterface
      */
     public function sendSignal($signal)
     {
-        if (!is_null($this->observer)) {
-            $this->observer->sentSignal($signal);
-        }
+        $this->observer->sentSignal($signal);
 
         $this->environment->sendSignal($this->process, $signal);
     }
@@ -298,9 +296,7 @@ final class Process implements ProcessInterface
         if (!$status['running'] && is_null($this->exitCode)) {
             $this->exitCode = $status['exitcode'];
 
-            if (!is_null($this->observer)) {
-                $this->observer->processExited($this->exitCode);
-            }
+            $this->observer->processExited($this->exitCode);
         }
 
         return $status;
@@ -320,9 +316,7 @@ final class Process implements ProcessInterface
             $callback($stdOut, $stdErr);
         }
 
-        if (!is_null($this->observer)) {
-            $this->observer->stdOutRead($stdOut);
-            $this->observer->stdErrRead($stdErr);
-        }
+        $this->observer->stdOutRead($stdOut);
+        $this->observer->stdErrRead($stdErr);
     }
 }
