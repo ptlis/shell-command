@@ -47,6 +47,16 @@ final class AggregateLogger implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
+    public function processPolled($runningTime)
+    {
+        foreach ($this->loggerList as $logger) {
+            $logger->processPolled($runningTime);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function stdOutRead($stdOut)
     {
         foreach ($this->loggerList as $logger) {

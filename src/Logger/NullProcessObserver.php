@@ -29,6 +29,14 @@ class NullProcessObserver implements ProcessObserverInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function processPolled($runningTime)
+    {
+        // Null observer, do nothing
+    }
+
+    /**
      * The contents of the stdout buffer have been read.
      *
      * @param string $stdOut

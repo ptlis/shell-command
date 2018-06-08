@@ -134,6 +134,10 @@ final class Process implements ProcessInterface
     {
         $status = $this->getStatus();
 
+        if (!is_null($this->observer)) {
+            $this->observer->processPolled(round(microtime(true) - $this->startTime) * 1000);
+        }
+
         return $status['running'];
     }
 

@@ -41,7 +41,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
         );
         $process->wait();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::ERROR,
@@ -81,7 +81,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
         );
         $process->wait();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::CRITICAL,
@@ -120,7 +120,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
         );
         $process->stop();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::ERROR,

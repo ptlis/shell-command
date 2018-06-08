@@ -14,10 +14,8 @@ namespace ptlis\ShellCommand\Test;
 
 class ptlisShellCommandTestcase extends \PHPUnit_Framework_TestCase
 {
-    public function assertLogsMatch(array $expectedLogList, array $actualLogList)
+    public function assertHasLogs(array $expectedLogList, array $actualLogList)
     {
-        $this->assertEquals(true, count($expectedLogList) == count($actualLogList), 'Log list lengths do not match.');
-
         foreach ($expectedLogList as $index => $expectedLog) {
 
             $hasMatch = false;

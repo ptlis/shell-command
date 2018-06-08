@@ -47,7 +47,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
         $process->sendSignal(Process::SIGTERM);
         $process->wait();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,

@@ -65,6 +65,14 @@ final class AllLogger implements ProcessObserverInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function processPolled($runningTime)
+    {
+        $this->log('Process polled', ['running time' => $runningTime]);
+    }
+
+    /**
      * The contents of the stdout buffer have been read.
      *
      * @param string $stdOut

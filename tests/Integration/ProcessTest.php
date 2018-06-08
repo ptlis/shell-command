@@ -146,7 +146,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process->stop();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,
@@ -197,7 +197,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process->stop();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,
@@ -242,7 +242,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process->wait();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,

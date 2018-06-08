@@ -24,6 +24,13 @@ interface ProcessObserverInterface
     public function processCreated($command);
 
     /**
+     * The process has had it's status polled.
+     *
+     * @param int $runningTime How long the process has been running for in milliseconds
+     */
+    public function processPolled($runningTime);
+
+    /**
      * The contents of the stdout buffer have been read.
      *
      * @param string $stdOut

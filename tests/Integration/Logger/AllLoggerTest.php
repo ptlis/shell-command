@@ -41,7 +41,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
         );
         $process->wait();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,
@@ -87,7 +87,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
         );
         $process->stop();
 
-        $this->assertLogsMatch(
+        $this->assertHasLogs(
             [
                 [
                     'level' => LogLevel::DEBUG,
