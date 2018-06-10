@@ -302,4 +302,26 @@ class ProcessTest extends ptlisShellCommandTestcase
         $process = new Process(new UnixEnvironment(), $command, getcwd());
         $process->stop();
     }
+
+    public function testGetAllStdout()
+    {
+        $command = './tests/commands/unix/slow_stdout_binary';
+
+        $process = new Process(
+            new UnixEnvironment(),
+            $command,
+            getcwd(),
+            -1,
+            1000,
+            new NullProcessObserver()
+        );
+
+        $result = $process->wait();
+
+        $this
+            ->assertEquals(
+                ['1', '2', '3', '4', '5', ''],
+                $result->getStdOutLines()
+            );
+    }
 }

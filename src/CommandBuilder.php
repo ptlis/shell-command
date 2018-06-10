@@ -38,7 +38,7 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
      */
-    private $timeout;
+    private $timeout = -1;
 
     /**
      * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
