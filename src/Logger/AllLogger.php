@@ -14,7 +14,7 @@ namespace ptlis\ShellCommand\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
-use ptlis\ShellCommand\ProcessOutput;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
  * Logs all information about the process.
@@ -98,7 +98,7 @@ final class AllLogger implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
-    public function processExited($pid, ProcessOutput $processOutput)
+    public function processExited($pid, ProcessOutputInterface $processOutput)
     {
         $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
