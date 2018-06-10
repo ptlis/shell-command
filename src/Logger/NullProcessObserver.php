@@ -12,6 +12,7 @@
 namespace ptlis\ShellCommand\Logger;
 
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\ProcessOutput;
 
 /**
  * Null logger, used when no observer is provided.
@@ -61,7 +62,7 @@ class NullProcessObserver implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
-    public function processExited($pid, $exitCode)
+    public function processExited($pid, ProcessOutput $processOutput)
     {
         // Null observer, do nothing
     }

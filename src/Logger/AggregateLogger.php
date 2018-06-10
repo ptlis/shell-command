@@ -12,6 +12,7 @@
 namespace ptlis\ShellCommand\Logger;
 
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\ProcessOutput;
 
 /**
  * Aggregates several loggers.
@@ -87,10 +88,10 @@ final class AggregateLogger implements ProcessObserverInterface
     /**
      * {@inheritDoc}
      */
-    public function processExited($pid, $exitCode)
+    public function processExited($pid, ProcessOutput $processOutput)
     {
         foreach ($this->loggerList as $logger) {
-            $logger->processExited($pid, $exitCode);
+            $logger->processExited($pid, $processOutput);
         }
     }
 }

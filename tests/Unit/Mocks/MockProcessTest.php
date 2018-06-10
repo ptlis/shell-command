@@ -80,9 +80,9 @@ class MockProcessTest extends ptlisShellCommandTestcase
     public function testGetExitCode()
     {
         $process = new MockProcess('test-command', new ProcessOutput(15, '', ''), 1000);
-        $process->stop();
+        $output = $process->stop();
 
-        $this->assertEquals(15, $process->getExitCode());
+        $this->assertEquals(15, $output->getExitCode());
     }
 
     public function testReadStdOut()
@@ -95,13 +95,5 @@ class MockProcessTest extends ptlisShellCommandTestcase
     {
         $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
         $this->assertEquals('foo bar baz', $process->readOutput(ProcessInterface::STDERR));
-    }
-
-    public function testGetExitCodeRunning()
-    {
-        $this->setExpectedException('\RuntimeException');
-
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000);
-        $process->getExitCode();
     }
 }

@@ -74,33 +74,20 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $fullStdOut = '';
         $fullStdErr = '';
-        $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
+        $output = $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
             $fullStdOut .= $stdOut;
             $fullStdErr .= $stdErr;
         });
 
         $this->assertEquals(
             5,
-            $process->getExitCode()
+            $output->getExitCode()
         );
 
         $this->assertEquals(
             'Fatal Error' . PHP_EOL,
             $fullStdErr
         );
-    }
-
-    public function testErrorGetExitCodeWhileRunning()
-    {
-        $this->setExpectedException(
-            'RuntimeException',
-            'Cannot get exit code of still-running process.'
-        );
-
-        $command = './tests/commands/unix/sleep_binary';
-
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
-        $process->getExitCode();
     }
 
     public function testGetPid()

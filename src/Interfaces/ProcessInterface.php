@@ -8,6 +8,7 @@
 
 namespace ptlis\ShellCommand\Interfaces;
 
+use ptlis\ShellCommand\ProcessOutput;
 use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 
@@ -38,6 +39,7 @@ interface ProcessInterface
      *
      * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout and
      *  stderr.
+     * @return ProcessOutput
      */
     public function wait(\Closure $callback = null);
 
@@ -45,6 +47,7 @@ interface ProcessInterface
      * Stops the running process.
      *
      * @param int $timeout (microseconds)
+     * @return ProcessOutput
      */
     public function stop($timeout = 1000000);
 
@@ -63,15 +66,6 @@ interface ProcessInterface
      * @param string $signal One of SIG* constants
      */
     public function sendSignal($signal);
-
-    /**
-     * Get the exit code of the process.
-     *
-     * @throws \RuntimeException If the process has not yet exited.
-     *
-     * @return int
-     */
-    public function getExitCode();
 
     /**
      * Returns the PID (process id) of running process.

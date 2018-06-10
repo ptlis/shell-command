@@ -12,6 +12,7 @@ use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
@@ -59,6 +60,16 @@ final class Process implements ProcessInterface
     private $exitCode;
 
     /**
+     * @var string Captured data from stdout.
+     */
+    private $fullStdOut = '';
+
+    /**
+     * @var string Captured data from stderr.
+     */
+    private $fullStdErr = '';
+
+    /**
      * @var array Pipes populated by proc_open.
      */
     private $pipeList = [];
@@ -72,6 +83,11 @@ final class Process implements ProcessInterface
      * @var Process ID of the running process.
      */
     private $pid;
+
+    /**
+     * @var ProcessOutputInterface|null The result of running this process, or null.
+     */
+    private $output = null;
 
 
     /**
@@ -168,6 +184,8 @@ final class Process implements ProcessInterface
         }
 
         $this->readStreams($callback);
+
+        return $this->getProcessOutput();
     }
 
     /**
@@ -189,6 +207,8 @@ final class Process implements ProcessInterface
 
             usleep($this->pollTimeout);
         }
+
+        return $this->getProcessOutput();
     }
 
     /**
@@ -213,12 +233,8 @@ final class Process implements ProcessInterface
     /**
      * @inheritDoc
      */
-    public function getExitCode()
+    private function getExitCode()
     {
-        if ($this->isRunning()) {
-            throw new \RuntimeException('Cannot get exit code of still-running process.');
-        }
-
         return $this->exitCode;
     }
 
@@ -248,14 +264,13 @@ final class Process implements ProcessInterface
         // Poll the process for completion
         $eventLoop->addPeriodicTimer(
             0.1,
-            function (TimerInterface $timer) use ($eventLoop, $deferred, &$fullStdOut, &$fullStdErr) {
-                $fullStdOut .= $this->readOutput(ProcessInterface::STDOUT);
-                $fullStdErr .= $this->readOutput(ProcessInterface::STDERR);
+            function (TimerInterface $timer) use ($eventLoop, $deferred) {
+                $this->readStreams();
 
                 // Process has terminated
                 if (!$this->isRunning()) {
                     $eventLoop->cancelTimer($timer);
-                    $output = new ProcessOutput($this->getExitCode(), $fullStdOut, $fullStdErr);
+                    $output = $this->getProcessOutput();
 
                     // Resolve or reject promise
                     if (0 === $output->getExitCode()) {
@@ -297,8 +312,6 @@ final class Process implements ProcessInterface
 
         if (!$status['running'] && is_null($this->exitCode)) {
             $this->exitCode = $status['exitcode'];
-
-            $this->observer->processExited($this->pid, $this->exitCode);
         }
 
         return $status;
@@ -314,11 +327,29 @@ final class Process implements ProcessInterface
         $stdOut = $this->readOutput(self::STDOUT);
         $stdErr = $this->readOutput(self::STDERR);
 
+        $this->fullStdOut .= $stdOut;
+        $this->fullStdErr .= $stdErr;
+
         if (!is_null($callback)) {
             $callback($stdOut, $stdErr);
         }
 
         $this->observer->stdOutRead($this->pid, $stdOut);
         $this->observer->stdErrRead($this->pid, $stdErr);
+    }
+
+    /**
+     * Returns the output of the process (exit code, stdout & stderr).
+     *
+     * @return ProcessOutputInterface
+     */
+    private function getProcessOutput()
+    {
+        if (is_null($this->output)) {
+            $this->output = new ProcessOutput($this->getExitCode(), $this->fullStdOut, $this->fullStdErr);
+            $this->observer->processExited($this->pid, $this->output);
+        }
+
+        return $this->output;
     }
 }

@@ -99,20 +99,8 @@ final class Command implements CommandInterface
     {
         $process = $this->runAsynchronous();
 
-        $fullStdOut = '';
-        $fullStdErr = '';
-
         // Accumulate output as we wait
-        $process->wait(function ($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
-            $fullStdOut .= $stdOut;
-            $fullStdErr .= $stdErr;
-        });
-
-        return new ProcessOutput(
-            $process->getExitCode(),
-            $fullStdOut,
-            $fullStdErr
-        );
+        return $process->wait();
     }
 
     /**

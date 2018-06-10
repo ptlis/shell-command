@@ -82,6 +82,8 @@ class MockProcess implements ProcessInterface
         if ($callback) {
             $callback($this->result->getStdOut(), $this->result->getStdErr());
         }
+
+        return $this->result;
     }
 
     /**
@@ -90,6 +92,8 @@ class MockProcess implements ProcessInterface
     public function stop($timeout = 1000000)
     {
         $this->stopped = true;
+
+        return $this->result;
     }
 
     /**
@@ -124,12 +128,8 @@ class MockProcess implements ProcessInterface
     /**
      * {@inheritdoc}
      */
-    public function getExitCode()
+    private function getExitCode()
     {
-        if ($this->isRunning()) {
-            throw new \RuntimeException('Cannot get exit code from running process');
-        }
-
         return $this->result->getExitCode();
     }
 

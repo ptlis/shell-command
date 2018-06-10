@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\ProcessOutput;
 
 /**
  * Logs error data from the process (stderr and exit code if not 0).
@@ -64,8 +65,8 @@ final class ErrorLogger extends NullProcessObserver
     /**
      * {@inheritDoc}
      */
-    public function processExited($pid, $exitCode)
+    public function processExited($pid, ProcessOutput $processOutput)
     {
-        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $exitCode]);
+        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
 }
