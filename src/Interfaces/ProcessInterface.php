@@ -8,7 +8,6 @@
 
 namespace ptlis\ShellCommand\Interfaces;
 
-use ptlis\ShellCommand\ProcessOutput;
 use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 
@@ -39,7 +38,7 @@ interface ProcessInterface
      *
      * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout and
      *  stderr.
-     * @return ProcessOutput
+     * @return ProcessOutputInterface
      */
     public function wait(\Closure $callback = null);
 
@@ -47,7 +46,7 @@ interface ProcessInterface
      * Stops the running process.
      *
      * @param int $timeout (microseconds)
-     * @return ProcessOutput
+     * @return ProcessOutputInterface
      */
     public function stop($timeout = 1000000);
 

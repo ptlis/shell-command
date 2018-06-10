@@ -10,7 +10,6 @@
  */
 
 namespace ptlis\ShellCommand\Interfaces;
-use ptlis\ShellCommand\ProcessOutput;
 
 /**
  * Interface that classes wishing to observe changes in processes must implement.
@@ -61,7 +60,7 @@ interface ProcessObserverInterface
      * Process has completed and the exit code is available.
      *
      * @param int $pid The process id of the running process.
-     * @param ProcessOutput $processOutput
+     * @param ProcessOutputInterface $processOutput
      */
-    public function processExited($pid, ProcessOutput $processOutput);
+    public function processExited($pid, ProcessOutputInterface $processOutput);
 }
