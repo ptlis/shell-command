@@ -97,10 +97,7 @@ final class Command implements CommandInterface
      */
     public function runSynchronous()
     {
-        $process = $this->runAsynchronous();
-
-        // Accumulate output as we wait
-        return $process->wait();
+        return $this->runAsynchronous()->wait();
     }
 
     /**
