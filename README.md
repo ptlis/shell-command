@@ -319,7 +319,7 @@ As with the synchronouse API, when you need to re-run the same command multiple 
 Check whether the process has completed:
 
 ```php
-    if (!$process->isisRunning()) {
+    if (!$process->isRunning()) {
         echo 'done' . PHP_EOL;
     }
 ```
