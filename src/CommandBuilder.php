@@ -14,6 +14,8 @@ use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
+use ptlis\ShellCommand\Promise\DeferredFactory;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 
 /**
  * Immutable builder, used to create Commands.
@@ -24,6 +26,11 @@ final class CommandBuilder implements CommandBuilderInterface
      * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
      */
     private $environment;
+
+    /**
+     * @var DeferredFactory Factory that builds deferred instances.
+     */
+    private $deferredFactory;
 
     /**
      * @var string The command to execute.
@@ -69,15 +76,21 @@ final class CommandBuilder implements CommandBuilderInterface
      *
      * @param EnvironmentInterface|null $environment If not provided the builder will attempt to find the correct
      *      environment for the OS.
+     * @param DeferredFactory|null $deferredFactory If not provided a default React promise factory will be used.
      */
     public function __construct(
-        EnvironmentInterface $environment = null
+        EnvironmentInterface $environment = null,
+        DeferredFactory $deferredFactory = null
     ) {
         if (is_null($environment)) {
             $environment = $this->getEnvironment(PHP_OS);
         }
-
         $this->environment = $environment;
+
+        if (is_null($deferredFactory)) {
+            $deferredFactory = new ReactDeferredFactory();
+        }
+        $this->deferredFactory = $deferredFactory;
     }
 
     /**
@@ -244,6 +257,7 @@ final class CommandBuilder implements CommandBuilderInterface
 
         return new Command(
             $this->environment,
+            $this->deferredFactory,
             $this->getObserver(),
             $this->command,
             $this->argumentList,

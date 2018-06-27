@@ -12,6 +12,7 @@ use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\Promise\DeferredFactory;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
@@ -22,6 +23,11 @@ final class Command implements CommandInterface
      * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
      */
     private $environment;
+
+    /**
+     * @var DeferredFactory Factory that builds deferred instances.
+     */
+    private $deferredFactory;
 
     /**
      * @var string The command to execute.
@@ -64,6 +70,7 @@ final class Command implements CommandInterface
      * Constructor
      *
      * @param EnvironmentInterface $environment
+     * @param DeferredFactory $deferredFactory
      * @param ProcessObserverInterface $processObserver
      * @param string $command
      * @param CommandArgumentInterface[] $newArgumentList
@@ -74,6 +81,7 @@ final class Command implements CommandInterface
      */
     public function __construct(
         EnvironmentInterface $environment,
+        DeferredFactory $deferredFactory,
         ProcessObserverInterface $processObserver,
         $command,
         array $newArgumentList,
@@ -83,6 +91,7 @@ final class Command implements CommandInterface
         $pollTimeout = 1000
     ) {
         $this->environment = $environment;
+        $this->deferredFactory = $deferredFactory;
         $this->processObserver = $processObserver;
         $this->command = $command;
         $this->argumentList = $newArgumentList;
@@ -107,6 +116,7 @@ final class Command implements CommandInterface
     {
         return new Process(
             $this->environment,
+            $this->deferredFactory,
             $this,
             $this->environment->expandPath($this->cwd),
             $this->timeout,

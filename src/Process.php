@@ -14,6 +14,7 @@ use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
+use ptlis\ShellCommand\Promise\DeferredFactory;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
@@ -27,6 +28,11 @@ final class Process implements ProcessInterface
      * @var EnvironmentInterface The environment to execute the command in.
      */
     private $environment;
+
+    /**
+     * @var DeferredFactory Factory that builds deferred instances.
+     */
+    private $deferredFactory;
 
     /**
      * @var string The command executed to create this process.
@@ -96,6 +102,7 @@ final class Process implements ProcessInterface
      * @throws CommandExecutionException
      *
      * @param EnvironmentInterface $environment
+     * @param DeferredFactory $deferredFactory
      * @param string $command
      * @param string $cwdOverride
      * @param int $timeout
@@ -104,6 +111,7 @@ final class Process implements ProcessInterface
      */
     public function __construct(
         EnvironmentInterface $environment,
+        DeferredFactory $deferredFactory,
         $command,
         $cwdOverride,
         $timeout = -1,
@@ -111,6 +119,7 @@ final class Process implements ProcessInterface
         ProcessObserverInterface $observer = null
     ) {
         $this->environment = $environment;
+        $this->deferredFactory = $deferredFactory;
         $this->command = $command;
         $this->observer = $observer;
         if (is_null($this->observer)) {
@@ -259,7 +268,7 @@ final class Process implements ProcessInterface
      */
     public function getPromise(LoopInterface $eventLoop)
     {
-        $deferred = new Deferred();
+        $deferred = $this->deferredFactory->buildDeferred();
 
         // Poll the process for completion
         $eventLoop->addPeriodicTimer(
