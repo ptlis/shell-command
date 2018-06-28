@@ -12,6 +12,7 @@ use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\CommandArgumentRaw;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Command;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\UnixEnvironment;
 
 /**
@@ -26,6 +27,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -47,6 +49,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -68,6 +71,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -90,6 +94,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -111,6 +116,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -133,6 +139,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $environment = new UnixEnvironment();
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [

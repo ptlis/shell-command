@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Process;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
@@ -29,6 +30,7 @@ class NullLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
@@ -51,6 +53,7 @@ class NullLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,

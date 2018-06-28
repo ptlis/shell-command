@@ -12,6 +12,7 @@ use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -37,7 +38,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
         $process->wait();
 
         $this->assertEquals(
@@ -55,7 +56,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
         $process->wait(function($stdOut, $stdErr) {
 
         });
@@ -70,7 +71,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/error_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
 
         $fullStdOut = '';
         $fullStdErr = '';
@@ -94,7 +95,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/sleep_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
 
         $this->assertNotNull(
             $process->getPid()
@@ -109,6 +110,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
@@ -163,6 +165,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
@@ -211,6 +214,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             500000,
@@ -262,6 +266,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             500000,
@@ -284,7 +289,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
     }
 
     public function testProcTerminateFail()
@@ -299,7 +304,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), new ReactDeferredFactory(), $command, getcwd());
         $process->stop();
     }
 
@@ -309,6 +314,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,

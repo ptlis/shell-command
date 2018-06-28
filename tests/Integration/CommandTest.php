@@ -10,6 +10,7 @@ namespace ptlis\ShellCommand\Test\Integration;
 
 use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\ProcessOutput;
@@ -28,6 +29,7 @@ class CommandTest extends ptlisShellCommandTestcase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -59,6 +61,7 @@ class CommandTest extends ptlisShellCommandTestcase
         $environment = new UnixEnvironment();
         $command = new Command(
             $environment,
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [
@@ -91,6 +94,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -115,6 +119,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -137,6 +142,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -162,6 +168,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -186,6 +193,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -220,6 +228,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],
@@ -254,6 +263,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         $command = new Command(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             new NullProcessObserver(),
             $path,
             [],

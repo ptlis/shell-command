@@ -13,6 +13,7 @@ namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ErrorLogger;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -31,6 +32,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
@@ -72,6 +74,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
@@ -114,6 +117,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,

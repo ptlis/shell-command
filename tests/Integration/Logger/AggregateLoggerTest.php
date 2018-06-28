@@ -16,6 +16,7 @@ use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Process;
+use ptlis\ShellCommand\Promise\ReactDeferredFactory;
 use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -34,6 +35,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
 
         $process = new Process(
             new UnixEnvironment(),
+            new ReactDeferredFactory(),
             $command,
             getcwd(),
             -1,
