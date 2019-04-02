@@ -20,7 +20,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function setCommand(string $command): self;
+    public function setCommand(string $command): CommandBuilderInterface;
 
     /**
      * Add an argument to the command if $conditionalResult is true. If the $conditionalResult parameter isn't passed it
@@ -31,7 +31,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addArgument(string $argument, bool $conditionalResult = true): self;
+    public function addArgument(string $argument, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Add one or more arguments to the command.
@@ -41,7 +41,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addArguments(array $argumentList, bool $conditionalResult = true): self;
+    public function addArguments(array $argumentList, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Add an argument to the command that will be applied without escaping.
@@ -54,7 +54,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): self;
+    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Add one or more arguments to the command that will be applied without escaping.
@@ -67,7 +67,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): self;
+    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Set the timeout
@@ -76,7 +76,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function setTimeout(int $timeout): self;
+    public function setTimeout(int $timeout): CommandBuilderInterface;
 
     /**
      * Set how long to sleep between polls of the running process when executing synchronously.
@@ -85,7 +85,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function setPollTimeout(int $pollTimeout): self;
+    public function setPollTimeout(int $pollTimeout): CommandBuilderInterface;
 
     /**
      * Set the current working directory for the command.
@@ -94,7 +94,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function setCwd(string $cwd): self;
+    public function setCwd(string $cwd): CommandBuilderInterface;
 
     /**
      * Add a logger to attach to built processes.
@@ -103,7 +103,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addProcessObserver(ProcessObserverInterface $observer): self;
+    public function addProcessObserver(ProcessObserverInterface $observer): CommandBuilderInterface;
 
     /**
      * Add an environment variable for use when running the command
@@ -114,7 +114,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addEnvironmentVariable(string $key, string $value, bool $conditionalResult = true): self;
+    public function addEnvironmentVariable(string $key, string $value, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Add an array of environment variables for use when running the command
@@ -124,7 +124,7 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): self;
+    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): CommandBuilderInterface;
 
     /**
      * Get the build command.
