@@ -320,10 +320,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testInvalidBinary()
     {
-        $this->setExpectedException(
-            '\RuntimeException',
-            'No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.');
         $builder = new MockCommandBuilder();
 
         $builder->buildCommand();
@@ -331,10 +329,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testClearOne()
     {
-        $this->setExpectedException(
-            '\RuntimeException',
-            'No result was provided for use when mocking execution of the command.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No result was provided for use when mocking execution of the command.');
 
         $builder = new MockCommandBuilder();
         $builder
@@ -360,10 +356,8 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
 
     public function testTooFewReturns()
     {
-        $this->setExpectedException(
-            '\RuntimeException',
-            'No result was provided for use when mocking execution of the command.'
-        );
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No result was provided for use when mocking execution of the command.');
 
         $builder = new MockCommandBuilder();
 

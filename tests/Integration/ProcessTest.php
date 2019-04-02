@@ -9,6 +9,7 @@
 namespace ptlis\ShellCommand\Test\Integration;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
@@ -253,10 +254,8 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testSendInvalidSignal()
     {
-        $this->setExpectedException(
-            '\ptlis\ShellCommand\Exceptions\CommandExecutionException',
-            'Unknown signal "wibble" provided'
-        );
+        $this->expectException(CommandExecutionException::class);
+        $this->expectExceptionMessage('Unknown signal "wibble" provided');
 
         $command = './tests/commands/unix/long_sleep_binary';
 
@@ -277,14 +276,12 @@ class ProcessTest extends ptlisShellCommandTestcase
         global $mockProcOpen;
         $mockProcOpen = true;
 
-        $this->setExpectedException(
-            'ptlis\ShellCommand\Exceptions\CommandExecutionException',
-            'Call to proc_open failed for unknown reason.'
-        );
+        $this->expectException(CommandExecutionException::class);
+        $this->expectExceptionMessage('Call to proc_open failed for unknown reason.');
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        new Process(new UnixEnvironment(), $command, getcwd());
     }
 
     public function testProcTerminateFail()
@@ -292,10 +289,8 @@ class ProcessTest extends ptlisShellCommandTestcase
         global $mockProcTerminate;
         $mockProcTerminate = true;
 
-        $this->setExpectedException(
-            'ptlis\ShellCommand\Exceptions\CommandExecutionException',
-            'Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.'
-        );
+        $this->expectException(CommandExecutionException::class);
+        $this->expectExceptionMessage('Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.');
 
         $command = './tests/commands/unix/test_binary';
 

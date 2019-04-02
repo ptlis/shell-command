@@ -11,23 +11,24 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
+        "php": "^7.1.0",
         "react/event-loop": "^0.4.3",
         "react/promise": "^2.5",
         "psr/log": "^1.0"
     },
     "require-dev": {
-        "pdepend/pdepend": "~2.1",
-        "phploc/phploc": "~2.0",
-        "phpmd/phpmd": "~2.2",
-        "phpunit/phpunit": "~4.0",
-        "sebastian/phpcpd": "~2.0",
-        "squizlabs/php_codesniffer": "~2.0"
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-4": {
             "ptlis\\ShellCommand\\": "src/",
             "ptlis\\ShellCommand\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.0"
         }
     }
 }

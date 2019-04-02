@@ -29,11 +29,16 @@ namespace ptlis\ShellCommand {
      */
     $mockProcTerminate = false;
     $mockProcTerminateRetval = false;
+    $mockProcTerminateCalled = false;
     function proc_terminate($process, $signal) {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
+        global $mockProcTerminateCalled;
 
         if ($mockProcTerminate) {
+            // Indicate that this has been called
+            $mockProcTerminateCalled = true;
+
             return $mockProcTerminateRetval;
 
         } else {

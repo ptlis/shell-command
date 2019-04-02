@@ -8,6 +8,7 @@
 
 namespace ptlis\ShellCommand\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\CommandArgumentRaw;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
@@ -17,7 +18,7 @@ use ptlis\ShellCommand\UnixEnvironment;
 /**
  * @covers \ptlis\ShellCommand\Command
  */
-class CommandTest extends \PHPUnit_Framework_TestCase
+class CommandTest extends TestCase
 {
     public function testWithFlag()
     {

@@ -70,7 +70,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPidStopped()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
 
         $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000);
         $process->stop();

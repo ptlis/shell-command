@@ -8,12 +8,13 @@
 
 namespace ptlis\ShellCommand\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use ptlis\ShellCommand\CommandArgumentRaw;
 
 /**
  * @covers \ptlis\ShellCommand\CommandArgumentRaw
  */
-class CommandArgumentRawTest extends \PHPUnit_Framework_TestCase
+class CommandArgumentRawTest extends TestCase
 {
     public function testEncode()
     {

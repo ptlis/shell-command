@@ -11,8 +11,9 @@
 
 namespace ptlis\ShellCommand\Test;
 
+use PHPUnit\Framework\TestCase;
 
-class ptlisShellCommandTestcase extends \PHPUnit_Framework_TestCase
+class ptlisShellCommandTestcase extends TestCase
 {
     public function assertHasLogs(array $expectedLogList, array $actualLogList)
     {

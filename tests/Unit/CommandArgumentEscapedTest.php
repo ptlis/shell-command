@@ -8,13 +8,14 @@
 
 namespace ptlis\ShellCommand\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * @covers \ptlis\ShellCommand\CommandArgumentEscaped
  */
-class CommandArgumentEscapedTest extends \PHPUnit_Framework_TestCase
+class CommandArgumentEscapedTest extends TestCase
 {
     public function testEncode()
     {

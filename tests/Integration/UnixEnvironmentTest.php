@@ -141,29 +141,37 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
     {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
+        global $mockProcTerminateCalled;
 
         $mockProcTerminate = true;
         $mockProcTerminateRetval = true;
+        $mockProcTerminateCalled = false;
 
         $environment = new UnixEnvironment();
         $environment->sendSignal(null, ProcessInterface::SIGTERM);
+
+        $this->assertTrue($mockProcTerminateCalled);
     }
 
     public function testSendSigKill()
     {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
+        global $mockProcTerminateCalled;
+        $mockProcTerminateCalled = false;
 
         $mockProcTerminate = true;
         $mockProcTerminateRetval = true;
 
         $environment = new UnixEnvironment();
         $environment->sendSignal(null, ProcessInterface::SIGKILL);
+
+        $this->assertTrue($mockProcTerminateCalled);
     }
 
     public function testSendInvalidSignal()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
 
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
@@ -177,7 +185,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
 
     public function testSignalError()
     {
-        $this->setExpectedException('\RuntimeException');
+        $this->expectException(\RuntimeException::class);
 
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
