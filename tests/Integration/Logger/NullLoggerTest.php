@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -21,7 +21,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class NullLoggerTest extends ptlisShellCommandTestcase
 {
-    public function testCalled()
+    public function testCalled(): void
     {
         $command = './tests/commands/unix/test_binary';
 
@@ -43,7 +43,7 @@ class NullLoggerTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSendSignal()
+    public function testSendSignal(): void
     {
         $command = './tests/commands/unix/sleep_binary';
 

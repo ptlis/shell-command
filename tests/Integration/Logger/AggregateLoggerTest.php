@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -25,7 +25,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class AggregateLoggerTest extends ptlisShellCommandTestcase
 {
-    public function testAggregateLogger()
+    public function testAggregateLogger(): void
     {
         $command = './tests/commands/unix/long_sleep_binary';
 

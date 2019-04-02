@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -21,7 +21,7 @@ use React\EventLoop\Factory;
  */
 class CommandTest extends ptlisShellCommandTestcase
 {
-    public function testRun()
+    public function testRun(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -46,7 +46,7 @@ class CommandTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRunFromHome()
+    public function testRunFromHome(): void
     {
         $originalPath = getenv('PATH');
 
@@ -79,7 +79,7 @@ class CommandTest extends ptlisShellCommandTestcase
         putenv('PATH=' . $originalPath);
     }
 
-    public function testRunHomeCwd()
+    public function testRunHomeCwd(): void
     {
         $originalPath = getenv('PATH');
 
@@ -109,7 +109,7 @@ class CommandTest extends ptlisShellCommandTestcase
         putenv('PATH=' . $originalPath);
     }
 
-    public function testRunWithSleep()
+    public function testRunWithSleep(): void
     {
         $path = './tests/commands/unix/sleep_binary';
 
@@ -131,7 +131,7 @@ class CommandTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRunWithEnvVariable()
+    public function testRunWithEnvVariable(): void
     {
         $path = './tests/commands/unix/echo_env_binary';
 
@@ -156,7 +156,7 @@ class CommandTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRunWithError()
+    public function testRunWithError(): void
     {
         $path = './tests/commands/unix/error_binary';
 
@@ -178,7 +178,7 @@ class CommandTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRunAsPromiseSuccess()
+    public function testRunAsPromiseSuccess(): void
     {
         $eventLoop = Factory::create();
 
@@ -212,7 +212,7 @@ class CommandTest extends ptlisShellCommandTestcase
         $this->assertFalse($failureCalled);
     }
 
-    public function testRunSleepAsPromiseSuccess()
+    public function testRunSleepAsPromiseSuccess(): void
     {
         $eventLoop = Factory::create();
 
@@ -246,7 +246,7 @@ class CommandTest extends ptlisShellCommandTestcase
         $this->assertFalse($failureCalled);
     }
 
-    public function testRunAsPromiseFailure()
+    public function testRunAsPromiseFailure(): void
     {
         $eventLoop = Factory::create();
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -16,7 +16,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
-    public function testGetSupportedList()
+    public function testGetSupportedList(): void
     {
         $environment = new UnixEnvironment();
 
@@ -26,7 +26,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEscapeShellArg()
+    public function testEscapeShellArg(): void
     {
         $environment = new UnixEnvironment();
 
@@ -36,7 +36,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testApplyEnvironmentVariables()
+    public function testApplyEnvironmentVariables(): void
     {
         $environment = new UnixEnvironment();
 

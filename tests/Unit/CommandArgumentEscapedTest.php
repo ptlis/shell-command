@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -17,7 +17,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandArgumentEscapedTest extends TestCase
 {
-    public function testEncode()
+    public function testEncode(): void
     {
         $argument = new CommandArgumentEscaped('foo bar', new UnixEnvironment());
 

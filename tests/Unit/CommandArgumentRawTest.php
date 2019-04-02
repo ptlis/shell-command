@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -16,7 +16,7 @@ use ptlis\ShellCommand\CommandArgumentRaw;
  */
 class CommandArgumentRawTest extends TestCase
 {
-    public function testEncode()
+    public function testEncode(): void
     {
         $argument = new CommandArgumentRaw('foo bar');
 

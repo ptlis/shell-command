@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -11,76 +11,49 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
+use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
  * Shell Command, encapsulates the data required to execute a shell command.
  */
 final class Command implements CommandInterface
 {
-    /**
-     * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
-     */
+    /** @var EnvironmentInterface */
     private $environment;
 
-    /**
-     * @var string The command to execute.
-     */
+    /** @var string */
     private $command;
 
-    /**
-     * @var CommandArgumentInterface[] Array of arguments to pass with the command.
-     */
+    /** @var CommandArgumentInterface[] */
     private $argumentList;
 
-    /**
-     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
-     */
+    /** @var int*/
     private $timeout;
 
-    /**
-     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
-     *  second.
-     */
+    /** @var int */
     private $pollTimeout;
 
-    /**
-     * @var string The current working directory to execute the command in.
-     */
+    /** @var string */
     private $cwd;
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $envVariableList;
 
-    /**
-     * @var ProcessObserverInterface
-     */
+    /** @var ProcessObserverInterface */
     private $processObserver;
 
 
-    /**
-     * Constructor
-     *
-     * @param EnvironmentInterface $environment
-     * @param ProcessObserverInterface $processObserver
-     * @param string $command
-     * @param CommandArgumentInterface[] $newArgumentList
-     * @param string $cwd
-     * @param string[] $envVariableList
-     * @param int $timeout
-     * @param int $pollTimeout
-     */
     public function __construct(
         EnvironmentInterface $environment,
         ProcessObserverInterface $processObserver,
-        $command,
+        string $command,
         array $newArgumentList,
-        $cwd,
-        $envVariableList = [],
-        $timeout = -1,
-        $pollTimeout = 1000
+        string $cwd,
+        ?array $envVariableList = [],
+        ?int $timeout = -1,
+        ?int $pollTimeout = 1000
     ) {
         $this->environment = $environment;
         $this->processObserver = $processObserver;
@@ -92,22 +65,16 @@ final class Command implements CommandInterface
         $this->cwd = $cwd;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function runSynchronous()
+    public function runSynchronous(): ProcessOutputInterface
     {
         return $this->runAsynchronous()->wait();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function runAsynchronous()
+    public function runAsynchronous(): ProcessInterface
     {
         return new Process(
             $this->environment,
-            $this,
+            (string)$this,
             $this->environment->expandPath($this->cwd),
             $this->timeout,
             $this->pollTimeout,
@@ -115,18 +82,12 @@ final class Command implements CommandInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __toString()
+    public function __toString(): string
     {
-        $stringCommand = array_reduce(
-            $this->argumentList,
-            function ($string, CommandArgumentInterface $argument) {
-                return $string . ' ' . $argument->encode();
-            },
-            $this->command
-        );
+        $stringCommand = $this->command;
+        foreach ($this->argumentList as $argument) {
+            $stringCommand .= ' ' . $argument->encode();
+        }
 
         return $this->environment->applyEnvironmentVariables($stringCommand, $this->envVariableList);
     }

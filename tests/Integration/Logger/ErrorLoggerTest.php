@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -23,7 +23,7 @@ use ptlis\ShellCommand\Process;
  */
 class ErrorLoggerTest extends ptlisShellCommandTestcase
 {
-    public function testCalled()
+    public function testCalled(): void
     {
         $command = './tests/commands/unix/error_binary';
 
@@ -64,7 +64,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testCalledWithCustomLogLevel()
+    public function testCalledWithCustomLogLevel(): void
     {
         $command = './tests/commands/unix/error_binary';
 
@@ -106,7 +106,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSendSignal()
+    public function testSendSignal(): void
     {
         $command = './tests/commands/unix/sleep_binary';
 

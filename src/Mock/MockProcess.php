@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -15,6 +15,7 @@ use ptlis\ShellCommand\ProcessOutput;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * Mock running process. Waits for the specified time before completing.
@@ -40,17 +41,11 @@ class MockProcess implements ProcessInterface
     private $startTime;
 
 
-    /**
-     * @param string $command
-     * @param int $runFor How long to fake the process running for
-     * @param ProcessOutputInterface $result
-     * @param int $pid
-     */
     public function __construct(
-        $command,
+        string $command,
         ProcessOutputInterface $result,
-        $runFor = 1000,
-        $pid = 123
+        ?int $runFor = 1000,
+        ?int $pid = 123
     ) {
         $this->command = $command;
         $this->runFor = $runFor;
@@ -59,10 +54,7 @@ class MockProcess implements ProcessInterface
         $this->startTime = microtime(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return (
             !$this->stopped
@@ -70,10 +62,7 @@ class MockProcess implements ProcessInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function wait(\Closure $callback = null)
+    public function wait(\Closure $callback = null): ProcessOutputInterface
     {
         while ($this->isRunning()) {
             usleep(50);
@@ -86,20 +75,14 @@ class MockProcess implements ProcessInterface
         return $this->result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function stop($timeout = 1000000)
+    public function stop(int $timeout = 1000000): ProcessOutputInterface
     {
         $this->stopped = true;
 
         return $this->result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function readOutput($streamId)
+    public function readOutput(int $streamId): string
     {
         $output = '';
 
@@ -116,27 +99,13 @@ class MockProcess implements ProcessInterface
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function sendSignal($signal)
+    public function sendSignal(string $signal): void
     {
         // Can only be one of SIGTERM or SIGKILL, force process to stop
         $this->stopped = true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    private function getExitCode()
-    {
-        return $this->result->getExitCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPid()
+    public function getPid(): int
     {
         if (!$this->isRunning()) {
             throw new \RuntimeException('Stopped processed do not have a pid');
@@ -145,18 +114,12 @@ class MockProcess implements ProcessInterface
         return $this->pid;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->command;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPromise(LoopInterface $eventLoop)
+    public function getPromise(LoopInterface $eventLoop): Promise
     {
         $deferred = new Deferred();
 
@@ -170,7 +133,7 @@ class MockProcess implements ProcessInterface
                 // Process has terminated
                 if (!$this->isRunning()) {
                     $eventLoop->cancelTimer($timer);
-                    $output = new ProcessOutput($this->getExitCode(), $fullStdOut, $fullStdErr);
+                    $output = new ProcessOutput($this->result->getExitCode(), $fullStdOut, $fullStdErr);
 
                     // Resolve or reject promise
                     if (0 === $output->getExitCode()) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -16,32 +16,22 @@ use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
  */
 final class CommandArgumentEscaped implements CommandArgumentInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $argument;
 
-    /**
-     * @var EnvironmentInterface
-     */
+    /** @var EnvironmentInterface */
     private $environment;
 
-    /**
-     * @param string $argument
-     * @param EnvironmentInterface $environment
-     */
+
     public function __construct(
-        $argument,
+        string $argument,
         EnvironmentInterface $environment
     ) {
         $this->argument = $argument;
         $this->environment = $environment;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function encode()
+    public function encode(): string
     {
         return $this->environment->escapeShellArg($this->argument);
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -17,16 +17,18 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class UnixEnvironmentTest extends ptlisShellCommandTestcase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
+        global $mockProcTerminateCalled;
 
         $mockProcTerminate = false;
         $mockProcTerminateRetval = false;
+        $mockProcTerminateCalled = false;
     }
 
-    public function testFullyQualified()
+    public function testFullyQualified(): void
     {
         $command = __DIR__ . '/../commands/unix/test_binary';
 
@@ -37,7 +39,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertSame(true, $valid);
     }
 
-    public function testRelative()
+    public function testRelative(): void
     {
         $command = './tests/commands/unix/test_binary';
 
@@ -48,7 +50,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertSame(true, $valid);
     }
 
-    public function testGlobal()
+    public function testGlobal(): void
     {
         $originalPath = getenv('PATH');
 
@@ -65,7 +67,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         putenv('PATH=' . $originalPath);
     }
 
-    public function testFromHome()
+    public function testFromHome(): void
     {
         $originalPath = getenv('PATH');
 
@@ -82,7 +84,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         putenv('PATH=' . $originalPath);
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $command = 'bob_1_2_3';
 
@@ -93,7 +95,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertSame(false, $valid);
     }
 
-    public function testCwdOverride()
+    public function testCwdOverride(): void
     {
         $command = './commands/unix/test_binary';
         $cwd = getcwd() . DIRECTORY_SEPARATOR . 'tests';
@@ -105,7 +107,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertSame(true, $valid);
     }
 
-    public function testPathOverride()
+    public function testPathOverride(): void
     {
         $paths = [
             realpath(getcwd() . '/tests/commands/unix')
@@ -118,7 +120,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertSame(true, $valid);
     }
 
-    public function testExpandPath()
+    public function testExpandPath(): void
     {
         global $mockIsExecutable;
         $mockIsExecutable = true;
@@ -137,7 +139,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $mockIsExecutable = false;
     }
 
-    public function testSendSigTerm()
+    public function testSendSigTerm(): void
     {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
@@ -153,7 +155,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertTrue($mockProcTerminateCalled);
     }
 
-    public function testSendSigKill()
+    public function testSendSigKill(): void
     {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
@@ -169,7 +171,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $this->assertTrue($mockProcTerminateCalled);
     }
 
-    public function testSendInvalidSignal()
+    public function testSendInvalidSignal(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -183,7 +185,7 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
         $environment->sendSignal(null, 'FOOBAR');
     }
 
-    public function testSignalError()
+    public function testSignalError(): void
     {
         $this->expectException(\RuntimeException::class);
 

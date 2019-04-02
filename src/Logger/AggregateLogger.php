@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -19,76 +19,50 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AggregateLogger implements ProcessObserverInterface
 {
-    /**
-     * @var ProcessObserverInterface[]
-     */
+    /** @var ProcessObserverInterface[] */
     private $loggerList;
 
 
-    /**
-     * Constructor.
-     *
-     * @param ProcessObserverInterface[] $loggerList
-     */
     public function __construct(array $loggerList)
     {
         $this->loggerList = $loggerList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function processCreated($pid, $command)
+    public function processCreated(int $pid, string $command): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->processCreated($pid, $command);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function processPolled($pid, $runningTime)
+    public function processPolled(int $pid, int $runningTime): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->processPolled($pid, $runningTime);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function stdOutRead($pid, $stdOut)
+    public function stdOutRead(int $pid, string $stdOut): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->stdOutRead($pid, $stdOut);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function stdErrRead($pid, $stdErr)
+    public function stdErrRead(int $pid, string $stdErr): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->stdErrRead($pid, $stdErr);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function sentSignal($pid, $signal)
+    public function sentSignal(int $pid, string $signal): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->sentSignal($pid, $signal);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function processExited($pid, ProcessOutputInterface $processOutput)
+    public function processExited(int $pid, ProcessOutputInterface $processOutput): void
     {
         foreach ($this->loggerList as $logger) {
             $logger->processExited($pid, $processOutput);

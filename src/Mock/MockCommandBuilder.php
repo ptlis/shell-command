@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -20,83 +20,48 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 final class MockCommandBuilder implements CommandBuilderInterface
 {
-    /**
-     * @var string The command to execute.
-     */
+    /** @var string */
     private $command;
 
-    /**
-     * @var string[] Array of arguments to pass to the command.
-     */
+    /** @var string[] */
     private $argumentList = [];
 
-    /**
-     * @var string[] Array of arguments to pass to the command without escaping.
-     */
+    /** @var string[] */
     private $rawArgumentList = [];
 
-    /**
-     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
-     */
+    /** @var int*/
     private $timeout;
 
-    /**
-     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
-     *  second.
-     */
+    /** @var int */
     private $pollTimeout;
 
-    /**
-     * @var string The current working directory to execute the command in.
-     */
+    /** @var string */
     private $cwd;
 
-    /**
-     * @var ProcessObserverInterface[]
-     */
+    /** @var ProcessObserverInterface[] */
     private $observerList = [];
 
-    /**
-     * @var string[] Array of environment variables. Array key is the variable name and array value is the env value.
-     */
+    /** @var string[] */
     private $envVariableList = [];
 
-    /**
-     * @var ProcessOutput[] Pre-populated list of results to return.
-     */
+    /** @var ProcessOutput[] */
     private $mockResultList = [];
 
-    /**
-     * @var MockCommand[] Array of commands built with this builder.
-     */
+    /** @var MockCommand[] */
     private $builtCommandList = [];
 
 
-    /**
-     * Constructor.
-     *
-     * @param ProcessOutputInterface[] $mockResultList
-     * @param string $command
-     * @param string[] $argumentsList
-     * @param int $timeout
-     * @param int $pollTimeout
-     * @param string $cwd
-     * @param string[] $envVariableList
-     * @param CommandInterface[] $builtCommandList
-     * @param string[] $rawArgumentList
-     * @param ProcessObserverInterface[] $observerList
-     */
     public function __construct(
-        array $mockResultList = [],
-        $command = '',
-        array $argumentsList = [],
-        $pollTimeout = 1000,
-        $timeout = -1,
-        $cwd = '',
-        $envVariableList = [],
-        array &$builtCommandList = [],
-        array $rawArgumentList = [],
-        array $observerList = []
+        ?array $mockResultList = [],
+        ?string $command = '',
+        ?array $argumentsList = [],
+        ?int $pollTimeout = 1000,
+        ?int $timeout = -1,
+        ?string $cwd = '',
+        ?array $envVariableList = [],
+        ?array &$builtCommandList = [],
+        ?array $rawArgumentList = [],
+        ?array $observerList = []
     ) {
         $this->mockResultList = $mockResultList;
         $this->command = $command;
@@ -110,15 +75,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $this->observerList = $observerList;
     }
 
-
-    /**
-     * Set the command to execute.
-     *
-     * @param string $command
-     *
-     * @return $this
-     */
-    public function setCommand($command)
+    public function setCommand(string $command): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -128,15 +85,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Add an argument to the command.
-     *
-     * @param string $argument
-     * @param bool $conditionalResult
-     *
-     * @return $this
-     */
-    public function addArgument($argument, $conditionalResult = true)
+    public function addArgument(string $argument, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -151,15 +100,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Add one or more arguments to the command.
-     *
-     * @param string[] $argumentList
-     * @param bool $conditionalResult
-     *
-     * @return $this
-     */
-    public function addArguments(array $argumentList, $conditionalResult = true)
+    public function addArguments(array $argumentList, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -174,7 +115,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addRawArgument($rawArgument, $conditionalResult = true)
+    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -189,7 +130,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addRawArguments(array $rawArgumentList, $conditionalResult = true)
+    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -204,14 +145,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Set the timeout
-     *
-     * @param int $timeout (microseconds) How long to wait for a command to finish executing.
-     *
-     * @return $this
-     */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -221,14 +155,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Set how long to sleep between polls of the running process when executing synchronously.
-     *
-     * @param int $pollTimeout
-     *
-     * @return $this
-     */
-    public function setPollTimeout($pollTimeout)
+    public function setPollTimeout(int $pollTimeout): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -238,14 +165,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Set the current working directory for the command.
-     *
-     * @param string $cwd
-     *
-     * @return $this
-     */
-    public function setCwd($cwd)
+    public function setCwd(string $cwd): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -255,17 +175,12 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Get all commands built by this builder instance.
-     *
-     * @return MockCommand[]
-     */
-    public function getBuiltCommands()
+    public function getBuiltCommands(): array
     {
         return $this->builtCommandList;
     }
 
-    public function addProcessObserver(ProcessObserverInterface $observer)
+    public function addProcessObserver(ProcessObserverInterface $observer): CommandBuilderInterface
     {
         $observerList = $this->observerList;
         $observerList[] = $observer;
@@ -278,8 +193,11 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addEnvironmentVariable($key, $value, $conditionalResult = true)
-    {
+    public function addEnvironmentVariable(
+        string $key,
+        string $value,
+        bool $conditionalResult = true
+    ): CommandBuilderInterface {
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
@@ -293,7 +211,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addEnvironmentVariables(array $envVars, $conditionalResult = true)
+    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -307,12 +225,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * Get the build command.
-     *
-     * @return CommandInterface
-     */
-    public function buildCommand()
+    public function buildCommand(): CommandInterface
     {
         if (!$this->command) {
             throw new \RuntimeException('No command was provided to "' . __CLASS__ . '", unable to build command.');
@@ -346,7 +259,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
      *
      * @return $this
      */
-    public function addMockResult($exitCode, $stdOut, $stdErr)
+    public function addMockResult(int $exitCode, string $stdOut, string $stdErr): CommandBuilderInterface
     {
         $mockResultList = $this->mockResultList;
         $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class ptlisShellCommandTestcase extends TestCase
 {
-    public function assertHasLogs(array $expectedLogList, array $actualLogList)
+    public function assertHasLogs(array $expectedLogList, array $actualLogList): void
     {
         foreach ($expectedLogList as $index => $expectedLog) {
 

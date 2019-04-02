@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -21,7 +21,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
-    public function testDetectEnvironmentSuccess()
+    public function testDetectEnvironmentSuccess(): void
     {
         $builder = new CommandBuilder();
 
@@ -33,7 +33,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testDetectEnvironmentError()
+    public function testDetectEnvironmentError(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Unable to find Environment for OS "foobar".');
@@ -43,7 +43,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         $builder->getEnvironment('foobar');
     }
 
-    public function testBasic()
+    public function testBasic(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -58,7 +58,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testArgument()
+    public function testArgument(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -74,7 +74,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalArgumentFalse()
+    public function testConditionalArgumentFalse(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -90,7 +90,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalArgumentTrue()
+    public function testConditionalArgumentTrue(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -106,7 +106,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testArgumentList()
+    public function testArgumentList(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -127,7 +127,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalArgumentListFalse()
+    public function testConditionalArgumentListFalse(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -149,7 +149,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalArgumentListTrue()
+    public function testConditionalArgumentListTrue(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -171,7 +171,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRawArgument()
+    public function testRawArgument(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -187,7 +187,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalRawArgumentFalse()
+    public function testConditionalRawArgumentFalse(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -203,7 +203,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testConditionalRawArgumentTrue()
+    public function testConditionalRawArgumentTrue(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -219,7 +219,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRawArgumentList()
+    public function testRawArgumentList(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -240,7 +240,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRawArgumentFalse()
+    public function testRawArgumentFalse(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -262,7 +262,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRawArgumentTrue()
+    public function testRawArgumentTrue(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new CommandBuilder(new UnixEnvironment());
@@ -284,7 +284,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testPollTimeout()
+    public function testPollTimeout(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -305,7 +305,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSetCwd()
+    public function testSetCwd(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -326,7 +326,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testTimeout()
+    public function testTimeout(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -348,7 +348,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEnvironmentVariable()
+    public function testEnvironmentVariable(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -371,7 +371,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEnvironmentVariableFalse()
+    public function testEnvironmentVariableFalse(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -394,7 +394,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEnvironmentVariableTrue()
+    public function testEnvironmentVariableTrue(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -417,7 +417,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testEnvironmentVariable2()
+    public function testEnvironmentVariable2(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -446,7 +446,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testAddSingleLogger()
+    public function testAddSingleLogger(): void
     {
         $builder = new CommandBuilder(new UnixEnvironment());
 
@@ -464,7 +464,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testAddMultipleLogger()
+    public function testAddMultipleLogger(): void
     {
         $builder = new CommandBuilder(new UnixEnvironment());
 

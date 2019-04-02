@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -20,7 +20,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class MockCommandBuilderTest extends ptlisShellCommandTestcase
 {
-    public function testMockCommandBuilderOne()
+    public function testMockCommandBuilderOne(): void
     {
         $builder = new MockCommandBuilder();
 
@@ -63,7 +63,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testMockCommandBuilderTwo()
+    public function testMockCommandBuilderTwo(): void
     {
         $builder = new MockCommandBuilder();
 
@@ -110,7 +110,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testMockCommandMultiUseOne()
+    public function testMockCommandMultiUseOne(): void
     {
         $builder = new MockCommandBuilder();
 
@@ -158,7 +158,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testMockCommandMultiUseTwo()
+    public function testMockCommandMultiUseTwo(): void
     {
         $builder = new MockCommandBuilder();
         $primedBuilder = $builder
@@ -207,7 +207,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testPollTimeout()
+    public function testPollTimeout(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -234,7 +234,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testTimeout()
+    public function testTimeout(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -261,7 +261,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSetCwd()
+    public function testSetCwd(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -289,7 +289,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testAddEnvironment()
+    public function testAddEnvironment(): void
     {
         $path = './tests/commands/unix/test_binary';
         $arguments = [
@@ -318,7 +318,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testInvalidBinary()
+    public function testInvalidBinary(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.');
@@ -327,7 +327,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         $builder->buildCommand();
     }
 
-    public function testClearOne()
+    public function testClearOne(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No result was provided for use when mocking execution of the command.');
@@ -338,14 +338,14 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->buildCommand();
     }
 
-    public function testClearTwo()
+    public function testClearTwo(): void
     {
         $builder = new MockCommandBuilder();
 
         $command = $builder
             ->setCommand('foo')
             ->addArgument('--test')
-            ->addMockResult(0, ['bar'], [])
+            ->addMockResult(0, 'bar', '')
             ->buildCommand();
 
         $this->assertEquals(
@@ -354,7 +354,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testTooFewReturns()
+    public function testTooFewReturns(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No result was provided for use when mocking execution of the command.');
@@ -367,7 +367,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
             ->buildCommand();
     }
 
-    public function testAddRawArgument()
+    public function testAddRawArgument(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new MockCommandBuilder();
@@ -394,7 +394,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testAddRawArguments()
+    public function testAddRawArguments(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new MockCommandBuilder();
@@ -421,7 +421,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testAddProcessObserver()
+    public function testAddProcessObserver(): void
     {
         $path = './tests/commands/unix/test_binary';
         $builder = new MockCommandBuilder();

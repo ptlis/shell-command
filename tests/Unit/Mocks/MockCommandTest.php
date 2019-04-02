@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -19,7 +19,7 @@ use React\EventLoop\Factory;
  */
 class MockCommandTest extends ptlisShellCommandTestcase
 {
-    public function testRunSynchronous()
+    public function testRunSynchronous(): void
     {
         $path = 'binary';
 
@@ -40,7 +40,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testRunPromiseSuccess()
+    public function testRunPromiseSuccess(): void
     {
         $path = 'binary';
 
@@ -86,7 +86,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $this->assertFalse($failureCalled);
     }
 
-    public function testRunPromiseFailure()
+    public function testRunPromiseFailure(): void
     {
         $path = 'binary';
 

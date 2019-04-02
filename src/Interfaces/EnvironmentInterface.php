@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -21,7 +21,7 @@ interface EnvironmentInterface
      *
      * @return bool
      */
-    public function validateCommand($command, $cwdOverride = '');
+    public function validateCommand(string $command, string $cwdOverride = ''): bool;
 
     /**
      * Send the specified signal to the process.
@@ -29,7 +29,7 @@ interface EnvironmentInterface
      * @param resource $process
      * @param string $signal One of ProcessInterface SIG* constants
      */
-    public function sendSignal($process, $signal);
+    public function sendSignal($process, string $signal): void;
 
     /**
      * Returns an array of OS strings that the environment supports.
@@ -38,7 +38,7 @@ interface EnvironmentInterface
      *
      * @return string[]
      */
-    public function getSupportedList();
+    public function getSupportedList(): array;
 
     /**
      * Escape an argument to be passed to the shell.
@@ -47,7 +47,7 @@ interface EnvironmentInterface
      *
      * @return string
      */
-    public function escapeShellArg($arg);
+    public function escapeShellArg(string $arg): string;
 
     /**
      * Performs an platform-specific path expansions (e.g. home folder).
@@ -56,7 +56,7 @@ interface EnvironmentInterface
      *
      * @return string
      */
-    public function expandPath($path);
+    public function expandPath(string $path): string;
 
     /**
      * Prepares the command to be run with the specified environment variables.
@@ -66,5 +66,5 @@ interface EnvironmentInterface
      *
      * @return string
      */
-    public function applyEnvironmentVariables($command, array $envVariableList);
+    public function applyEnvironmentVariables(string $command, array $envVariableList): string;
 }

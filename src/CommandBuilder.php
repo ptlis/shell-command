@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -10,6 +10,7 @@ namespace ptlis\ShellCommand;
 
 use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
 use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
+use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
@@ -20,58 +21,33 @@ use ptlis\ShellCommand\Logger\NullProcessObserver;
  */
 final class CommandBuilder implements CommandBuilderInterface
 {
-    /**
-     * @var EnvironmentInterface Instance of class that wraps environment-specific behaviours.
-     */
+    /** @var EnvironmentInterface*/
     private $environment;
 
-    /**
-     * @var string The command to execute.
-     */
+    /** @var string*/
     private $command;
 
-    /**
-     * @var CommandArgumentInterface[] Array of arguments to pass to the command.
-     */
+    /** @var CommandArgumentInterface[] */
     private $argumentList = [];
 
-    /**
-     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
-     */
+    /** @var int */
     private $timeout = -1;
 
-    /**
-     * @var int The amount of time in milliseconds to sleep for when polling for completion, defaults to 1/100 of a
-     *  second.
-     */
+    /** @var int */
     private $pollTimeout;
 
-    /**
-     * @var string The current working directory to execute the command in.
-     */
-    private $cwd;
+    /** @var string */
+    private $cwd = '';
 
-    /**
-     * @var string|int[] Array of environment variables. Array key is the variable name and array value is the env value.
-     */
+    /** @var string|int[] */
     private $envVariableList = [];
 
-    /**
-     * @var ProcessObserverInterface[] List of observers to attach to processes created by built Command.
-     */
+    /** @var ProcessObserverInterface[] */
     private $observerList = [];
 
 
-    /**
-     * Constructor.
-     *
-     * @throws \RuntimeException if no Environment is provided and the OS was not known.
-     *
-     * @param EnvironmentInterface|null $environment If not provided the builder will attempt to find the correct
-     *      environment for the OS.
-     */
     public function __construct(
-        EnvironmentInterface $environment = null
+        ?EnvironmentInterface $environment = null
     ) {
         if (is_null($environment)) {
             $environment = $this->getEnvironment(PHP_OS);
@@ -80,10 +56,7 @@ final class CommandBuilder implements CommandBuilderInterface
         $this->environment = $environment;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setCommand($command)
+    public function setCommand(string $command): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->command = $command;
@@ -91,10 +64,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addArgument($argument, $conditionalResult = true)
+    public function addArgument(string $argument, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -105,10 +75,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addArguments(array $argumentList, $conditionalResult = true)
+    public function addArguments(array $argumentList, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -121,10 +88,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addRawArgument($rawArgument, $conditionalResult = true)
+    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -135,10 +99,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addRawArguments(array $rawArgumentList, $conditionalResult = true)
+    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -151,10 +112,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->timeout = $timeout;
@@ -162,10 +120,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setPollTimeout($pollTimeout)
+    public function setPollTimeout(int $pollTimeout): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->pollTimeout = $pollTimeout;
@@ -173,10 +128,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setCwd($cwd)
+    public function setCwd(string $cwd): CommandBuilderInterface
     {
         $newBuilder = clone $this;
         $newBuilder->cwd = $cwd;
@@ -184,10 +136,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addProcessObserver(ProcessObserverInterface $observer)
+    public function addProcessObserver(ProcessObserverInterface $observer): CommandBuilderInterface
     {
         $observerList = $this->observerList;
         $observerList[] = $observer;
@@ -198,11 +147,11 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addEnvironmentVariable($key, $value, $conditionalResult = true)
-    {
+    public function addEnvironmentVariable(
+        string $key,
+        string $value,
+        bool $conditionalResult = true
+    ): CommandBuilderInterface {
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
@@ -214,10 +163,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function addEnvironmentVariables(array $envVars, $conditionalResult = true)
+    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): CommandBuilderInterface
     {
         $newBuilder = clone $this;
 
@@ -228,10 +174,7 @@ final class CommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function buildCommand()
+    public function buildCommand(): CommandInterface
     {
         if (!$this->environment->validateCommand($this->command)) {
             throw new \RuntimeException('Invalid command "' . $this->command . '" provided to ' . __CLASS__ . '.');
@@ -257,11 +200,9 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * If more than one observer is attached to the command then wrap them up in an Aggregate logger.
      *
-     * This means that as far as
-     *
-     * @return ProcessObserverInterface
+     * This means that as far as calling code is called there's only one observer.
      */
-    private function getObserver()
+    private function getObserver(): ProcessObserverInterface
     {
         if (1 === count($this->observerList)) {
             $observer = $this->observerList[0];
@@ -276,30 +217,20 @@ final class CommandBuilder implements CommandBuilderInterface
 
     /**
      * Build the correct Environment instance for the provided operating system.
-     *
-     * @throws \RuntimeException
-     *
-     * @param string $operatingSystem A value from PHP_OS
-     *
-     * @return EnvironmentInterface
      */
-    public function getEnvironment($operatingSystem)
+    public function getEnvironment(string $operatingSystem): EnvironmentInterface
     {
         $environmentList = [
             new UnixEnvironment()
         ];
 
         /** @var EnvironmentInterface $environment */
-        $environment = array_reduce(
-            $environmentList,
-            function (EnvironmentInterface $carry = null, EnvironmentInterface $item) use ($operatingSystem) {
-                if (in_array($operatingSystem, $item->getSupportedList())) {
-                    $carry = $item;
-                }
-
-                return $carry;
+        $environment = null;
+        foreach ($environmentList as $possibleEnvironment) {
+            if (in_array($operatingSystem, $possibleEnvironment->getSupportedList())) {
+                $environment = $possibleEnvironment;
             }
-        );
+        }
 
         if (is_null($environment)) {
             throw new \RuntimeException(

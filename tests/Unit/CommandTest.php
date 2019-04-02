@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -20,7 +20,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandTest extends TestCase
 {
-    public function testWithFlag()
+    public function testWithFlag(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -41,7 +41,7 @@ class CommandTest extends TestCase
         );
     }
 
-    public function testWithArgument()
+    public function testWithArgument(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -62,7 +62,7 @@ class CommandTest extends TestCase
         );
     }
 
-    public function testWithParameter()
+    public function testWithParameter(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -84,7 +84,7 @@ class CommandTest extends TestCase
         );
     }
 
-    public function testWithAdHoc()
+    public function testWithAdHoc(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -105,7 +105,7 @@ class CommandTest extends TestCase
         );
     }
 
-    public function testWithEnvVariables()
+    public function testWithEnvVariables(): void
     {
         $path = './tests/commands/unix/test_binary';
 
@@ -127,7 +127,7 @@ class CommandTest extends TestCase
         );
     }
 
-    public function testMixedArguments()
+    public function testMixedArguments(): void
     {
         $path = './tests/commands/unix/test_binary';
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -17,7 +17,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
-    public function testInvalidCommand()
+    public function testInvalidCommand(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid command "foobar" provided to ptlis\ShellCommand\CommandBuilder.');

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -17,98 +17,60 @@ use ptlis\ShellCommand\Logger\NullProcessObserver;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
+use React\Promise\Promise;
 
 /**
  * Class encapsulating the lifetime of a process.
  */
 final class Process implements ProcessInterface
 {
-    /**
-     * @var EnvironmentInterface The environment to execute the command in.
-     */
+    /** @var EnvironmentInterface */
     private $environment;
 
-    /**
-     * @var string The command executed to create this process.
-     */
+    /** @var string */
     private $command;
 
-    /**
-     * @var ProcessObserverInterface Observer watching process state.
-     */
+    /** @var ProcessObserverInterface */
     private $observer;
 
-    /**
-     * @var int (microseconds) How long to wait for a command to finish executing, -1 to wait indefinitely.
-     */
+    /** @var int */
     private $timeout;
 
-    /**
-     * @var int (microseconds) The amount of time to sleep for when polling for completion, defaults to 1/100 of a
-     *  second.
-     */
+    /** @var int */
     private $pollTimeout;
 
-    /**
-     * @var float Unix timestamp with microseconds.
-     */
+    /** @var float */
     private $startTime;
 
-    /**
-     * @var int The exit code of the process, set once the process has exited.
-     */
+    /** @var int */
     private $exitCode;
 
-    /**
-     * @var string Captured data from stdout.
-     */
+    /** @var string */
     private $fullStdOut = '';
 
-    /**
-     * @var string Captured data from stderr.
-     */
+    /** @var string */
     private $fullStdErr = '';
 
-    /**
-     * @var array Pipes populated by proc_open.
-     */
+    /** @var array */
     private $pipeList = [];
 
-    /**
-     * @var resource Process resource returned by proc_open.
-     */
+    /** @var resource */
     private $process = null;
 
-    /**
-     * @var Process ID of the running process.
-     */
+    /** @var int */
     private $pid;
 
-    /**
-     * @var ProcessOutputInterface|null The result of running this process, or null.
-     */
+    /** @var ProcessOutputInterface|null*/
     private $output = null;
 
 
-    /**
-     * Constructor.
-     *
-     * @throws CommandExecutionException
-     *
-     * @param EnvironmentInterface $environment
-     * @param string $command
-     * @param string $cwdOverride
-     * @param int $timeout
-     * @param int $pollTimeout
-     * @param ProcessObserverInterface|null $observer
-     */
     public function __construct(
         EnvironmentInterface $environment,
-        $command,
-        $cwdOverride,
-        $timeout = -1,
-        $pollTimeout = 1000,
-        ProcessObserverInterface $observer = null
+        string $command,
+        string $cwdOverride,
+        ?int $timeout = -1,
+        ?int $pollTimeout = 1000,
+        ?ProcessObserverInterface $observer = null
     ) {
         $this->environment = $environment;
         $this->command = $command;
@@ -135,11 +97,12 @@ final class Process implements ProcessInterface
         }
 
         $this->pid = $this->getStatus()['pid'];
+
         $this->startTime = microtime(true);
 
         // Mark pipe streams as non-blocking
         foreach ($this->pipeList as $pipe) {
-            stream_set_blocking($pipe, 0);
+            stream_set_blocking($pipe, false);
         }
 
         // Notify observer of process creation.
@@ -152,22 +115,16 @@ final class Process implements ProcessInterface
         $this->pollTimeout = $pollTimeout;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isRunning()
+    public function isRunning(): bool
     {
         $status = $this->getStatus();
 
-        $this->observer->processPolled($this->pid, round(microtime(true) - $this->startTime) * 1000);
+        $this->observer->processPolled($this->pid, (int)floor((microtime(true) - $this->startTime) * 1000));
 
         return $status['running'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function wait(\Closure $callback = null)
+    public function wait(\Closure $callback = null): ProcessOutputInterface
     {
         while ($this->isRunning()) {
             if ($this->hasExceededTimeout()) {
@@ -178,9 +135,9 @@ final class Process implements ProcessInterface
             usleep($this->pollTimeout);
         }
 
-        // Mark pipe streams as non-blocking
+        // Mark pipe streams as blocking
         foreach ($this->pipeList as $pipe) {
-            stream_set_blocking($pipe, 1);
+            stream_set_blocking($pipe, true);
         }
 
         $this->readStreams($callback);
@@ -188,10 +145,7 @@ final class Process implements ProcessInterface
         return $this->getProcessOutput();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function stop($timeout = 1000000)
+    public function stop(int $timeout = 1000000): ProcessOutputInterface
     {
         $originalTime = microtime(true);
         $this->sendSignal(ProcessInterface::SIGTERM);
@@ -202,7 +156,6 @@ final class Process implements ProcessInterface
             // If term hasn't succeeded by the specified timeout then try and kill
             if (($time - $originalTime) * 1000000 > $timeout) {
                 $this->sendSignal(ProcessInterface::SIGKILL);
-                break;
             }
 
             usleep($this->pollTimeout);
@@ -211,53 +164,30 @@ final class Process implements ProcessInterface
         return $this->getProcessOutput();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function sendSignal($signal)
+    public function sendSignal(string $signal): void
     {
         $this->observer->sentSignal($this->pid, $signal);
 
         $this->environment->sendSignal($this->process, $signal);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function readOutput($streamId)
+    public function readOutput(int $streamId): string
     {
         $data = stream_get_contents($this->pipeList[$streamId]);
         return $data;
     }
 
-    /**
-     * @inheritDoc
-     */
-    private function getExitCode()
-    {
-        return $this->exitCode;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPid()
+    public function getPid(): int
     {
         return $this->pid;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->command;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getPromise(LoopInterface $eventLoop)
+    public function getPromise(LoopInterface $eventLoop): Promise
     {
         $deferred = new Deferred();
 
@@ -288,10 +218,8 @@ final class Process implements ProcessInterface
 
     /**
      * Returns true if the process has been running for longer than the specified timeout.
-     *
-     * @return bool
      */
-    private function hasExceededTimeout()
+    private function hasExceededTimeout(): bool
     {
         return -1 !== $this->timeout && (microtime(true) - $this->startTime) * 1000000 > $this->timeout;
     }
@@ -303,10 +231,8 @@ final class Process implements ProcessInterface
      * where only the last call after process termination contains the real exit code.
      *
      * See http://stackoverflow.com/a/7841550 For more information.
-     *
-     * @return array
      */
-    private function getStatus()
+    private function getStatus(): array
     {
         $status = proc_get_status($this->process);
 
@@ -319,10 +245,8 @@ final class Process implements ProcessInterface
 
     /**
      * Read from the stdout & stderr streams, passing data to callback if provided.
-     *
-     * @param \Closure|null $callback
      */
-    private function readStreams(\Closure $callback = null)
+    private function readStreams(\Closure $callback = null): void
     {
         $stdOut = $this->readOutput(self::STDOUT);
         $stdErr = $this->readOutput(self::STDERR);
@@ -340,13 +264,11 @@ final class Process implements ProcessInterface
 
     /**
      * Returns the output of the process (exit code, stdout & stderr).
-     *
-     * @return ProcessOutputInterface
      */
-    private function getProcessOutput()
+    private function getProcessOutput(): ProcessOutputInterface
     {
         if (is_null($this->output)) {
-            $this->output = new ProcessOutput($this->getExitCode(), $this->fullStdOut, $this->fullStdErr);
+            $this->output = new ProcessOutput($this->exitCode, $this->fullStdOut, $this->fullStdErr);
             $this->observer->processExited($this->pid, $this->output);
         }
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -19,50 +19,32 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 class NullProcessObserver implements ProcessObserverInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function processCreated($pid, $command)
+    public function processCreated(int $pid, string $command): void
     {
         // Null observer, do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function processPolled($pid, $runningTime)
+    public function processPolled(int $pid, int $runningTime): void
     {
         // Null observer, do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function stdOutRead($pid, $stdOut)
+    public function stdOutRead(int $pid, string $stdOut): void
     {
         // Null observer, do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function stdErrRead($pid, $stdErr)
+    public function stdErrRead(int $pid, string $stdErr): void
     {
         // Null observer, do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function sentSignal($pid, $signal)
+    public function sentSignal(int $pid, string $signal): void
     {
         // Null observer, do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function processExited($pid, ProcessOutputInterface $processOutput)
+    public function processExited(int $pid, ProcessOutputInterface $processOutput): void
     {
         // Null observer, do nothing
     }

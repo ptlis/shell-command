@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -17,28 +17,20 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
  */
 final class UnixEnvironment implements EnvironmentInterface
 {
-    /**
-     * Use the paths stored here in place of the system paths.
-     *
-     * @var string[]
-     */
+    /** @var string[] */
     private $paths;
 
 
-    /**
-     * Constructor.
-     *
-     * @param string[] $pathsOverride
-     */
-    public function __construct(array $pathsOverride = [])
+    public function __construct(?array $pathsOverride = [])
     {
-        $this->setPaths($pathsOverride);
+        if (count($pathsOverride)) {
+            $this->paths = $pathsOverride;
+        } else {
+            $this->paths = explode(':', getenv('PATH'));
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function validateCommand($command, $cwdOverride = '')
+    public function validateCommand(string $command, string $cwdOverride = ''): bool
     {
         $cwd = $this->normalizeCwd($cwdOverride);
 
@@ -50,10 +42,7 @@ final class UnixEnvironment implements EnvironmentInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function sendSignal($process, $signal)
+    public function sendSignal($process, string $signal): void
     {
         switch ($signal) {
             case ProcessInterface::SIGTERM:
@@ -71,10 +60,7 @@ final class UnixEnvironment implements EnvironmentInterface
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function expandPath($path)
+    public function expandPath(string $path): string
     {
         if ($this->isValidHomeDirectory($path)) {
             $path = $this->expandHomeDirectory($path);
@@ -83,16 +69,35 @@ final class UnixEnvironment implements EnvironmentInterface
         return $path;
     }
 
+    public function getSupportedList(): array
+    {
+        return [
+            'Linux',
+            'Darwin'
+        ];
+    }
+
+    public function escapeShellArg(string $arg): string
+    {
+        return escapeshellarg($arg);
+    }
+
+    public function applyEnvironmentVariables(string $command, array $envVariableList): string
+    {
+        $envVariablePrefix = '';
+        foreach ($envVariableList as $key => $value) {
+            $envVariablePrefix .= $key . '=' . $this->escapeShellArg($value) . ' ';
+        }
+
+        return $envVariablePrefix . $command;
+    }
+
     /**
      * 'Safe' send signal method; throws an exception if the signal send fails for any reason.
      *
-     * @param resource $process
-     * @param string $signal
-     * @param int $mappedSignal
-     *
      * @throws CommandExecutionException on error.
      */
-    private function safeSendSignal($process, $signal, $mappedSignal)
+    private function safeSendSignal($process, string $signal, int $mappedSignal): void
     {
         if (true !== proc_terminate($process, $mappedSignal)) {
             throw new CommandExecutionException(
@@ -103,12 +108,8 @@ final class UnixEnvironment implements EnvironmentInterface
 
     /**
      * Normalize CWD - if Override is set return that otherwise return the real CWD.
-     *
-     * @param string $cwdOverride
-     *
-     * @return string Normalized CWD.
      */
-    private function normalizeCwd($cwdOverride)
+    private function normalizeCwd(string $cwdOverride): string
     {
         if (strlen($cwdOverride)) {
             return $cwdOverride;
@@ -118,25 +119,9 @@ final class UnixEnvironment implements EnvironmentInterface
     }
 
     /**
-     * Set the paths to look for global commands, if $pathsOverride not set then default to system paths.
-     *
-     * @param string[] $pathsOverride
+     * Expands home director '~/' to the full path to the home directory of the user who is executing the command.
      */
-    private function setPaths(array $pathsOverride)
-    {
-        if (count($pathsOverride)) {
-            $this->paths = $pathsOverride;
-        } else {
-            $this->paths = explode(':', getenv('PATH'));
-        }
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    private function expandHomeDirectory($path)
+    private function expandHomeDirectory(string $path): string
     {
         return getenv('HOME') . DIRECTORY_SEPARATOR . substr($path, 2, strlen($path));
     }
@@ -146,12 +131,8 @@ final class UnixEnvironment implements EnvironmentInterface
      *
      * The home directory receives special attention due to the fact that chdir (and pals) don't expand '~' to the users
      *  home directory - this is a function of the shell on UNIX systems so we must replicate the behaviour here.
-     *
-     * @param string $path
-     *
-     * @return bool
      */
-    private function isValidHomeDirectory($path)
+    private function isValidHomeDirectory(string $path): bool
     {
         $valid = false;
         if ('~/' === substr($path, 0, 2)) {
@@ -165,12 +146,8 @@ final class UnixEnvironment implements EnvironmentInterface
 
     /**
      * Returns true if the path points to an executable file.
-     *
-     * @param string $path
-     *
-     * @return bool
      */
-    private function isValidFullPath($path)
+    private function isValidFullPath(string $path): bool
     {
         $valid = false;
         if ('/' === substr($path, 0, 1) && is_executable($path)) {
@@ -182,13 +159,8 @@ final class UnixEnvironment implements EnvironmentInterface
 
     /**
      * Validate a relative command path.
-     *
-     * @param string $relativePath
-     * @param string $cwd
-     *
-     * @return bool
      */
-    private function isValidRelativePath($relativePath, $cwd)
+    private function isValidRelativePath(string $relativePath, string $cwd): bool
     {
         $valid = false;
         if ('./' === substr($relativePath, 0, 2)) {
@@ -202,12 +174,8 @@ final class UnixEnvironment implements EnvironmentInterface
 
     /**
      * Validate a global command by checking through system & provided paths.
-     *
-     * @param string $command
-     *
-     * @return bool
      */
-    private function isValidGlobalCommand($command)
+    private function isValidGlobalCommand(string $command): bool
     {
         $valid = false;
 
@@ -223,37 +191,5 @@ final class UnixEnvironment implements EnvironmentInterface
         }
 
         return $valid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSupportedList()
-    {
-        return [
-            'Linux',
-            'Darwin'
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function escapeShellArg($arg)
-    {
-        return escapeshellarg($arg);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function applyEnvironmentVariables($command, array $envVariableList)
-    {
-        $envVariablePrefix = '';
-        foreach ($envVariableList as $key => $value) {
-            $envVariablePrefix .= $key . '=' . $this->escapeShellArg($value) . ' ';
-        }
-
-        return $envVariablePrefix . $command;
     }
 }

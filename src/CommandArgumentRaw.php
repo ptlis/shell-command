@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -15,24 +15,15 @@ use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
  */
 final class CommandArgumentRaw implements CommandArgumentInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $argument;
 
-    /**
-     * @param string $argument
-     */
-    public function __construct(
-        $argument
-    ) {
+
+    public function __construct(string $argument) {
         $this->argument = $argument;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function encode()
+    public function encode(): string
     {
         return $this->argument;
     }

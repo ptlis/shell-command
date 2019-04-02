@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -18,5 +18,5 @@ interface CommandArgumentInterface
      *
      * @return string
      */
-    public function encode();
+    public function encode(): string;
 }

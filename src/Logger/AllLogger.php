@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -21,27 +21,49 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AllLogger implements ProcessObserverInterface
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $logLevel;
 
 
-    /**
-     * Constructor.
-     *
-     * @param LoggerInterface $logger
-     * @param string $logLevel
-     */
-    public function __construct(LoggerInterface $logger, $logLevel = LogLevel::DEBUG)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        string $logLevel = LogLevel::DEBUG
+    ) {
         $this->logger = $logger;
         $this->logLevel = $logLevel;
+    }
+
+    public function processCreated(int $pid, string $command): void
+    {
+        $this->log('Process created', ['pid' => $pid, 'command' => $command]);
+    }
+
+    public function processPolled(int $pid, int $runningTime): void
+    {
+        $this->log('Process polled', ['pid' => $pid, 'running time' => $runningTime]);
+    }
+
+    public function stdOutRead(int $pid, string $stdOut): void
+    {
+        $this->log('Read from stdout', ['pid' => $pid, 'stdout' => $stdOut]);
+    }
+
+    public function stdErrRead(int $pid, string $stdErr): void
+    {
+        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
+    }
+
+    public function sentSignal(int $pid, string $signal): void
+    {
+        $this->log('Signal sent', ['pid' => $pid, 'signal' => $signal]);
+    }
+
+    public function processExited(int $pid, ProcessOutputInterface $processOutput): void
+    {
+        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
 
     /**
@@ -50,56 +72,8 @@ final class AllLogger implements ProcessObserverInterface
      * @param string $message
      * @param array $context
      */
-    protected function log($message, array $context = [])
+    private function log(string $message, array $context = []): void
     {
         $this->logger->log($this->logLevel, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function processCreated($pid, $command)
-    {
-        $this->log('Process created', ['pid' => $pid, 'command' => $command]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function processPolled($pid, $runningTime)
-    {
-        $this->log('Process polled', ['pid' => $pid, 'running time' => $runningTime]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function stdOutRead($pid, $stdOut)
-    {
-        $this->log('Read from stdout', ['pid' => $pid, 'stdout' => $stdOut]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function stdErrRead($pid, $stdErr)
-    {
-        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function sentSignal($pid, $signal)
-    {
-        $this->log('Signal sent', ['pid' => $pid, 'signal' => $signal]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function processExited($pid, ProcessOutputInterface $processOutput)
-    {
-        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
 }

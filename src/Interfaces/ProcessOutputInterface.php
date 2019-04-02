@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -18,7 +18,7 @@ interface ProcessOutputInterface
      *
      * @return string
      */
-    public function getStdOut();
+    public function getStdOut(): string ;
 
     /**
      * Get the array representation of the contents of stdout when the command was executed (each element of the array
@@ -26,14 +26,14 @@ interface ProcessOutputInterface
      *
      * @return string[]
      */
-    public function getStdOutLines();
+    public function getStdOutLines(): array;
 
     /**
      * Get the string representation of the contents of stderr when the command was executed.
      *
      * @return string
      */
-    public function getStdErr();
+    public function getStdErr(): string;
 
     /**
      * Get the array representation of the contents of stderr when the command was executed (each element of the array
@@ -41,12 +41,12 @@ interface ProcessOutputInterface
      *
      * @return string[]
      */
-    public function getStdErrLines();
+    public function getStdErrLines(): array;
 
     /**
      * Get the exit code from the executed command.
      *
      * @return int
      */
-    public function getExitCode();
+    public function getExitCode(): int;
 }

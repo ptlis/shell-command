@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -23,18 +23,20 @@ use ptlis\ShellCommand\Process;
  */
 class ProcessTest extends ptlisShellCommandTestcase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         global $mockProcOpen;
         $mockProcOpen = false;
 
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
+        global $mockProcTerminateCalled;
         $mockProcTerminate = false;
         $mockProcTerminateRetval = false;
+        $mockProcTerminateCalled = false;
     }
 
-    public function testRunProcess()
+    public function testRunProcess(): void
     {
         $command = './tests/commands/unix/test_binary';
 
@@ -52,7 +54,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testWaitWithClosure()
+    public function testWaitWithClosure(): void
     {
         $command = './tests/commands/unix/test_binary';
 
@@ -67,7 +69,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testHandleCommandError()
+    public function testHandleCommandError(): void
     {
         $command = './tests/commands/unix/error_binary';
 
@@ -91,7 +93,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testGetPid()
+    public function testGetPid(): void
     {
         $command = './tests/commands/unix/sleep_binary';
 
@@ -150,7 +152,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testStopRunningRequiresSigkill()
+    public function testStopRunningRequiresSigkill(): void
     {
         global $mockProcTerminate;
         $mockProcTerminate = true;
@@ -204,7 +206,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testTimeoutLongRunning()
+    public function testTimeoutLongRunning(): void
     {
         $command = './tests/commands/unix/long_sleep_binary';
 
@@ -252,7 +254,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSendInvalidSignal()
+    public function testSendInvalidSignal(): void
     {
         $this->expectException(CommandExecutionException::class);
         $this->expectExceptionMessage('Unknown signal "wibble" provided');
@@ -271,7 +273,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         $process->sendSignal('wibble');
     }
 
-    public function testProcOpenFail()
+    public function testProcOpenFail(): void
     {
         global $mockProcOpen;
         $mockProcOpen = true;
@@ -284,7 +286,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         new Process(new UnixEnvironment(), $command, getcwd());
     }
 
-    public function testProcTerminateFail()
+    public function testProcTerminateFail(): void
     {
         global $mockProcTerminate;
         $mockProcTerminate = true;
@@ -298,7 +300,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         $process->stop();
     }
 
-    public function testGetAllStdout()
+    public function testGetAllStdout(): void
     {
         $command = './tests/commands/unix/slow_stdout_binary';
 

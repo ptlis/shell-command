@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -10,6 +10,7 @@ namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 
 /**
@@ -17,68 +18,40 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class MockCommand implements CommandInterface
 {
-    /**
-     * @var EnvironmentInterface
-     */
+    /** @var EnvironmentInterface */
     private $environment;
 
-    /**
-     * @var string The command to execute.
-     */
+    /** @var string */
     private $command;
 
-    /**
-     * @var string[] Array of arguments to pass to the command.
-     */
+    /** @var string[] */
     private $argumentList;
 
-    /**
-     * @var string[] Array of raw arguments to pass to the command.
-     */
+    /** @var string[] */
     private $rawArgumentList;
 
-    /**
-     * @var ProcessOutputInterface The mocked result of this operation.
-     */
+    /** @var ProcessOutputInterface */
     private $result;
 
-    /**
-     * @var string[] Array of environment variables to set. Key is variable name and value is the variable value.
-     */
+    /** @var string[] */
     private $envVariables;
 
-    /**
-     * @var int (microseconds) The amount of time to simulate the process running for.
-     */
+    /** @var int */
     private $runningTime;
 
-    /**
-     * @var int The simulated process id.
-     */
+    /** @var int */
     private $pid;
 
 
-    /**
-     * Constructor
-     *
-     * @param EnvironmentInterface $environment
-     * @param string $command
-     * @param string[] $argumentList
-     * @param string[] $rawArgumentList
-     * @param ProcessOutputInterface $result
-     * @param int $runningTime
-     * @param int $pid
-     * @param string[] $envVariables
-     */
     public function __construct(
         EnvironmentInterface $environment,
-        $command,
+        string $command,
         array $argumentList,
         array $rawArgumentList,
         ProcessOutputInterface $result,
-        array $envVariables = [],
-        $runningTime = 314,
-        $pid = 31415
+        ?array $envVariables = [],
+        ?int $runningTime = 314,
+        ?int $pid = 31415
     ) {
         $this->environment = $environment;
         $this->command = $command;
@@ -90,18 +63,12 @@ final class MockCommand implements CommandInterface
         $this->pid = $pid;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function runSynchronous()
+    public function runSynchronous(): ProcessOutputInterface
     {
         return $this->result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function runAsynchronous()
+    public function runAsynchronous(): ProcessInterface
     {
         return new MockProcess(
             $this->command,
@@ -111,10 +78,7 @@ final class MockCommand implements CommandInterface
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $arguments = '';
         foreach ($this->argumentList as $argument) {

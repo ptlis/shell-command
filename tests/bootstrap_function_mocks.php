@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * We're abusing the fact that redeclaring global functions in a namespace will override those functions when called

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -16,7 +16,7 @@ use ptlis\ShellCommand\ProcessOutput;
  */
 class ProcessOutputTest extends ptlisShellCommandTestcase
 {
-    public function testProcessOutput()
+    public function testProcessOutput(): void
     {
         $shellResult = new ProcessOutput(
             0,

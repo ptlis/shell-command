@@ -20,27 +20,29 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ErrorLogger extends NullProcessObserver
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface */
     private $logger;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $logLevel;
 
 
-    /**
-     * Constructor.
-     *
-     * @param LoggerInterface $logger
-     * @param string $logLevel
-     */
-    public function __construct(LoggerInterface $logger, $logLevel = LogLevel::ERROR)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        string $logLevel = LogLevel::ERROR
+    ) {
         $this->logger = $logger;
         $this->logLevel = $logLevel;
+    }
+
+    public function stdErrRead(int $pid, string $stdErr): void
+    {
+        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
+    }
+
+    public function processExited(int $pid, ProcessOutputInterface $processOutput): void
+    {
+        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
 
     /**
@@ -49,24 +51,8 @@ final class ErrorLogger extends NullProcessObserver
      * @param string $message
      * @param array $context
      */
-    protected function log($message, array $context = [])
+    private function log($message, array $context = []): void
     {
         $this->logger->log($this->logLevel, $message, $context);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function stdErrRead($pid, $stdErr)
-    {
-        $this->log('Read from stderr', ['pid' => $pid, 'stderr' => $stdErr]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function processExited($pid, ProcessOutputInterface $processOutput)
-    {
-        $this->log('Process exited', ['pid' => $pid, 'exit_code' => $processOutput->getExitCode()]);
     }
 }

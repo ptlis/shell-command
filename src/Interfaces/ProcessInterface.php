@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -31,7 +31,7 @@ interface ProcessInterface
      *
      * @return bool
      */
-    public function isRunning();
+    public function isRunning(): bool;
 
     /**
      * Blocks execution until the command has finished executing.
@@ -40,7 +40,7 @@ interface ProcessInterface
      *  stderr.
      * @return ProcessOutputInterface
      */
-    public function wait(\Closure $callback = null);
+    public function wait(\Closure $callback = null): ProcessOutputInterface;
 
     /**
      * Stops the running process.
@@ -48,7 +48,7 @@ interface ProcessInterface
      * @param int $timeout (microseconds)
      * @return ProcessOutputInterface
      */
-    public function stop($timeout = 1000000);
+    public function stop(int $timeout = 1000000): ProcessOutputInterface;
 
     /**
      * Read the pending output from the specified stream.
@@ -57,14 +57,14 @@ interface ProcessInterface
      *
      * @return string
      */
-    public function readOutput($streamId);
+    public function readOutput(int $streamId): string;
 
     /**
      * Send a signal to the running process.
      *
      * @param string $signal One of SIG* constants
      */
-    public function sendSignal($signal);
+    public function sendSignal(string $signal): void;
 
     /**
      * Returns the PID (process id) of running process.
@@ -73,14 +73,14 @@ interface ProcessInterface
      *
      * @return int
      */
-    public function getPid();
+    public function getPid(): int;
 
     /**
      * Get the command that was executed to create the process.
      *
      * @return string
      */
-    public function getCommand();
+    public function getCommand(): string;
 
     /**
      * Return a promise representing the running process.
@@ -88,5 +88,5 @@ interface ProcessInterface
      * @param LoopInterface $eventLoop
      * @return Promise
      */
-    public function getPromise(LoopInterface $eventLoop);
+    public function getPromise(LoopInterface $eventLoop): Promise;
 }

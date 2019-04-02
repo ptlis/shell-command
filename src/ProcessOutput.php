@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -15,83 +15,55 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ProcessOutput implements ProcessOutputInterface
 {
-    /**
-     * @var int The exit code emitted by the command.
-     */
+    /** @var int */
     private $exitCode;
 
-    /**
-     * @var string The contents of stdout when executing the command.
-     */
+    /** @var string */
     private $stdOut;
 
-    /**
-     * @var string The contents of stderr when executing the command.
-     */
+    /** @var string */
     private $stdErr;
 
 
-    /**
-     * Constructor.
-     *
-     * @param int $exitCode
-     * @param string $stdOut
-     * @param string $stdErr
-     */
-    public function __construct($exitCode, $stdOut, $stdErr)
-    {
+    public function __construct(
+        int $exitCode,
+        string $stdOut,
+        string $stdErr
+    ) {
         $this->exitCode = $exitCode;
         $this->stdOut = $stdOut;
         $this->stdErr = $stdErr;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStdOut()
+    public function getStdOut(): string
     {
         return $this->stdOut;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStdOutLines()
+    public function getStdOutLines(): array
     {
         return $this->stringToArray($this->stdOut);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStdErr()
+    public function getStdErr(): string
     {
         return $this->stdErr;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getStdErrLines()
+    public function getStdErrLines(): array
     {
         return $this->stringToArray($this->stdErr);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getExitCode()
+    public function getExitCode(): int
     {
         return $this->exitCode;
     }
 
     /**
      * Accepts console output as a string and returns an array of it split by newlines.
-     *
-     * @param string $string
-     * @return string[]
      */
-    private function stringToArray($string)
+    private function stringToArray(string $string): array
     {
         $lines = preg_split('/\R/', $string);
         if (1 === count($lines) && '' === $lines[0]) {
