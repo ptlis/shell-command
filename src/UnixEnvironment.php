@@ -21,7 +21,7 @@ final class UnixEnvironment implements EnvironmentInterface
     private $paths;
 
 
-    public function __construct(?array $pathsOverride = [])
+    public function __construct(array $pathsOverride = [])
     {
         if (count($pathsOverride)) {
             $this->paths = $pathsOverride;

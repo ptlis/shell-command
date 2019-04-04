@@ -68,9 +68,9 @@ final class Process implements ProcessInterface
         EnvironmentInterface $environment,
         string $command,
         string $cwdOverride,
-        ?int $timeout = -1,
-        ?int $pollTimeout = 1000,
-        ?ProcessObserverInterface $observer = null
+        int $timeout = -1,
+        int $pollTimeout = 1000,
+        ProcessObserverInterface $observer = null
     ) {
         $this->environment = $environment;
         $this->command = $command;

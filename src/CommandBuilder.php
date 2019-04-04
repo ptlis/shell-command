@@ -34,7 +34,7 @@ final class CommandBuilder implements CommandBuilderInterface
     private $timeout = -1;
 
     /** @var int */
-    private $pollTimeout;
+    private $pollTimeout = 1000;
 
     /** @var string */
     private $cwd = '';
@@ -47,7 +47,7 @@ final class CommandBuilder implements CommandBuilderInterface
 
 
     public function __construct(
-        ?EnvironmentInterface $environment = null
+        EnvironmentInterface $environment = null
     ) {
         if (is_null($environment)) {
             $environment = $this->getEnvironment(PHP_OS);

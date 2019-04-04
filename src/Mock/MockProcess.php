@@ -44,8 +44,8 @@ class MockProcess implements ProcessInterface
     public function __construct(
         string $command,
         ProcessOutputInterface $result,
-        ?int $runFor = 1000,
-        ?int $pid = 123
+        int $runFor = 1000,
+        int $pid = 123
     ) {
         $this->command = $command;
         $this->runFor = $runFor;

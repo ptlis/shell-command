@@ -52,16 +52,16 @@ final class MockCommandBuilder implements CommandBuilderInterface
 
 
     public function __construct(
-        ?array $mockResultList = [],
-        ?string $command = '',
-        ?array $argumentsList = [],
-        ?int $pollTimeout = 1000,
-        ?int $timeout = -1,
-        ?string $cwd = '',
-        ?array $envVariableList = [],
-        ?array &$builtCommandList = [],
-        ?array $rawArgumentList = [],
-        ?array $observerList = []
+        array $mockResultList = [],
+        string $command = '',
+        array $argumentsList = [],
+        int $pollTimeout = 1000,
+        int $timeout = -1,
+        string $cwd = '',
+        array $envVariableList = [],
+        array &$builtCommandList = [],
+        array $rawArgumentList = [],
+        array $observerList = []
     ) {
         $this->mockResultList = $mockResultList;
         $this->command = $command;

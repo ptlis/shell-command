@@ -51,9 +51,9 @@ final class Command implements CommandInterface
         string $command,
         array $newArgumentList,
         string $cwd,
-        ?array $envVariableList = [],
-        ?int $timeout = -1,
-        ?int $pollTimeout = 1000
+        array $envVariableList = [],
+        int $timeout = -1,
+        int $pollTimeout = 1000
     ) {
         $this->environment = $environment;
         $this->processObserver = $processObserver;
