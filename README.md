@@ -189,7 +189,7 @@ Conditionally, depending on the result of an expression:
 
 ```php
     $builder
-        ->addArguments([
+        ->addRawArguments([
             '--foo=bar',
             '-xzcf',
             'if=/dev/sda of=/dev/sdb'
