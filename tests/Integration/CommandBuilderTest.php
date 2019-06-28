@@ -28,4 +28,21 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
             ->setCommand('foobar')
             ->buildCommand();
     }
+
+    public function testWithCwd(): void
+    {
+        $builder = new CommandBuilder();
+
+        $command = $builder
+            ->setCwd(realpath(__DIR__ . '/../commands/unix/'))
+            ->setCommand('./test_binary')
+            ->buildCommand();
+
+        $result = $command->runSynchronous();
+
+        $this->assertEquals(
+            "Test command" . PHP_EOL . PHP_EOL,
+            $result->getStdOut()
+        );
+    }
 }

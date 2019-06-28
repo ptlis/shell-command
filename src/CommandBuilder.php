@@ -176,7 +176,7 @@ final class CommandBuilder implements CommandBuilderInterface
 
     public function buildCommand(): CommandInterface
     {
-        if (!$this->environment->validateCommand($this->command)) {
+        if (!$this->environment->validateCommand($this->command, $this->cwd)) {
             throw new \RuntimeException('Invalid command "' . $this->command . '" provided to ' . __CLASS__ . '.');
         }
 
