@@ -305,27 +305,6 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
         );
     }
 
-    public function testSetCwd(): void
-    {
-        $path = './tests/commands/unix/test_binary';
-        $arguments = [
-            '--foo bar',
-            'baz'
-        ];
-        $builder = new CommandBuilder(new UnixEnvironment());
-
-        $command = $builder
-            ->setCommand($path)
-            ->addArguments($arguments)
-            ->setCwd('/bob')
-            ->buildCommand();
-
-        $this->assertSame(
-            '/bob',
-            TestCase::readAttribute($command, 'cwd')
-        );
-    }
-
     public function testTimeout(): void
     {
         $path = './tests/commands/unix/test_binary';
