@@ -79,17 +79,14 @@ final class Process implements ProcessInterface
             $this->observer = new NullProcessObserver();
         }
 
-        // Store CWD, set to override
-        $prevCwd = getcwd();
-        chdir($cwdOverride);
-
         $this->process = proc_open(
             $command,
             [
                 self::STDOUT => ['pipe', 'w'],
                 self::STDERR => ['pipe', 'w']
             ],
-            $this->pipeList
+            $this->pipeList,
+            $cwdOverride
         );
 
         if (!is_resource($this->process)) {
@@ -107,9 +104,6 @@ final class Process implements ProcessInterface
 
         // Notify observer of process creation.
         $this->observer->processCreated($this->pid, $command);
-
-        // Reset CWD to previous
-        chdir($prevCwd);
 
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;
