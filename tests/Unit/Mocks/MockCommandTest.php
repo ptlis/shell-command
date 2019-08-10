@@ -32,7 +32,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             ['FOO' => 'bar']
         );
 
-        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
+        $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
 
         $this->assertEquals(
             new ProcessOutput(0, 'hello world', ''),
@@ -53,7 +53,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             ['FOO' => 'bar']
         );
 
-        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
+        $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
 
         $eventLoop = Factory::create();
         $promise = $command->runAsynchronous()->getPromise($eventLoop);
@@ -99,7 +99,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             ['FOO' => 'bar']
         );
 
-        $this->assertEquals('FOO=\'bar\' binary \'foo\' --test=\'123\'', $command->__toString());
+        $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
 
         $eventLoop = Factory::create();
         $promise = $command->runAsynchronous()->getPromise($eventLoop);

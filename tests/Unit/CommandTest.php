@@ -122,7 +122,7 @@ class CommandTest extends TestCase
         );
 
         $this->assertSame(
-            'MY_VAR=\'VALUE\' ' . $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
+            $path . ' \'if=/dev/sha1 of=/dev/sdb2\'',
             $command->__toString()
         );
     }

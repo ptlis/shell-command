@@ -35,14 +35,4 @@ class UnixEnvironmentTest extends ptlisShellCommandTestcase
             $environment->escapeShellArg('--foo=bar')
         );
     }
-
-    public function testApplyEnvironmentVariables(): void
-    {
-        $environment = new UnixEnvironment();
-
-        $this->assertSame(
-            'FOO=\'bar\' BAZ=\'bat\' test',
-            $environment->applyEnvironmentVariables('test', ['FOO' => 'bar', 'BAZ' => 'bat'])
-        );
-    }
 }

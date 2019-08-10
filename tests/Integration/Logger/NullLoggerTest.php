@@ -31,6 +31,7 @@ class NullLoggerTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             $nullLogger
@@ -53,6 +54,7 @@ class NullLoggerTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             $nullLogger

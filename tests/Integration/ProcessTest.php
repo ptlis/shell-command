@@ -114,6 +114,7 @@ class ProcessTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new AllLogger($logger)
@@ -168,6 +169,7 @@ class ProcessTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new AllLogger($logger)
@@ -216,6 +218,7 @@ class ProcessTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             500000,
             1000,
             new AllLogger($logger)
@@ -265,6 +268,7 @@ class ProcessTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             500000,
             1000,
             new NullProcessObserver()
@@ -308,6 +312,7 @@ class ProcessTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new NullProcessObserver()

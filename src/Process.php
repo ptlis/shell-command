@@ -68,6 +68,7 @@ final class Process implements ProcessInterface
         EnvironmentInterface $environment,
         string $command,
         string $cwdOverride,
+        array $envVarList = [],
         int $timeout = -1,
         int $pollTimeout = 1000,
         ProcessObserverInterface $observer = null
@@ -86,7 +87,8 @@ final class Process implements ProcessInterface
                 self::STDERR => ['pipe', 'w']
             ],
             $this->pipeList,
-            $cwdOverride
+            $cwdOverride,
+            array_merge(getenv(), $envVarList)
         );
 
         if (!is_resource($this->process)) {

@@ -89,6 +89,6 @@ final class MockCommand implements CommandInterface
             $arguments .= ' ' . $rawArgument;
         }
 
-        return $this->environment->applyEnvironmentVariables($this->command . $arguments, $this->envVariables);
+        return $this->command . $arguments;
     }
 }

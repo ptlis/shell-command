@@ -76,6 +76,7 @@ final class Command implements CommandInterface
             $this->environment,
             (string)$this,
             $this->environment->expandPath($this->cwd),
+            $this->envVariableList,
             $this->timeout,
             $this->pollTimeout,
             $this->processObserver
@@ -89,6 +90,6 @@ final class Command implements CommandInterface
             $stringCommand .= ' ' . $argument->encode();
         }
 
-        return $this->environment->applyEnvironmentVariables($stringCommand, $this->envVariableList);
+        return $stringCommand;
     }
 }

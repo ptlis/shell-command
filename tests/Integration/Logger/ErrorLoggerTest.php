@@ -33,6 +33,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new ErrorLogger(
@@ -74,6 +75,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new ErrorLogger(
@@ -116,6 +118,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
             new UnixEnvironment(),
             $command,
             getcwd(),
+            [],
             -1,
             1000,
             new ErrorLogger(

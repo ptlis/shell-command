@@ -82,16 +82,6 @@ final class UnixEnvironment implements EnvironmentInterface
         return escapeshellarg($arg);
     }
 
-    public function applyEnvironmentVariables(string $command, array $envVariableList): string
-    {
-        $envVariablePrefix = '';
-        foreach ($envVariableList as $key => $value) {
-            $envVariablePrefix .= $key . '=' . $this->escapeShellArg($value) . ' ';
-        }
-
-        return $envVariablePrefix . $command;
-    }
-
     /**
      * 'Safe' send signal method; throws an exception if the signal send fails for any reason.
      *

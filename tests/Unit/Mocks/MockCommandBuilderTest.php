@@ -105,7 +105,7 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
         );
 
         $this->assertEquals(
-            'key=\'value\' test=\'message\' bar \'baz\' \'bat\'',
+            'bar \'baz\' \'bat\'',
             $builtCommand->__toString()
         );
     }
