@@ -36,9 +36,17 @@ final class AllLogger implements ProcessObserverInterface
         $this->logLevel = $logLevel;
     }
 
-    public function processCreated(int $pid, string $command): void
+    public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void
     {
-        $this->log('Process created', ['pid' => $pid, 'command' => $command]);
+        $this->log(
+            'Process created',
+            [
+                'pid' => $pid,
+                'command' => $command,
+                'cwd' => $cwd,
+                'env_vars' => $environmentVariables
+            ]
+        );
     }
 
     public function processPolled(int $pid, int $runningTime): void

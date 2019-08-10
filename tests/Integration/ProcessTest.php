@@ -129,7 +129,9 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 555,
-                        'command' => './tests/commands/unix/sleep_binary'
+                        'command' => './tests/commands/unix/sleep_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [
@@ -184,7 +186,9 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 9999,
-                        'command' => './tests/commands/unix/sleep_binary'
+                        'command' => './tests/commands/unix/sleep_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [
@@ -233,7 +237,9 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 1234,
-                        'command' => './tests/commands/unix/long_sleep_binary'
+                        'command' => './tests/commands/unix/long_sleep_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [

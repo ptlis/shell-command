@@ -19,7 +19,7 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 class NullProcessObserver implements ProcessObserverInterface
 {
-    public function processCreated(int $pid, string $command): void
+    public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void
     {
         // Null observer, do nothing
     }

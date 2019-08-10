@@ -55,7 +55,9 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 1234,
-                        'command' => './tests/commands/unix/long_sleep_binary'
+                        'command' => './tests/commands/unix/long_sleep_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [

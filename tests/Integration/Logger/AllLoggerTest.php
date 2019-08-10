@@ -49,7 +49,9 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 4523,
-                        'command' => './tests/commands/unix/test_binary'
+                        'command' => './tests/commands/unix/test_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [
@@ -99,7 +101,9 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 9241,
-                        'command' => './tests/commands/unix/sleep_binary'
+                        'command' => './tests/commands/unix/sleep_binary',
+                        'cwd' => getcwd(),
+                        'env_vars' => []
                     ]
                 ],
                 [

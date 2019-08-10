@@ -28,10 +28,10 @@ final class AggregateLogger implements ProcessObserverInterface
         $this->loggerList = $loggerList;
     }
 
-    public function processCreated(int $pid, string $command): void
+    public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void
     {
         foreach ($this->loggerList as $logger) {
-            $logger->processCreated($pid, $command);
+            $logger->processCreated($pid, $command, $cwd, $environmentVariables);
         }
     }
 

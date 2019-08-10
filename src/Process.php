@@ -88,7 +88,7 @@ final class Process implements ProcessInterface
             ],
             $this->pipeList,
             $cwdOverride,
-            array_merge(getenv(), $envVarList)
+            array_merge(getenv(), $envVarList)  // Merge PHP process's env vars with those passed to process
         );
 
         if (!is_resource($this->process)) {
@@ -105,7 +105,7 @@ final class Process implements ProcessInterface
         }
 
         // Notify observer of process creation.
-        $this->observer->processCreated($this->pid, $command);
+        $this->observer->processCreated($this->pid, $command, $cwdOverride, $envVarList);
 
         $this->timeout = $timeout;
         $this->pollTimeout = $pollTimeout;

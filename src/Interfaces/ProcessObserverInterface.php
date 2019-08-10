@@ -21,8 +21,10 @@ interface ProcessObserverInterface
      *
      * @param int $pid The process id of the running process.
      * @param string $command
+     * @param string $cwd The current working directory that the process was created in.
+     * @param string[] $envVarList Array of environment variables passed to the process.
      */
-    public function processCreated(int $pid, string $command): void ;
+    public function processCreated(int $pid, string $command, string $cwd, array $envVarList): void ;
 
     /**
      * The process has had it's status polled.
