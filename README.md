@@ -108,7 +108,7 @@ If the process execution time exceeds this value a SIGTERM will be sent; if the 
 
 #### Set Poll Timeout
 
-Set how long to wait (in milliseconds) between polling the status of processes. Defaults to 1000 (1 second).
+Set how long to wait (in microseconds) between polling the status of processes. Defaults to 1,000,000 (1 second).
 
 ```php
     $builder
