@@ -16,15 +16,15 @@ There were several goals that inspired the creation of this package:
   * [Install](#install)
   * [Usage](#usage)
      * [The Builder](#the-builder)
-        * [Add Command](#add-command)
-        * [Set Timeout](#set-timeout)
+        * [Set Command](#set-command)
+        * [Set Process Timeout](#set-process-timeout)
+        * [Set Poll Timeout](#set-poll-timeout)
         * [Set Working Directory](#set-working-directory)
         * [Add Arguments](#add-arguments)
         * [Add Raw Arguments](#add-raw-arguments)
-        * [Set Environment Variables](#set-environment-variables)
+        * [Add Environment Variables](#add-environment-variables)
         * [Add Process Observers](#add-process-observers)
         * [Build the Command](#build-the-command)
-        * [Set Poll Timeout](#set-poll-timeout)
      * [Synchronous Execution](#synchronous-execution)
      * [Asynchronous execution](#asynchronous-execution)
         * [Command::runAsynchronous](#commandrunasynchronous)
@@ -94,7 +94,7 @@ First we must provide the command to execute:
 If the command is not locatable a ```RuntimeException``` is thrown.
 
 
-#### Set Timeout
+#### Set Process Timeout
 
 The timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
 
@@ -104,6 +104,17 @@ The timeout (in microseconds) sets how long the library will wait on a process b
 ```
 
 If the process execution time exceeds this value a SIGTERM will be sent; if the process then doesn't terminate after a further 1 second wait then a SIGKILL is sent.
+
+
+#### Set Poll Timeout
+
+Set how long to wait (in milliseconds) between polling the status of processes. Defaults to 1000 (1 second).
+
+```php
+    $builder
+        ->setPollTimeout(30 * 1000 * 1000)          // Wait 30 seconds
+
+```
 
 
 #### Set Working Directory
@@ -199,7 +210,7 @@ Conditionally, depending on the result of an expression:
 **Note:** Escaped and raw arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
 
 
-#### Set Environment Variables
+#### Add Environment Variables
 
 Environment variables can be set when running a command:
 
@@ -262,17 +273,6 @@ One the builder has been configured, the command can be retrieved for execution:
         ->buildCommand();
 ```
 
-
-
-#### Set Poll Timeout
-
-Set how long to wait (in milliseconds) between polling the status of processes. Defaults to 1000 (1 second).
-
-```php
-    $builder
-        ->setPollTimeout(30 * 1000 * 1000)          // Wait 30 seconds
-
-```
 
 
 ### Synchronous Execution
