@@ -83,6 +83,7 @@ final class Process implements ProcessInterface
         $this->process = proc_open(
             $command,
             [
+                self::STDIN  => ['pipe', 'r'],
                 self::STDOUT => ['pipe', 'w'],
                 self::STDERR => ['pipe', 'w']
             ],
@@ -171,6 +172,11 @@ final class Process implements ProcessInterface
     {
         $data = stream_get_contents($this->pipeList[$streamId]);
         return $data;
+    }
+
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void
+    {
+        fwrite($this->pipeList[$streamId], $input);
     }
 
     public function getPid(): int

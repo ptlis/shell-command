@@ -60,6 +60,15 @@ interface ProcessInterface
     public function readOutput(int $streamId): string;
 
     /**
+     * Write something to the specified stream.
+     *
+     * @param string $input
+     *
+     * @param int $streamId defaults to ProcessInterface::STDIN
+     */
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void;
+
+    /**
      * Send a signal to the running process.
      *
      * @param string $signal One of SIG* constants

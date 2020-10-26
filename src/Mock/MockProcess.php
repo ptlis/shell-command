@@ -40,6 +40,9 @@ class MockProcess implements ProcessInterface
     /** @var float */
     private $startTime;
 
+    /** @var array */
+    private $inputs = [];
+
 
     public function __construct(
         string $command,
@@ -97,6 +100,11 @@ class MockProcess implements ProcessInterface
         }
 
         return $output;
+    }
+
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void
+    {
+        $this->inputs[$streamId][] = $input;
     }
 
     public function sendSignal(string $signal): void
