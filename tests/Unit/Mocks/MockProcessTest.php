@@ -96,4 +96,13 @@ class MockProcessTest extends ptlisShellCommandTestcase
         $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
         $this->assertEquals('foo bar baz', $process->readOutput(ProcessInterface::STDERR));
     }
+
+    public function testWriteInput(): void
+    {
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
+        $process->writeInput('Hello stdin w/ newline');
+        $process->writeInput('Hello stdin w/o newline', ProcessInterface::STDIN,false);
+        $this->assertEquals([ProcessInterface::STDIN => ["Hello stdin w/ newline\n","Hello stdin w/o newline"]], $process->getInputs());
+
+    }
 }

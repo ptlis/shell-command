@@ -332,4 +332,29 @@ class ProcessTest extends ptlisShellCommandTestcase
                 $result->getStdOutLines()
             );
     }
+
+    public function testWriteInput(): void
+    {
+        $command = './tests/commands/unix/echo_cmd';
+
+        $process = new Process(
+            new UnixEnvironment(),
+            $command,
+            getcwd(),
+            [],
+            -1,
+            1000,
+            new NullProcessObserver()
+        );
+
+        $process->writeInput('Hello world');
+        usleep(500000); // the bash script needs some time to respond, half second is fair
+        $output = $process->readOutput(ProcessInterface::STDOUT);
+
+        $this
+            ->assertEquals(
+                "Hello world\n",
+                $output
+            );
+    }
 }

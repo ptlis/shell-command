@@ -156,4 +156,9 @@ class MockProcess implements ProcessInterface
 
         return $deferred->promise();
     }
+
+    public function getInputs(): array
+    {
+        return $this->inputs;
+    }
 }

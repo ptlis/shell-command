@@ -1,0 +1,4 @@
+#!/bin/bash
+# Reads from STDIN and sends read text to STDOUT
+read in
+echo $in
