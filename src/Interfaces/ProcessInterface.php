@@ -64,9 +64,12 @@ interface ProcessInterface
      *
      * @param string $input
      *
-     * @param int $streamId defaults to ProcessInterface::STDIN
+     * @param int    $streamId defaults to ProcessInterface::STDIN
+     *
+     * @param bool $appendNewline true (default) appends a new line ("\n") to the end;
+     *                            false - nothing is appended
      */
-    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void;
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void;
 
     /**
      * Send a signal to the running process.

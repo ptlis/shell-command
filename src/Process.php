@@ -174,9 +174,12 @@ final class Process implements ProcessInterface
         return $data;
     }
 
-    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
     {
         fwrite($this->pipeList[$streamId], $input);
+        if($appendNewline){
+            fwrite($this->pipeList[$streamId], "\n");
+        }
     }
 
     public function getPid(): int

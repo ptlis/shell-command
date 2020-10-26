@@ -102,9 +102,9 @@ class MockProcess implements ProcessInterface
         return $output;
     }
 
-    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN): void
+    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
     {
-        $this->inputs[$streamId][] = $input;
+        $this->inputs[$streamId][] = $input . ($appendNewline ? "\n" : '');
     }
 
     public function sendSignal(string $signal): void
