@@ -26,8 +26,9 @@ There were several goals that inspired the creation of this package:
         * [Add Process Observers](#add-process-observers)
         * [Build the Command](#build-the-command)
      * [Synchronous Execution](#synchronous-execution)
-     * [Asynchronous execution](#asynchronous-execution)
+     * [Asynchronous Execution](#asynchronous-execution)
         * [Command::runAsynchronous](#commandrunasynchronous)
+     * [Process API](#process-api)
         * [Process::getPromise](#processgetpromise)
   * [Mocking](#mocking)
   * [Contributing](#contributing)
@@ -298,7 +299,7 @@ The exit code & output of the command are available as methods on this object:
 
 
 
-### Asynchronous execution
+### Asynchronous Execution
 
 Commands can also be executed asynchronously, allowing your program to continue executing while waiting for the result.
 
@@ -314,7 +315,9 @@ The ```runAsynchronous``` method returns an object implementing the ```ProcessIn
 
 As with the synchronouse API, when you need to re-run the same command multiple times you can simply invoke ```runAsynchronous``` repeatedly; each call will run the command returning the object representing the process to your application.
 
-```ProcessInterface``` provides the methods required to monitor the state and lifecycle of a process.
+### Process API
+
+```ProcessInterface``` provides the methods required to monitor and manipulate the state and lifecycle of a process.
 
 Check whether the process has completed:
 
