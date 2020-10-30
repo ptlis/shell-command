@@ -348,6 +348,12 @@ Read output from a stream:
     $stdOut = $process->readStream(ProcessInterface::STDOUT);
 ```
 
+Provide input (e.g. via STDIN):
+
+```php
+    $process->writeInput('Data to pass to the running process via STDIN');
+```
+
 Get the exit code (throws a ```\RuntimeException``` if the process is still running):
 
 ```php
