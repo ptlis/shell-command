@@ -28,14 +28,14 @@ class MockCommandTest extends ptlisShellCommandTestcase
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\''),
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
             ['FOO' => 'bar']
         );
 
         $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
 
         $this->assertEquals(
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\''),
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
             $command->runSynchronous()
         );
     }
@@ -49,7 +49,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\''),
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
             ['FOO' => 'bar']
         );
 
@@ -66,7 +66,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
                 function(ProcessOutput $result) use (&$successCalled) {
                     $successCalled = true;
                     $this->assertEquals(
-                        new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\''),
+                        new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
                         $result
                     );
                 },
@@ -78,7 +78,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $eventLoop->run();
 
         $this->assertEquals(
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\''),
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
             $command->runSynchronous()
         );
 
@@ -95,7 +95,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(1, 'error', '', ''),
+            new ProcessOutput(1, 'error', '', '', '.'),
             ['FOO' => 'bar']
         );
 
@@ -115,7 +115,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
                 function(ProcessOutput $result) use (&$failureCalled) {
                     $failureCalled = true;
                     $this->assertEquals(
-                        new ProcessOutput(1, 'error', '', ''),
+                        new ProcessOutput(1, 'error', '', '', '.'),
                         $result
                     );
                 }
@@ -124,7 +124,7 @@ class MockCommandTest extends ptlisShellCommandTestcase
         $eventLoop->run();
 
         $this->assertEquals(
-            new ProcessOutput(1, 'error', '', ''),
+            new ProcessOutput(1, 'error', '', '', '.'),
             $command->runSynchronous()
         );
 

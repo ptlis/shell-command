@@ -58,4 +58,13 @@ interface ProcessOutputInterface
      * @return string
      */
     public function getExecutedCommand(): string;
+
+    /**
+     * Get the working directory that command was executed in.
+     *
+     * This is here purely to make debugging commands easier.
+     *
+     * @return string
+     */
+    public function getWorkingDirectory(): string;
 }

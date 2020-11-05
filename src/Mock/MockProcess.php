@@ -141,7 +141,7 @@ class MockProcess implements ProcessInterface
                 // Process has terminated
                 if (!$this->isRunning()) {
                     $eventLoop->cancelTimer($timer);
-                    $output = new ProcessOutput($this->result->getExitCode(), $fullStdOut, $fullStdErr, $this->command);
+                    $output = new ProcessOutput($this->result->getExitCode(), $fullStdOut, $fullStdErr, $this->command, '.');
 
                     // Resolve or reject promise
                     if (0 === $output->getExitCode()) {

@@ -27,17 +27,22 @@ final class ProcessOutput implements ProcessOutputInterface
     /** @var string */
     private $command;
 
+    /** @var string */
+    private $workingDirectory;
+
 
     public function __construct(
         int $exitCode,
         string $stdOut,
         string $stdErr,
-        string $command
+        string $command,
+        string $workingDirectory
     ) {
         $this->exitCode = $exitCode;
         $this->stdOut = $stdOut;
         $this->stdErr = $stdErr;
         $this->command = $command;
+        $this->workingDirectory = $workingDirectory;
     }
 
     public function getStdOut(): string
@@ -68,6 +73,11 @@ final class ProcessOutput implements ProcessOutputInterface
     public function getExecutedCommand(): string
     {
         return $this->command;
+    }
+
+    public function getWorkingDirectory(): string
+    {
+        return $this->workingDirectory;
     }
 
     /**

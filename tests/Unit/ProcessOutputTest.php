@@ -22,7 +22,8 @@ class ProcessOutputTest extends ptlisShellCommandTestcase
             0,
             'great success!',
             '',
-            'foo --bar'
+            'foo --bar',
+            '.'
         );
 
         $this->assertSame(
@@ -53,6 +54,11 @@ class ProcessOutputTest extends ptlisShellCommandTestcase
         $this->assertSame(
             'foo --bar',
             $shellResult->getExecutedCommand()
+        );
+
+        $this->assertSame(
+            '.',
+            $shellResult->getWorkingDirectory()
         );
     }
 }

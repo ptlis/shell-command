@@ -27,6 +27,9 @@ final class Process implements ProcessInterface
     /** @var EnvironmentInterface */
     private $environment;
 
+    /** @var string */
+    private $cwdOverride;
+
     /** @var string[] */
     private $envVarList;
 
@@ -74,6 +77,7 @@ final class Process implements ProcessInterface
         ProcessObserverInterface $observer = null
     ) {
         $this->environment = $environment;
+        $this->cwdOverride = $cwdOverride;
         $this->observer = $observer;
         $this->envVarList = $envVarList;
         if (is_null($this->observer)) {
@@ -283,7 +287,8 @@ final class Process implements ProcessInterface
                 $this->exitCode,
                 $this->fullStdOut,
                 $this->fullStdErr,
-                $envVarString . $this->getCommand()
+                $envVarString . $this->getCommand(),
+                $this->cwdOverride
             );
             $this->observer->processExited($this->pid, $this->output);
         }

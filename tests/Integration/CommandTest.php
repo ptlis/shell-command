@@ -41,7 +41,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 '',
-                './tests/commands/unix/test_binary \'if=/dev/sha1 of=/dev/sdb2\''
+                './tests/commands/unix/test_binary \'if=/dev/sha1 of=/dev/sdb2\'',
+                getcwd()
             ),
             $command->runSynchronous()
         );
@@ -73,7 +74,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 '',
-                '~/test_binary \'if=/dev/sha1 of=/dev/sdb2\''
+                '~/test_binary \'if=/dev/sha1 of=/dev/sdb2\'',
+                getcwd()
             ),
             $command->runSynchronous()
         );
@@ -85,9 +87,10 @@ class CommandTest extends ptlisShellCommandTestcase
     {
         $originalPath = getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
+        $fakeHomePath = realpath(getcwd() . '/tests/commands/unix');
 
-        putenv('HOME=' . $pathToCommand);
+
+        putenv('HOME=' . $fakeHomePath);
 
         $path = '~/sleep_binary';
 
@@ -104,7 +107,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 '',
                 '',
-                '~/sleep_binary'
+                '~/sleep_binary',
+                $fakeHomePath . '/'
             ),
             $command->runSynchronous()
         );
@@ -129,7 +133,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 '',
                 '',
-                './tests/commands/unix/sleep_binary'
+                './tests/commands/unix/sleep_binary',
+                getcwd()
             ),
             $command->runSynchronous()
         );
@@ -155,7 +160,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 'VALUE' . PHP_EOL,
                 '',
-                'TEST_VAR=\'VALUE\' ./tests/commands/unix/echo_env_binary'
+                'TEST_VAR=\'VALUE\' ./tests/commands/unix/echo_env_binary',
+                getcwd()
             ),
             $command->runSynchronous()
         );
@@ -178,7 +184,8 @@ class CommandTest extends ptlisShellCommandTestcase
                 5,
                 '',
                 'Fatal Error' . PHP_EOL,
-                './tests/commands/unix/error_binary'
+                './tests/commands/unix/error_binary',
+                getcwd()
             ),
             $command->runSynchronous()
         );
