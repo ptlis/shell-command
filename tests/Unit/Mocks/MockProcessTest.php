@@ -20,7 +20,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
 {
     public function testIsRunning(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''));
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'));
 
         $this->assertTrue($process->isRunning());
     }
@@ -29,7 +29,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
     {
         $callbackCalled = false;
 
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 100);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 100);
         $process->wait(function() use (&$callbackCalled) {
             $callbackCalled = true;
         });
@@ -40,7 +40,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testStop(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 100000);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 100000);
         $this->assertTrue($process->isRunning());
 
         $process->stop();
@@ -49,7 +49,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testSignal(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 100000);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 100000);
         $this->assertTrue($process->isRunning());
 
         $process->sendSignal(ProcessInterface::SIGTERM);
@@ -58,13 +58,13 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPid(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000, 9999);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 1000, 9999);
         $this->assertEquals(9999, $process->getPid());
     }
 
     public function testGetCommand(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000, 9999);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 1000, 9999);
         $this->assertEquals('test-command', $process->getCommand());
     }
 
@@ -72,14 +72,14 @@ class MockProcessTest extends ptlisShellCommandTestcase
     {
         $this->expectException(\RuntimeException::class);
 
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', ''), 1000);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command'), 1000);
         $process->stop();
         $process->getPid();
     }
 
     public function testGetExitCode(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(15, '', ''), 1000);
+        $process = new MockProcess('test-command', new ProcessOutput(15, '', '', 'test-command'), 1000);
         $output = $process->stop();
 
         $this->assertEquals(15, $output->getExitCode());
@@ -87,22 +87,21 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testReadStdOut(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, 'abc123', ''), 1000, 9999);
+        $process = new MockProcess('test-command', new ProcessOutput(0, 'abc123', '', 'test-command'), 1000, 9999);
         $this->assertEquals('abc123', $process->readOutput(ProcessInterface::STDOUT));
     }
 
     public function testReadStdErr(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command'), 1000, 9999);
         $this->assertEquals('foo bar baz', $process->readOutput(ProcessInterface::STDERR));
     }
 
     public function testWriteInput(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz'), 1000, 9999);
+        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command'), 1000, 9999);
         $process->writeInput('Hello stdin w/ newline');
         $process->writeInput('Hello stdin w/o newline', ProcessInterface::STDIN,false);
         $this->assertEquals([ProcessInterface::STDIN => ["Hello stdin w/ newline\n","Hello stdin w/o newline"]], $process->getInputs());
-
     }
 }

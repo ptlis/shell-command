@@ -27,8 +27,8 @@ final class Process implements ProcessInterface
     /** @var EnvironmentInterface */
     private $environment;
 
-    /** @var string */
-    private $command;
+    /** @var string[] */
+    private $envVarList;
 
     /** @var ProcessObserverInterface */
     private $observer;
@@ -74,8 +74,8 @@ final class Process implements ProcessInterface
         ProcessObserverInterface $observer = null
     ) {
         $this->environment = $environment;
-        $this->command = $command;
         $this->observer = $observer;
+        $this->envVarList = $envVarList;
         if (is_null($this->observer)) {
             $this->observer = new NullProcessObserver();
         }
@@ -89,7 +89,7 @@ final class Process implements ProcessInterface
             ],
             $this->pipeList,
             $cwdOverride,
-            array_merge(getenv(), $envVarList)  // Merge PHP process's env vars with those passed to process
+            $this->getMergedEnvVars()
         );
 
         if (!is_resource($this->process)) {
@@ -189,7 +189,8 @@ final class Process implements ProcessInterface
 
     public function getCommand(): string
     {
-        return $this->command;
+        $status = $this->getStatus();
+        return $status['command'];
     }
 
     public function getPromise(LoopInterface $eventLoop): Promise
@@ -273,10 +274,28 @@ final class Process implements ProcessInterface
     private function getProcessOutput(): ProcessOutputInterface
     {
         if (is_null($this->output)) {
-            $this->output = new ProcessOutput($this->exitCode, $this->fullStdOut, $this->fullStdErr);
+            $envVarString = '';
+            foreach ($this->envVarList as $key => $value) {
+                $envVarString .= $key . '=' . $this->environment->escapeShellArg($value) . ' ';
+            }
+
+            $this->output = new ProcessOutput(
+                $this->exitCode,
+                $this->fullStdOut,
+                $this->fullStdErr,
+                $envVarString . $this->getCommand()
+            );
             $this->observer->processExited($this->pid, $this->output);
         }
 
         return $this->output;
+    }
+
+    /**
+     * Returns the PHP process's env vars merged with those passed to process
+     */
+    private function getMergedEnvVars(): array
+    {
+        return array_merge(getenv(), $this->envVarList);
     }
 }

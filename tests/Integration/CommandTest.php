@@ -40,7 +40,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
-                ''
+                '',
+                './tests/commands/unix/test_binary \'if=/dev/sha1 of=/dev/sdb2\''
             ),
             $command->runSynchronous()
         );
@@ -71,7 +72,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 0,
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
-                ''
+                '',
+                '~/test_binary \'if=/dev/sha1 of=/dev/sdb2\''
             ),
             $command->runSynchronous()
         );
@@ -101,7 +103,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 0,
                 '',
-                ''
+                '',
+                '~/sleep_binary'
             ),
             $command->runSynchronous()
         );
@@ -125,7 +128,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 0,
                 '',
-                ''
+                '',
+                './tests/commands/unix/sleep_binary'
             ),
             $command->runSynchronous()
         );
@@ -150,7 +154,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 0,
                 'VALUE' . PHP_EOL,
-                ''
+                '',
+                'TEST_VAR=\'VALUE\' ./tests/commands/unix/echo_env_binary'
             ),
             $command->runSynchronous()
         );
@@ -172,7 +177,8 @@ class CommandTest extends ptlisShellCommandTestcase
             new ProcessOutput(
                 5,
                 '',
-                'Fatal Error' . PHP_EOL
+                'Fatal Error' . PHP_EOL,
+                './tests/commands/unix/error_binary'
             ),
             $command->runSynchronous()
         );

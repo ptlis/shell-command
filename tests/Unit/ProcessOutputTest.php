@@ -21,7 +21,8 @@ class ProcessOutputTest extends ptlisShellCommandTestcase
         $shellResult = new ProcessOutput(
             0,
             'great success!',
-            ''
+            '',
+            'foo --bar'
         );
 
         $this->assertSame(
@@ -47,6 +48,11 @@ class ProcessOutputTest extends ptlisShellCommandTestcase
         $this->assertSame(
             [],
             $shellResult->getStdErrLines()
+        );
+
+        $this->assertSame(
+            'foo --bar',
+            $shellResult->getExecutedCommand()
         );
     }
 }

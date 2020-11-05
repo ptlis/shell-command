@@ -255,13 +255,14 @@ final class MockCommandBuilder implements CommandBuilderInterface
      * @param int $exitCode
      * @param string $stdOut
      * @param string $stdErr
+     * @param string $command
      *
      * @return $this
      */
-    public function addMockResult(int $exitCode, string $stdOut, string $stdErr): CommandBuilderInterface
+    public function addMockResult(int $exitCode, string $stdOut, string $stdErr, string $command): CommandBuilderInterface
     {
         $mockResultList = $this->mockResultList;
-        $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr);
+        $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr, $command);
 
         return new MockCommandBuilder(
             $mockResultList,

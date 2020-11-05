@@ -18,7 +18,7 @@ interface ProcessOutputInterface
      *
      * @return string
      */
-    public function getStdOut(): string ;
+    public function getStdOut(): string;
 
     /**
      * Get the array representation of the contents of stdout when the command was executed (each element of the array
@@ -49,4 +49,13 @@ interface ProcessOutputInterface
      * @return int
      */
     public function getExitCode(): int;
+
+    /**
+     * Get the command that was executed as a string (e.g. "ls -lah").
+     *
+     * This is here purely to make debugging commands easier.
+     *
+     * @return string
+     */
+    public function getExecutedCommand(): string;
 }
