@@ -290,11 +290,13 @@ When you need to re-run the same command multiple times you can simply invoke ``
 The exit code & output of the command are available as methods on this object:
 
 ```php
-    $result->getExitCode();     // 0 for success, anything else conventionally indicates an error
-    $result->getStdOut();       // The contents of stdout (as a string)
-    $result->getStdOutLines();  // The contents of stdout (as an array of lines)
-    $result->getStdErr();       // The contents of stderr (as a string)
-    $result->getStdErrLines();  // The contents of stderr (as an array of lines)
+    $result->getExitCode();         // 0 for success, anything else conventionally indicates an error
+    $result->getStdOut();           // The contents of stdout (as a string)
+    $result->getStdOutLines();      // The contents of stdout (as an array of lines)
+    $result->getStdErr();           // The contents of stderr (as a string)
+    $result->getStdErrLines();      // The contents of stderr (as an array of lines)
+    $result->getExecutedCommand();  // Get the executed command as a string, including environment variables
+    $result->getWorkingDirectory(); // Get the directory the command was executed in 
 ```
 
 
