@@ -8,7 +8,6 @@
 
 namespace ptlis\ShellCommand\Test\Unit;
 
-use PHPUnit\Framework\TestCase;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\MockPsrLogger;
@@ -21,6 +20,14 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
+    private function readAttribute($object, string $property)
+    {
+        $reflectionObject = new \ReflectionClass($object::class);
+        $property = $reflectionObject->getProperty($property);
+        $property->setAccessible(true);
+        return $property->getValue($object);
+    }
+
     public function testDetectEnvironmentSuccess(): void
     {
         $builder = new CommandBuilder();
@@ -301,7 +308,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             1234567,
-            TestCase::readAttribute($command, 'pollTimeout')
+            $this->readAttribute($command, 'pollTimeout')
         );
     }
 
@@ -323,7 +330,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             60 * 1000 * 1000,
-            TestCase::readAttribute($command, 'timeout')
+            $this->readAttribute($command, 'timeout')
         );
     }
 
@@ -346,7 +353,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             ['TEST' => 'VALUE'],
-            TestCase::readAttribute($command, 'envVariableList')
+            $this->readAttribute($command, 'envVariableList')
         );
     }
 
@@ -369,7 +376,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             [],
-            TestCase::readAttribute($command, 'envVariableList')
+            $this->readAttribute($command, 'envVariableList')
         );
     }
 
@@ -392,7 +399,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             ['TEST' => 'VALUE'],
-            TestCase::readAttribute($command, 'envVariableList')
+            $this->readAttribute($command, 'envVariableList')
         );
     }
 
@@ -421,7 +428,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
                 'ABC' => '123',
                 'TEST' => 'VALUE'
             ],
-            TestCase::readAttribute($command, 'envVariableList')
+            $this->readAttribute($command, 'envVariableList')
         );
     }
 
@@ -439,7 +446,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertInstanceOf(
             'ptlis\ShellCommand\Logger\NullProcessObserver',
-            TestCase::readAttribute($command, 'processObserver')
+            $this->readAttribute($command, 'processObserver')
         );
     }
 
@@ -462,9 +469,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertInstanceOf(
             'ptlis\ShellCommand\Logger\AggregateLogger',
-            TestCase::readAttribute($command, 'processObserver')
+            $this->readAttribute($command, 'processObserver')
         );
-
-        // Todo test internals of AggregateLogger?
     }
 }
