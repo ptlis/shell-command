@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace ptlis\ShellCommand\Test\Mocks;
+namespace ptlis\ShellCommand\Test\Unit\Mocks;
 
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Mock\MockProcess;
