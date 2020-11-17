@@ -20,7 +20,7 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandBuilderTest extends ptlisShellCommandTestcase
 {
-    private function readAttribute($object, string $property)
+    private function readPrivateAttribute($object, string $property)
     {
         $reflectionObject = new \ReflectionClass(get_class($object));
         $property = $reflectionObject->getProperty($property);
@@ -308,7 +308,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             1234567,
-            $this->readAttribute($command, 'pollTimeout')
+            $this->readPrivateAttribute($command, 'pollTimeout')
         );
     }
 
@@ -330,7 +330,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             60 * 1000 * 1000,
-            $this->readAttribute($command, 'timeout')
+            $this->readPrivateAttribute($command, 'timeout')
         );
     }
 
@@ -353,7 +353,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             ['TEST' => 'VALUE'],
-            $this->readAttribute($command, 'envVariableList')
+            $this->readPrivateAttribute($command, 'envVariableList')
         );
     }
 
@@ -376,7 +376,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             [],
-            $this->readAttribute($command, 'envVariableList')
+            $this->readPrivateAttribute($command, 'envVariableList')
         );
     }
 
@@ -399,7 +399,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertSame(
             ['TEST' => 'VALUE'],
-            $this->readAttribute($command, 'envVariableList')
+            $this->readPrivateAttribute($command, 'envVariableList')
         );
     }
 
@@ -428,7 +428,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
                 'ABC' => '123',
                 'TEST' => 'VALUE'
             ],
-            $this->readAttribute($command, 'envVariableList')
+            $this->readPrivateAttribute($command, 'envVariableList')
         );
     }
 
@@ -446,7 +446,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertInstanceOf(
             'ptlis\ShellCommand\Logger\NullProcessObserver',
-            $this->readAttribute($command, 'processObserver')
+            $this->readPrivateAttribute($command, 'processObserver')
         );
     }
 
@@ -469,7 +469,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 
         $this->assertInstanceOf(
             'ptlis\ShellCommand\Logger\AggregateLogger',
-            $this->readAttribute($command, 'processObserver')
+            $this->readPrivateAttribute($command, 'processObserver')
         );
     }
 }
