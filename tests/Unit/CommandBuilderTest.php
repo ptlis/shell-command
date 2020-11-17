@@ -22,7 +22,7 @@ class CommandBuilderTest extends ptlisShellCommandTestcase
 {
     private function readAttribute($object, string $property)
     {
-        $reflectionObject = new \ReflectionClass($object::class);
+        $reflectionObject = new \ReflectionClass(get_class($object));
         $property = $reflectionObject->getProperty($property);
         $property->setAccessible(true);
         return $property->getValue($object);
