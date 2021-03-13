@@ -58,7 +58,7 @@ final class Process implements ProcessInterface
     private $pipeList = [];
 
     /** @var resource */
-    private $process = null;
+    private $process;
 
     /** @var int */
     private $pid;
@@ -174,8 +174,7 @@ final class Process implements ProcessInterface
 
     public function readOutput(int $streamId): string
     {
-        $data = stream_get_contents($this->pipeList[$streamId]);
-        return $data;
+        return stream_get_contents($this->pipeList[$streamId]);
     }
 
     public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void

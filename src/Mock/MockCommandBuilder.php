@@ -23,10 +23,10 @@ final class MockCommandBuilder implements CommandBuilderInterface
     private $command;
 
     /** @var string[] */
-    private $argumentList = [];
+    private $argumentList;
 
     /** @var string[] */
-    private $rawArgumentList = [];
+    private $rawArgumentList;
 
     /** @var int*/
     private $timeout;
@@ -38,13 +38,13 @@ final class MockCommandBuilder implements CommandBuilderInterface
     private $cwd;
 
     /** @var ProcessObserverInterface[] */
-    private $observerList = [];
+    private $observerList;
 
     /** @var string[] */
-    private $envVariableList = [];
+    private $envVariableList;
 
     /** @var ProcessOutput[] */
-    private $mockResultList = [];
+    private $mockResultList;
 
     /** @var MockCommand[] */
     private $builtCommandList = [];

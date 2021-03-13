@@ -51,7 +51,7 @@ final class ErrorLogger extends NullProcessObserver
      * @param string $message
      * @param array $context
      */
-    private function log($message, array $context = []): void
+    private function log(string $message, array $context = []): void
     {
         $this->logger->log($this->logLevel, $message, $context);
     }

@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4
@@ -11,7 +10,7 @@ before_script:
     - composer install
 
 script:
-    - ./vendor/bin/phpunit --coverage-clover=coverage.clover
+    - XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover=coverage.clover
 after_script:
     - wget https://scrutinizer-ci.com/ocular.phar
     - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
