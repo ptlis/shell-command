@@ -1,5 +1,10 @@
 # Changelog:
 
+## 1.3.0 - 2021-03-13
+
+* Add support for PHP 8.0 and drop support for PHP 7.1.
+
+
 ## 1.2.0 - 2020-11-05
 
 * Add properties to retrieve the executed command and working directory to the
