@@ -17,6 +17,7 @@ use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\Process;
+use React\EventLoop\Factory;
 
 /**
  * @covers \ptlis\ShellCommand\Process
@@ -40,7 +41,7 @@ class ProcessTest extends ptlisShellCommandTestcase
     {
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, getcwd(), ['FOO' => 'bar']);
         $process->wait();
 
         $this->assertEquals(
@@ -52,6 +53,58 @@ class ProcessTest extends ptlisShellCommandTestcase
             './tests/commands/unix/test_binary',
             $process->getCommand()
         );
+    }
+
+    public function testRunWithPromiseSuccess(): void
+    {
+        $command = './tests/commands/unix/test_binary';
+
+        $eventLoop = Factory::create();
+
+        $promise = (new Process(new UnixEnvironment(), $command, getcwd()))
+            ->getPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+        $promise->then(
+            function () use (&$successCalled) {
+                $successCalled = true;
+            },
+            function () use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertTrue($successCalled);
+        $this->assertFalse($failureCalled);
+    }
+
+    public function testRunWithPromiseError(): void
+    {
+        $command = './tests/commands/unix/error_binary';
+
+        $eventLoop = Factory::create();
+
+        $promise = (new Process(new UnixEnvironment(), $command, getcwd()))
+            ->getPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+        $promise->then(
+            function () use (&$successCalled) {
+                $successCalled = true;
+            },
+            function () use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertFalse($successCalled);
+        $this->assertTrue($failureCalled);
     }
 
     public function testWaitWithClosure(): void

@@ -12,6 +12,7 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Mock\MockProcess;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use React\EventLoop\Factory;
 
 /**
  * @covers \ptlis\ShellCommand\Mock\MockProcess
@@ -103,5 +104,53 @@ class MockProcessTest extends ptlisShellCommandTestcase
         $process->writeInput('Hello stdin w/ newline');
         $process->writeInput('Hello stdin w/o newline', ProcessInterface::STDIN,false);
         $this->assertEquals([ProcessInterface::STDIN => ["Hello stdin w/ newline\n","Hello stdin w/o newline"]], $process->getInputs());
+    }
+
+    public function testRunWithPromiseSuccess(): void
+    {
+        $eventLoop = Factory::create();
+
+        $promise = (new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'), 1000, 9999))
+            ->getPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+        $promise->then(
+            function () use (&$successCalled) {
+                $successCalled = true;
+            },
+            function () use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertTrue($successCalled);
+        $this->assertFalse($failureCalled);
+    }
+
+    public function testRunWithPromiseError(): void
+    {
+        $eventLoop = Factory::create();
+
+        $promise = (new MockProcess('test-command', new ProcessOutput(1, 'ohno!', 'foo bar baz', 'test-command', '.'), 1000, 9999))
+            ->getPromise($eventLoop);
+
+        $successCalled = false;
+        $failureCalled = false;
+        $promise->then(
+            function () use (&$successCalled) {
+                $successCalled = true;
+            },
+            function () use (&$failureCalled) {
+                $failureCalled = true;
+            }
+        );
+
+        $eventLoop->run();
+
+        $this->assertFalse($successCalled);
+        $this->assertTrue($failureCalled);
     }
 }
