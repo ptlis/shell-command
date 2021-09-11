@@ -10,3 +10,4 @@
 /composer.phar
 /.idea/
 composer.lock
+.phpunit.result.cache
