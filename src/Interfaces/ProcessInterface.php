@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace ptlis\ShellCommand\Interfaces;
 
 use React\EventLoop\LoopInterface;
-use React\Promise\Promise;
+use React\Promise\PromiseInterface;
 use RuntimeException;
 
 /**
@@ -86,5 +86,5 @@ interface ProcessInterface
     /**
      * Return a promise representing the running process.
      */
-    public function getPromise(LoopInterface $eventLoop): Promise;
+    public function getPromise(LoopInterface $eventLoop): PromiseInterface;
 }

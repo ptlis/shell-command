@@ -33,11 +33,15 @@ final class Command implements CommandInterface
     private array $envVariableList;
     private ProcessObserverInterface $processObserver;
 
+    /**
+     * @param array<CommandArgumentInterface> $argumentList
+     * @param array<string, string> $envVariableList
+     */
     public function __construct(
         EnvironmentInterface $environment,
         ProcessObserverInterface $processObserver,
         string $command,
-        array $newArgumentList,
+        array $argumentList,
         string $cwd,
         array $envVariableList = [],
         int $timeout = -1,
@@ -46,11 +50,11 @@ final class Command implements CommandInterface
         $this->environment = $environment;
         $this->processObserver = $processObserver;
         $this->command = $command;
-        $this->argumentList = $newArgumentList;
+        $this->argumentList = $argumentList;
         $this->timeout = $timeout;
         $this->envVariableList = $envVariableList;
         $this->pollTimeout = $pollTimeout;
-        $this->cwd = $cwd;
+        $this->cwd = $this->environment->getNormalizedCwd($cwd);
     }
 
     public function runSynchronous(): ProcessOutputInterface

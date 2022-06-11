@@ -19,7 +19,7 @@ use ptlis\ShellCommand\Logger\NullProcessObserver;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
-use React\Promise\Promise;
+use React\Promise\PromiseInterface;
 
 /**
  * Class encapsulating the lifetime of a process.
@@ -44,6 +44,9 @@ final class Process implements ProcessInterface
     private int $pid;
     private ?ProcessOutputInterface $output = null;
 
+    /**
+     * @param array<string, string> $envVarList
+     */
     public function __construct(
         EnvironmentInterface $environment,
         string $command,
@@ -57,8 +60,11 @@ final class Process implements ProcessInterface
         $this->cwdOverride = $cwdOverride;
         $this->envVarList = $envVarList;
         $this->observer = $observer ?? new NullProcessObserver();
+        $this->timeout = $timeout;
+        $this->pollTimeout = $pollTimeout;
 
-        $this->process = proc_open(
+        // Attempt to launch process
+        $process = proc_open(
             $command,
             [
                 self::STDIN  => ['pipe', 'r'],
@@ -69,13 +75,12 @@ final class Process implements ProcessInterface
             $cwdOverride,
             $this->getMergedEnvVars()
         );
-
-        if (!\is_resource($this->process)) {
+        if (!\is_resource($process)) {
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
         }
 
+        $this->process = $process;
         $this->pid = $this->getStatus()['pid'];
-
         $this->startTime = \microtime(true);
 
         // Mark pipe streams as non-blocking
@@ -86,8 +91,6 @@ final class Process implements ProcessInterface
         // Notify observer of process creation.
         $this->observer->processCreated($this->pid, $command, $cwdOverride, $envVarList);
 
-        $this->timeout = $timeout;
-        $this->pollTimeout = $pollTimeout;
     }
 
     public function isRunning(): bool
@@ -149,7 +152,7 @@ final class Process implements ProcessInterface
 
     public function readOutput(int $streamId): string
     {
-        return stream_get_contents($this->pipeList[$streamId]);
+        return (string)\stream_get_contents($this->pipeList[$streamId]);
     }
 
     public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
@@ -171,7 +174,7 @@ final class Process implements ProcessInterface
         return $status['command'];
     }
 
-    public function getPromise(LoopInterface $eventLoop): Promise
+    public function getPromise(LoopInterface $eventLoop): PromiseInterface
     {
         $deferred = new Deferred();
 
@@ -215,6 +218,17 @@ final class Process implements ProcessInterface
      * where only the last call after process termination contains the real exit code.
      *
      * See http://stackoverflow.com/a/7841550 For more information.
+     *
+     * @return array{
+     *     command: string,
+     *     pid: int,
+     *     running: bool,
+     *     signaled: bool,
+     *     stopped: bool,
+     *     exitcode: int,
+     *     termsig: int,
+     *     stopsig: int
+     * }
      */
     private function getStatus(): array
     {
@@ -258,7 +272,7 @@ final class Process implements ProcessInterface
             }
 
             $this->output = new ProcessOutput(
-                $this->exitCode,
+                (int)$this->exitCode,
                 $this->fullStdOut,
                 $this->fullStdErr,
                 $envVarString . $this->getCommand(),
@@ -272,6 +286,8 @@ final class Process implements ProcessInterface
 
     /**
      * Returns the PHP process's env vars merged with those passed to process
+     *
+     * @return array<string, string>
      */
     private function getMergedEnvVars(): array
     {

@@ -75,7 +75,7 @@ final class AllLogger implements ProcessObserverInterface
     /**
      * Create a log entry, utility method for derived classes.
      *
-     * @param array $context<mixed>
+     * @param array<mixed> $context
      */
     private function log(string $message, array $context = []): void
     {

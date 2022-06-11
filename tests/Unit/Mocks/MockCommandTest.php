@@ -26,12 +26,10 @@ class MockCommandTest extends PtlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
-            ['FOO' => 'bar']
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.')
         );
 
         $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
@@ -47,12 +45,10 @@ class MockCommandTest extends PtlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
-            ['FOO' => 'bar']
+            new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.')
         );
 
         $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());
@@ -93,12 +89,10 @@ class MockCommandTest extends PtlisShellCommandTestcase
         $path = 'binary';
 
         $command = new MockCommand(
-            new UnixEnvironment(),
             $path,
             ['foo'],
             ['--test=\'123\''],
-            new ProcessOutput(1, 'error', '', '', '.'),
-            ['FOO' => 'bar']
+            new ProcessOutput(1, 'error', '', '', '.')
         );
 
         $this->assertEquals('binary \'foo\' --test=\'123\'', $command->__toString());

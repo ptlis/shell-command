@@ -74,11 +74,13 @@ final class ProcessOutput implements ProcessOutputInterface
 
     /**
      * Accepts console output as a string and returns an array of it split by newlines.
+     *
+     * @return array<string>
      */
     private function stringToArray(string $string): array
     {
         $lines = \preg_split('/\R/', $string);
-        if (1 === \count($lines) && '' === $lines[0]) {
+        if (!\is_array($lines) || (1 === \count($lines) && '' === $lines[0])) {
             $lines = [];
         }
         return $lines;

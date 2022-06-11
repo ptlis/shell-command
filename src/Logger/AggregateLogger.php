@@ -24,6 +24,9 @@ final class AggregateLogger implements ProcessObserverInterface
     /** @var array<ProcessObserverInterface> */
     private array $loggerList;
 
+    /**
+     * @param array<ProcessObserverInterface> $loggerList
+     */
     public function __construct(array $loggerList)
     {
         $this->loggerList = $loggerList;

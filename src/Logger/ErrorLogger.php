@@ -46,6 +46,8 @@ final class ErrorLogger extends NullProcessObserver
 
     /**
      * Create a log entry, utility method for derived classes.
+     *
+     * @param array<mixed> $context
      */
     private function log(string $message, array $context = []): void
     {

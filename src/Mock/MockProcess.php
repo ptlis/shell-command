@@ -12,12 +12,11 @@ namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
-use ptlis\ShellCommand\Process;
 use ptlis\ShellCommand\ProcessOutput;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
-use React\Promise\Promise;
+use React\Promise\PromiseInterface;
 use RuntimeException;
 
 /**
@@ -31,7 +30,7 @@ class MockProcess implements ProcessInterface
     private int $pid;
     private bool $stopped = false;
     private float $startTime;
-    /** @var array<mixed> */
+    /** @var array<int, array<string>> */
     private array $inputs = [];
 
     public function __construct(
@@ -109,7 +108,7 @@ class MockProcess implements ProcessInterface
         return $this->command;
     }
 
-    public function getPromise(LoopInterface $eventLoop): Promise
+    public function getPromise(LoopInterface $eventLoop): PromiseInterface
     {
         $deferred = new Deferred();
 
@@ -145,6 +144,9 @@ class MockProcess implements ProcessInterface
         return $deferred->promise();
     }
 
+    /**
+     * @return array<int, array<string>>
+     */
     public function getInputs(): array
     {
         return $this->inputs;

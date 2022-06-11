@@ -46,4 +46,9 @@ interface EnvironmentInterface
      * Performs a platform-specific path expansions (e.g. of the home folder).
      */
     public function expandPath(string $path): string;
+
+    /**
+     * Get normalized CWD - if Override is set return that otherwise return the real CWD.
+     */
+    public function getNormalizedCwd(string $cwdOverride = ''): string;
 }

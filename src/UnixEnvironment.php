@@ -13,6 +13,8 @@ namespace ptlis\ShellCommand;
 use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
+use RuntimeException;
+use function substr;
 
 /**
  * Implementation of a UNIX environment.
@@ -20,18 +22,20 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 final class UnixEnvironment implements EnvironmentInterface
 {
     /** @var array<string> */
-    private array $paths;
+    private readonly array $paths;
 
+    /**
+     * @param array<string> $pathsOverride
+     */
     public function __construct(array $pathsOverride = [])
     {
-        $this->paths = \count($pathsOverride)
-            ? $pathsOverride
-            : \explode(':', getenv('PATH'));
+        $envPath = \getenv('PATH') ?: '';
+        $this->paths = \count($pathsOverride) ? $pathsOverride : \explode(':', $envPath);
     }
 
     public function validateCommand(string $command, string $cwdOverride = ''): bool
     {
-        $cwd = $this->normalizeCwd($cwdOverride);
+        $cwd = $this->getNormalizedCwd($cwdOverride);
 
         return (
             $this->isValidFullPath($command)
@@ -81,8 +85,19 @@ final class UnixEnvironment implements EnvironmentInterface
         return \escapeshellarg($arg);
     }
 
+    public function getNormalizedCwd(string $cwdOverride = ''): string
+    {
+        if (\strlen($cwdOverride)) {
+            return $cwdOverride;
+        } else {
+            return $this->getCwd();
+        }
+    }
+
     /**
      * 'Safe' send signal method; throws an exception if the signal send fails for any reason.
+     *
+     * @param resource $process
      *
      * @throws CommandExecutionException on error.
      */
@@ -95,16 +110,13 @@ final class UnixEnvironment implements EnvironmentInterface
         }
     }
 
-    /**
-     * Normalize CWD - if Override is set return that otherwise return the real CWD.
-     */
-    private function normalizeCwd(string $cwdOverride): string
+    private function getCwd(): string
     {
-        if (strlen($cwdOverride)) {
-            return $cwdOverride;
-        } else {
-            return getcwd();
+        $cwd = getcwd();
+        if (!$cwd) {
+            throw new RuntimeException('Unable to determine current working directory');
         }
+        return $cwd;
     }
 
     /**
@@ -112,7 +124,7 @@ final class UnixEnvironment implements EnvironmentInterface
      */
     private function expandHomeDirectory(string $path): string
     {
-        return getenv('HOME') . DIRECTORY_SEPARATOR . substr($path, 2, strlen($path));
+        return \getenv('HOME') . DIRECTORY_SEPARATOR . substr($path, 2, \strlen($path));
     }
 
     /**
@@ -124,7 +136,7 @@ final class UnixEnvironment implements EnvironmentInterface
     private function isValidHomeDirectory(string $path): bool
     {
         $valid = false;
-        if ('~/' === substr($path, 0, 2)) {
+        if (\str_starts_with($path, '~/')) {
             $valid = $this->isValidFullPath(
                 $this->expandHomeDirectory($path)
             );
@@ -139,7 +151,7 @@ final class UnixEnvironment implements EnvironmentInterface
     private function isValidFullPath(string $path): bool
     {
         $valid = false;
-        if ('/' === substr($path, 0, 1) && is_executable($path)) {
+        if (\str_starts_with($path, '/') && is_executable($path)) {
             $valid = true;
         }
 
@@ -152,7 +164,7 @@ final class UnixEnvironment implements EnvironmentInterface
     private function isValidRelativePath(string $relativePath, string $cwd): bool
     {
         $valid = false;
-        if ('./' === substr($relativePath, 0, 2)) {
+        if (\str_starts_with($relativePath, './')) {
             $tmpPath = $cwd . DIRECTORY_SEPARATOR . substr($relativePath, 2, strlen($relativePath));
 
             $valid = $this->isValidFullPath($tmpPath);
@@ -168,7 +180,7 @@ final class UnixEnvironment implements EnvironmentInterface
     {
         $valid = false;
 
-        if (strlen($command)) {
+        if (\strlen($command)) {
             // Check for command in path list
             foreach ($this->paths as $pathDir) {
                 $tmpPath = $pathDir . DIRECTORY_SEPARATOR . $command;

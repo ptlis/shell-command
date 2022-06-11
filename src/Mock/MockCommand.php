@@ -20,34 +20,31 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class MockCommand implements CommandInterface
 {
-    private EnvironmentInterface $environment;
     private string $command;
     /** @var array<string> */
     private array $argumentList;
     /** @var array<string> */
     private array $rawArgumentList;
     private ProcessOutputInterface $result;
-    /** @var array<string, string> */
-    private array $envVariables;
     private int $runningTime;
     private int $pid;
 
+    /**
+     * @param array<string> $argumentList
+     * @param array<string> $rawArgumentList
+     */
     public function __construct(
-        EnvironmentInterface $environment,
         string $command,
         array $argumentList,
         array $rawArgumentList,
         ProcessOutputInterface $result,
-        ?array $envVariables = [],
-        ?int $runningTime = 314,
-        ?int $pid = 31415
+        int $runningTime = 314,
+        int $pid = 31415
     ) {
-        $this->environment = $environment;
         $this->command = $command;
         $this->argumentList = $argumentList;
         $this->rawArgumentList = $rawArgumentList;
         $this->result = $result;
-        $this->envVariables = $envVariables;
         $this->runningTime = $runningTime;
         $this->pid = $pid;
     }

@@ -168,17 +168,12 @@ final class CommandBuilder implements CommandBuilderInterface
             throw new RuntimeException('Invalid command "' . $this->command . '" provided to ' . __CLASS__ . '.');
         }
 
-        $cwd = $this->cwd;
-        if (!\strlen($cwd)) {
-            $cwd = \getcwd();
-        }
-
         return new Command(
             $this->environment,
             $this->getObserver(),
             $this->command,
             $this->argumentList,
-            $cwd,
+            $this->cwd,
             $this->envVariableList,
             $this->timeout,
             $this->pollTimeout
@@ -212,7 +207,7 @@ final class CommandBuilder implements CommandBuilderInterface
             new UnixEnvironment()
         ];
 
-        /** @var EnvironmentInterface $environment */
+        /** @var ?EnvironmentInterface $environment */
         $environment = null;
         foreach ($environmentList as $possibleEnvironment) {
             if (\in_array($operatingSystem, $possibleEnvironment->getSupportedList())) {

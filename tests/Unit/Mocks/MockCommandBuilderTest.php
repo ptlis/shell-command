@@ -39,7 +39,6 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
         $builtCommand = $builder->buildCommand();
 
         $expectCommand = new MockCommand(
-            new UnixEnvironment(),
             'foo',
             [
                 '--foo bar',
@@ -85,12 +84,10 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
             ->buildCommand();
 
         $expectCommand = new MockCommand(
-            new UnixEnvironment(),
             'bar',
             ['baz', 'bat'],
             [],
-            new ProcessOutput(1, 'hurray!', '', 'bar \'baz\' \'bat\'', '.'),
-            ['key' => 'value', 'test' => 'message']
+            new ProcessOutput(1, 'hurray!', '', 'bar \'baz\' \'bat\'', '.')
         );
 
         $this->assertEquals(
@@ -125,7 +122,6 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '', 'bar', '.');
         $expectCommand1 = new MockCommand(
-            new UnixEnvironment(),
             'bar',
             [],
             [],
@@ -144,7 +140,6 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '', 'baz', '.');
         $expectCommand2 = new MockCommand(
-            new UnixEnvironment(),
             'baz',
             [],
             [],
@@ -175,7 +170,6 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
 
         $expectResult1 = new ProcessOutput(1, 'hurray!', '', 'bar', '.');
         $expectCommand1 = new MockCommand(
-            new UnixEnvironment(),
             'bar',
             [],
             [],
@@ -193,7 +187,6 @@ class MockCommandBuilderTest extends PtlisShellCommandTestcase
 
         $expectResult2 = new ProcessOutput(0, 'success', '', 'baz', '.');
         $expectCommand2 = new MockCommand(
-            new UnixEnvironment(),
             'baz',
             [],
             [],

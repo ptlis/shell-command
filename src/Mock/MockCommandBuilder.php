@@ -39,6 +39,14 @@ final class MockCommandBuilder implements CommandBuilderInterface
     /** @var array<MockCommand> */
     private array $builtCommandList = [];
 
+    /**
+     * @param array<ProcessOutput> $mockResultList
+     * @param array<string> $argumentsList
+     * @param array<string, string> $envVariableList
+     * @param array<MockCommand> $builtCommandList
+     * @param array<string> $rawArgumentList
+     * @param array<ProcessObserverInterface> $observerList
+     */
     public function __construct(
         array $mockResultList = [],
         string $command = '',
@@ -161,6 +169,9 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
+    /**
+     * @return array<MockCommand>
+     */
     public function getBuiltCommands(): array
     {
         return $this->builtCommandList;
@@ -224,12 +235,10 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $result = \array_shift($this->mockResultList);
 
         $command = new MockCommand(
-            new UnixEnvironment(),
             $this->command,
             $this->argumentList,
             $this->rawArgumentList,
-            $result,
-            $this->envVariableList
+            $result
         );
         $this->builtCommandList[] = $command;
 
