@@ -17,8 +17,6 @@ interface ProcessOutputInterface
 {
     /**
      * Get the string representation of the contents of stdout when the command was executed.
-     *
-     * @return string
      */
     public function getStdOut(): string;
 
@@ -26,14 +24,12 @@ interface ProcessOutputInterface
      * Get the array representation of the contents of stdout when the command was executed (each element of the array
      * contains one line from the output)..
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getStdOutLines(): array;
 
     /**
      * Get the string representation of the contents of stderr when the command was executed.
-     *
-     * @return string
      */
     public function getStdErr(): string;
 
@@ -41,14 +37,12 @@ interface ProcessOutputInterface
      * Get the array representation of the contents of stderr when the command was executed (each element of the array
      * contains one line from the output)..
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getStdErrLines(): array;
 
     /**
      * Get the exit code from the executed command.
-     *
-     * @return int
      */
     public function getExitCode(): int;
 
@@ -56,8 +50,6 @@ interface ProcessOutputInterface
      * Get the command that was executed as a string (e.g. "ls -lah").
      *
      * This is here purely to make debugging commands easier.
-     *
-     * @return string
      */
     public function getExecutedCommand(): string;
 
@@ -65,8 +57,6 @@ interface ProcessOutputInterface
      * Get the working directory that command was executed in.
      *
      * This is here purely to make debugging commands easier.
-     *
-     * @return string
      */
     public function getWorkingDirectory(): string;
 }

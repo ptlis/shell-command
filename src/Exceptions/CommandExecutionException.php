@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Exceptions;
 
+use RuntimeException;
+
 /**
  * Exception thrown when an error occurs executing a command.
  */
-final class CommandExecutionException extends \RuntimeException
+final class CommandExecutionException extends RuntimeException
 {
 }

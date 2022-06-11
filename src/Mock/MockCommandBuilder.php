@@ -15,42 +15,29 @@ use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
+use RuntimeException;
 
 /**
  * Mock implementation of the command builder interface.
  */
 final class MockCommandBuilder implements CommandBuilderInterface
 {
-    /** @var string */
-    private $command;
-
-    /** @var string[] */
-    private $argumentList;
-
-    /** @var string[] */
-    private $rawArgumentList;
-
-    /** @var int*/
-    private $timeout;
-
-    /** @var int */
-    private $pollTimeout;
-
-    /** @var string */
-    private $cwd;
-
-    /** @var ProcessObserverInterface[] */
-    private $observerList;
-
-    /** @var string[] */
-    private $envVariableList;
-
-    /** @var ProcessOutput[] */
-    private $mockResultList;
-
-    /** @var MockCommand[] */
-    private $builtCommandList = [];
-
+    private string $command;
+    /** @var array<string> */
+    private array $argumentList;
+    /** @var array<string> */
+    private array $rawArgumentList;
+    private int $timeout;
+    private int $pollTimeout;
+    private string $cwd;
+    /** @var array<ProcessObserverInterface> */
+    private array $observerList;
+    /** @var array<string, string> */
+    private array $envVariableList;
+    /** @var array<ProcessOutput> */
+    private array $mockResultList;
+    /** @var array<MockCommand> */
+    private array $builtCommandList = [];
 
     public function __construct(
         array $mockResultList = [],
@@ -106,8 +93,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            /** @var string[] $argumentList */
-            $argumentList = array_merge($this->argumentList, $argumentList);
+            $argumentList = \array_merge($this->argumentList, $argumentList);
             $newBuilder->builtCommandList = &$this->builtCommandList;
             $newBuilder->mockResultList = &$this->mockResultList;
             $newBuilder->argumentList = $argumentList;
@@ -136,7 +122,6 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
-            /** @var string[] $argumentList */
             $rawArgumentList = array_merge($this->rawArgumentList, $rawArgumentList);
             $newBuilder->builtCommandList = &$this->builtCommandList;
             $newBuilder->mockResultList = &$this->mockResultList;
@@ -229,14 +214,14 @@ final class MockCommandBuilder implements CommandBuilderInterface
     public function buildCommand(): CommandInterface
     {
         if (!$this->command) {
-            throw new \RuntimeException('No command was provided to "' . __CLASS__ . '", unable to build command.');
+            throw new RuntimeException('No command was provided to "' . __CLASS__ . '", unable to build command.');
         }
 
         if (!count($this->mockResultList)) {
-            throw new \RuntimeException('No result was provided for use when mocking execution of the command.');
+            throw new RuntimeException('No result was provided for use when mocking execution of the command.');
         }
 
-        $result = array_shift($this->mockResultList);
+        $result = \array_shift($this->mockResultList);
 
         $command = new MockCommand(
             new UnixEnvironment(),
@@ -253,14 +238,6 @@ final class MockCommandBuilder implements CommandBuilderInterface
 
     /**
      * Add a mock result (to be returned in order of execution).
-     *
-     * @param int $exitCode
-     * @param string $stdOut
-     * @param string $stdErr
-     * @param string $command
-     * @param string $workingDirectory
-     *
-     * @return $this
      */
     public function addMockResult(
         int $exitCode,

@@ -17,21 +17,11 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ProcessOutput implements ProcessOutputInterface
 {
-    /** @var int */
-    private $exitCode;
-
-    /** @var string */
-    private $stdOut;
-
-    /** @var string */
-    private $stdErr;
-
-    /** @var string */
-    private $command;
-
-    /** @var string */
-    private $workingDirectory;
-
+    private int $exitCode;
+    private string $stdOut;
+    private string $stdErr;
+    private string $command;
+    private string $workingDirectory;
 
     public function __construct(
         int $exitCode,
@@ -87,11 +77,10 @@ final class ProcessOutput implements ProcessOutputInterface
      */
     private function stringToArray(string $string): array
     {
-        $lines = preg_split('/\R/', $string);
-        if (1 === count($lines) && '' === $lines[0]) {
+        $lines = \preg_split('/\R/', $string);
+        if (1 === \count($lines) && '' === $lines[0]) {
             $lines = [];
         }
-
         return $lines;
     }
 }

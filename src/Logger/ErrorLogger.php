@@ -22,11 +22,8 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ErrorLogger extends NullProcessObserver
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $logLevel;
+    private LoggerInterface $logger;
+    private string $logLevel;
 
 
     public function __construct(
@@ -49,9 +46,6 @@ final class ErrorLogger extends NullProcessObserver
 
     /**
      * Create a log entry, utility method for derived classes.
-     *
-     * @param string $message
-     * @param array $context
      */
     private function log(string $message, array $context = []): void
     {

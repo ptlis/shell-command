@@ -19,17 +19,14 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
  */
 final class UnixEnvironment implements EnvironmentInterface
 {
-    /** @var string[] */
-    private $paths;
-
+    /** @var array<string> */
+    private array $paths;
 
     public function __construct(array $pathsOverride = [])
     {
-        if (count($pathsOverride)) {
-            $this->paths = $pathsOverride;
-        } else {
-            $this->paths = explode(':', getenv('PATH'));
-        }
+        $this->paths = \count($pathsOverride)
+            ? $pathsOverride
+            : \explode(':', getenv('PATH'));
     }
 
     public function validateCommand(string $command, string $cwdOverride = ''): bool
@@ -81,7 +78,7 @@ final class UnixEnvironment implements EnvironmentInterface
 
     public function escapeShellArg(string $arg): string
     {
-        return escapeshellarg($arg);
+        return \escapeshellarg($arg);
     }
 
     /**

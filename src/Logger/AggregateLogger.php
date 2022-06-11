@@ -21,9 +21,8 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AggregateLogger implements ProcessObserverInterface
 {
-    /** @var ProcessObserverInterface[] */
-    private $loggerList;
-
+    /** @var array<ProcessObserverInterface> */
+    private array $loggerList;
 
     public function __construct(array $loggerList)
     {

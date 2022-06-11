@@ -22,30 +22,16 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class Command implements CommandInterface
 {
-    /** @var EnvironmentInterface */
-    private $environment;
-
-    /** @var string */
-    private $command;
-
-    /** @var CommandArgumentInterface[] */
-    private $argumentList;
-
-    /** @var int*/
-    private $timeout;
-
-    /** @var int */
-    private $pollTimeout;
-
-    /** @var string */
-    private $cwd;
-
-    /** @var string[] */
-    private $envVariableList;
-
-    /** @var ProcessObserverInterface */
-    private $processObserver;
-
+    private EnvironmentInterface $environment;
+    private string $command;
+    /** @var array<CommandArgumentInterface> */
+    private array $argumentList;
+    private int $timeout;
+    private int $pollTimeout;
+    private string $cwd;
+    /** @var array<string> */
+    private array $envVariableList;
+    private ProcessObserverInterface $processObserver;
 
     public function __construct(
         EnvironmentInterface $environment,

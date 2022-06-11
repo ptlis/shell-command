@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand\Interfaces;
 
 use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
+use RuntimeException;
 
 /**
  * Interface defining a class to monitor process lifetimes.
@@ -20,7 +21,6 @@ interface ProcessInterface
 {
     /** Signal used to request that the process terminates. */
     public const SIGTERM = 'SIGTERM';
-
     /** Signal used to force the process to terminate. */
     public const SIGKILL = 'SIGKILL';
 
@@ -30,8 +30,6 @@ interface ProcessInterface
 
     /**
      * Returns true if the process is still running.
-     *
-     * @return bool
      */
     public function isRunning(): bool;
 
@@ -40,32 +38,24 @@ interface ProcessInterface
      *
      * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout
      *  and stderr.
-     * @return ProcessOutputInterface
      */
     public function wait(\Closure $callback = null): ProcessOutputInterface;
 
     /**
      * Stops the running process.
      *
-     * @param int $timeout (microseconds)
-     * @return ProcessOutputInterface
+     * @param int $timeout Maximum time (in microseconds) to wait before forcing the process to quit with SIGKILL.
      */
     public function stop(int $timeout = 1000000): ProcessOutputInterface;
 
     /**
      * Read the pending output from the specified stream.
-     *
-     * @param int $streamId
-     *
-     * @return string
      */
     public function readOutput(int $streamId): string;
 
     /**
      * Write something to the specified stream.
      *
-     * @param string $input
-     * @param int $streamId defaults to ProcessInterface::STDIN
      * @param bool $appendNewline true (default) appends a new line ("\n") to the end; false - nothing is appended
      */
     public function writeInput(
@@ -82,26 +72,19 @@ interface ProcessInterface
     public function sendSignal(string $signal): void;
 
     /**
-     * Returns the PID (process id) of running process.
+     * Returns the process id (pid) of running process.
      *
-     * @throws \RuntimeException If the process has already exited.
-     *
-     * @return int
+     * @throws RuntimeException If the process has already exited.
      */
     public function getPid(): int;
 
     /**
      * Get the command that was executed to create the process.
-     *
-     * @return string
      */
     public function getCommand(): string;
 
     /**
      * Return a promise representing the running process.
-     *
-     * @param LoopInterface $eventLoop
-     * @return Promise
      */
     public function getPromise(LoopInterface $eventLoop): Promise;
 }

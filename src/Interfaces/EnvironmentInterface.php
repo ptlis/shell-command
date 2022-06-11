@@ -16,12 +16,7 @@ namespace ptlis\ShellCommand\Interfaces;
 interface EnvironmentInterface
 {
     /**
-     * Accepts a command (without arguments) and verifies whether or not it can be executed.
-     *
-     * @param string $command
-     * @param string $cwdOverride
-     *
-     * @return bool
+     * Accepts a command (without arguments) and verifies that it can be executed.
      */
     public function validateCommand(string $command, string $cwdOverride = ''): bool;
 
@@ -36,27 +31,19 @@ interface EnvironmentInterface
     /**
      * Returns an array of OS strings that the environment supports.
      *
-     * These strings map to values found in the PHP_OS constant.
+     * These strings map to the values that can be set in the PHP_OS constant.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getSupportedList(): array;
 
     /**
      * Escape an argument to be passed to the shell.
-     *
-     * @param string $arg
-     *
-     * @return string
      */
     public function escapeShellArg(string $arg): string;
 
     /**
-     * Performs an platform-specific path expansions (e.g. home folder).
-     *
-     * @param string $path
-     *
-     * @return string
+     * Performs a platform-specific path expansions (e.g. of the home folder).
      */
     public function expandPath(string $path): string;
 }

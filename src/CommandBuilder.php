@@ -17,44 +17,30 @@ use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
+use RuntimeException;
 
 /**
  * Immutable builder, used to create Commands.
  */
 final class CommandBuilder implements CommandBuilderInterface
 {
-    /** @var EnvironmentInterface*/
-    private $environment;
+    private EnvironmentInterface $environment;
+    private string $command;
+    /** @var array<CommandArgumentInterface> */
+    private array $argumentList = [];
+    private int $timeout = -1;
+    private int $pollTimeout = 1000;
+    private string $cwd = '';
+    /** @var array<string, string> */
+    private array $envVariableList = [];
+    /** @var array<ProcessObserverInterface> */
+    private array $observerList = [];
 
-    /** @var string*/
-    private $command;
-
-    /** @var CommandArgumentInterface[] */
-    private $argumentList = [];
-
-    /** @var int */
-    private $timeout = -1;
-
-    /** @var int */
-    private $pollTimeout = 1000;
-
-    /** @var string */
-    private $cwd = '';
-
-    /** @var string|int[] */
-    private $envVariableList = [];
-
-    /** @var ProcessObserverInterface[] */
-    private $observerList = [];
-
-
-    public function __construct(
-        EnvironmentInterface $environment = null
-    ) {
-        if (is_null($environment)) {
+    public function __construct(EnvironmentInterface $environment = null)
+    {
+        if (\is_null($environment)) {
             $environment = $this->getEnvironment(PHP_OS);
         }
-
         $this->environment = $environment;
     }
 
@@ -179,12 +165,12 @@ final class CommandBuilder implements CommandBuilderInterface
     public function buildCommand(): CommandInterface
     {
         if (!$this->environment->validateCommand($this->command, $this->cwd)) {
-            throw new \RuntimeException('Invalid command "' . $this->command . '" provided to ' . __CLASS__ . '.');
+            throw new RuntimeException('Invalid command "' . $this->command . '" provided to ' . __CLASS__ . '.');
         }
 
         $cwd = $this->cwd;
-        if (!strlen($cwd)) {
-            $cwd = getcwd();
+        if (!\strlen($cwd)) {
+            $cwd = \getcwd();
         }
 
         return new Command(
@@ -206,9 +192,9 @@ final class CommandBuilder implements CommandBuilderInterface
      */
     private function getObserver(): ProcessObserverInterface
     {
-        if (1 === count($this->observerList)) {
+        if (1 === \count($this->observerList)) {
             $observer = $this->observerList[0];
-        } elseif (count($this->observerList)) {
+        } elseif (\count($this->observerList)) {
             $observer = new AggregateLogger($this->observerList);
         } else {
             $observer = new NullProcessObserver();
@@ -229,13 +215,13 @@ final class CommandBuilder implements CommandBuilderInterface
         /** @var EnvironmentInterface $environment */
         $environment = null;
         foreach ($environmentList as $possibleEnvironment) {
-            if (in_array($operatingSystem, $possibleEnvironment->getSupportedList())) {
+            if (\in_array($operatingSystem, $possibleEnvironment->getSupportedList())) {
                 $environment = $possibleEnvironment;
             }
         }
 
         if (is_null($environment)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Unable to find Environment for OS "' . $operatingSystem . '".' .
                 'Try explicitly providing an Environment when instantiating the builder.'
             );

@@ -26,48 +26,23 @@ use React\Promise\Promise;
  */
 final class Process implements ProcessInterface
 {
-    /** @var EnvironmentInterface */
-    private $environment;
-
-    /** @var string */
-    private $cwdOverride;
-
-    /** @var string[] */
-    private $envVarList;
-
-    /** @var ProcessObserverInterface */
-    private $observer;
-
-    /** @var int */
-    private $timeout;
-
-    /** @var int */
-    private $pollTimeout;
-
-    /** @var float */
-    private $startTime;
-
-    /** @var int */
-    private $exitCode;
-
-    /** @var string */
-    private $fullStdOut = '';
-
-    /** @var string */
-    private $fullStdErr = '';
-
-    /** @var array */
-    private $pipeList = [];
-
+    private EnvironmentInterface $environment;
+    private string $cwdOverride;
+    /** @var array<string, string> */
+    private array $envVarList;
+    private ProcessObserverInterface $observer;
+    private int $timeout;
+    private int $pollTimeout;
+    private float $startTime;
+    private ?int $exitCode = null;
+    private string $fullStdOut = '';
+    private string $fullStdErr = '';
+    /** @var array<resource> */
+    private array $pipeList = [];
     /** @var resource */
     private $process;
-
-    /** @var int */
-    private $pid;
-
-    /** @var ProcessOutputInterface|null*/
-    private $output = null;
-
+    private int $pid;
+    private ?ProcessOutputInterface $output = null;
 
     public function __construct(
         EnvironmentInterface $environment,
@@ -80,11 +55,8 @@ final class Process implements ProcessInterface
     ) {
         $this->environment = $environment;
         $this->cwdOverride = $cwdOverride;
-        $this->observer = $observer;
         $this->envVarList = $envVarList;
-        if (is_null($this->observer)) {
-            $this->observer = new NullProcessObserver();
-        }
+        $this->observer = $observer ?? new NullProcessObserver();
 
         $this->process = proc_open(
             $command,
@@ -98,17 +70,17 @@ final class Process implements ProcessInterface
             $this->getMergedEnvVars()
         );
 
-        if (!is_resource($this->process)) {
+        if (!\is_resource($this->process)) {
             throw new CommandExecutionException('Call to proc_open failed for unknown reason.');
         }
 
         $this->pid = $this->getStatus()['pid'];
 
-        $this->startTime = microtime(true);
+        $this->startTime = \microtime(true);
 
         // Mark pipe streams as non-blocking
         foreach ($this->pipeList as $pipe) {
-            stream_set_blocking($pipe, false);
+            \stream_set_blocking($pipe, false);
         }
 
         // Notify observer of process creation.
@@ -121,9 +93,10 @@ final class Process implements ProcessInterface
     public function isRunning(): bool
     {
         $status = $this->getStatus();
-
-        $this->observer->processPolled($this->pid, (int)floor((microtime(true) - $this->startTime) * 1000));
-
+        $this->observer->processPolled(
+            $this->pid,
+            (int)\floor((\microtime(true) - $this->startTime) * 1000)
+        );
         return $status['running'];
     }
 
@@ -135,12 +108,12 @@ final class Process implements ProcessInterface
             }
 
             $this->readStreams($callback);
-            usleep($this->pollTimeout);
+            \usleep($this->pollTimeout);
         }
 
         // Mark pipe streams as blocking
         foreach ($this->pipeList as $pipe) {
-            stream_set_blocking($pipe, true);
+            \stream_set_blocking($pipe, true);
         }
 
         $this->readStreams($callback);
@@ -150,18 +123,18 @@ final class Process implements ProcessInterface
 
     public function stop(int $timeout = 1000000): ProcessOutputInterface
     {
-        $originalTime = microtime(true);
+        $originalTime = \microtime(true);
         $this->sendSignal(ProcessInterface::SIGTERM);
 
         while ($this->isRunning()) {
-            $time = microtime(true);
+            $time = \microtime(true);
 
             // If term hasn't succeeded by the specified timeout then try and kill
             if (($time - $originalTime) * 1000000 > $timeout) {
                 $this->sendSignal(ProcessInterface::SIGKILL);
             }
 
-            usleep($this->pollTimeout);
+            \usleep($this->pollTimeout);
         }
 
         return $this->getProcessOutput();
@@ -181,9 +154,9 @@ final class Process implements ProcessInterface
 
     public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
     {
-        fwrite($this->pipeList[$streamId], $input);
+        \fwrite($this->pipeList[$streamId], $input);
         if ($appendNewline) {
-            fwrite($this->pipeList[$streamId], "\n");
+            \fwrite($this->pipeList[$streamId], "\n");
         }
     }
 
@@ -232,7 +205,7 @@ final class Process implements ProcessInterface
      */
     private function hasExceededTimeout(): bool
     {
-        return -1 !== $this->timeout && (microtime(true) - $this->startTime) * 1000000 > $this->timeout;
+        return -1 !== $this->timeout && (\microtime(true) - $this->startTime) * 1000000 > $this->timeout;
     }
 
     /**
@@ -245,9 +218,9 @@ final class Process implements ProcessInterface
      */
     private function getStatus(): array
     {
-        $status = proc_get_status($this->process);
+        $status = \proc_get_status($this->process);
 
-        if (!$status['running'] && is_null($this->exitCode)) {
+        if (!$status['running'] && \is_null($this->exitCode)) {
             $this->exitCode = $status['exitcode'];
         }
 
@@ -265,7 +238,7 @@ final class Process implements ProcessInterface
         $this->fullStdOut .= $stdOut;
         $this->fullStdErr .= $stdErr;
 
-        if (!is_null($callback)) {
+        if (!\is_null($callback)) {
             $callback($stdOut, $stdErr);
         }
 
@@ -278,7 +251,7 @@ final class Process implements ProcessInterface
      */
     private function getProcessOutput(): ProcessOutputInterface
     {
-        if (is_null($this->output)) {
+        if (\is_null($this->output)) {
             $envVarString = '';
             foreach ($this->envVarList as $key => $value) {
                 $envVarString .= $key . '=' . $this->environment->escapeShellArg($value) . ' ';
@@ -302,6 +275,6 @@ final class Process implements ProcessInterface
      */
     private function getMergedEnvVars(): array
     {
-        return array_merge(getenv(), $this->envVarList);
+        return \array_merge(\getenv(), $this->envVarList);
     }
 }

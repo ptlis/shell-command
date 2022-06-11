@@ -23,12 +23,8 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AllLogger implements ProcessObserverInterface
 {
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $logLevel;
-
+    private LoggerInterface $logger;
+    private string $logLevel;
 
     public function __construct(
         LoggerInterface $logger,
@@ -79,8 +75,7 @@ final class AllLogger implements ProcessObserverInterface
     /**
      * Create a log entry, utility method for derived classes.
      *
-     * @param string $message
-     * @param array $context
+     * @param array $context<mixed>
      */
     private function log(string $message, array $context = []): void
     {

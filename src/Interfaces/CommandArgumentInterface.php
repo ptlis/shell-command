@@ -17,8 +17,6 @@ interface CommandArgumentInterface
 {
     /**
      * Encodes the argument for inclusion in a command.
-     *
-     * @return string
      */
     public function encode(): string;
 }

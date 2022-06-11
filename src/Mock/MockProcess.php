@@ -18,33 +18,21 @@ use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Promise\Deferred;
 use React\Promise\Promise;
+use RuntimeException;
 
 /**
  * Mock running process. Waits for the specified time before completing.
  */
 class MockProcess implements ProcessInterface
 {
-    /** @var string */
-    private $command;
-
-    /** @var int */
-    private $runFor;
-
-    /** @var ProcessOutputInterface */
-    private $result;
-
-    /** @var int */
-    private $pid;
-
-    /** @var bool */
-    private $stopped = false;
-
-    /** @var float */
-    private $startTime;
-
-    /** @var array */
-    private $inputs = [];
-
+    private string $command;
+    private int $runFor;
+    private ProcessOutputInterface $result;
+    private int $pid;
+    private bool $stopped = false;
+    private float $startTime;
+    /** @var array<mixed> */
+    private array $inputs = [];
 
     public function __construct(
         string $command,
@@ -56,21 +44,21 @@ class MockProcess implements ProcessInterface
         $this->runFor = $runFor;
         $this->result = $result;
         $this->pid = $pid;
-        $this->startTime = microtime(true);
+        $this->startTime = \microtime(true);
     }
 
     public function isRunning(): bool
     {
         return (
             !$this->stopped
-            && ((microtime(true) - $this->startTime) < ($this->runFor / 1000))
+            && ((\microtime(true) - $this->startTime) < ($this->runFor / 1000))
         );
     }
 
     public function wait(\Closure $callback = null): ProcessOutputInterface
     {
         while ($this->isRunning()) {
-            usleep(50);
+            \usleep(50);
         }
 
         if ($callback) {
@@ -89,19 +77,11 @@ class MockProcess implements ProcessInterface
 
     public function readOutput(int $streamId): string
     {
-        $output = '';
-
-        switch ($streamId) {
-            case Process::STDOUT:
-                $output = $this->result->getStdOut();
-                break;
-
-            case Process::STDERR:
-                $output = $this->result->getStdErr();
-                break;
-        }
-
-        return $output;
+        return match ($streamId) {
+            ProcessInterface::STDOUT => $this->result->getStdOut(),
+            ProcessInterface::STDERR => $this->result->getStdErr(),
+            default => '',
+        };
     }
 
     public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
@@ -118,7 +98,7 @@ class MockProcess implements ProcessInterface
     public function getPid(): int
     {
         if (!$this->isRunning()) {
-            throw new \RuntimeException('Stopped processed do not have a pid');
+            throw new RuntimeException('Stopped processed do not have a pid');
         }
 
         return $this->pid;
