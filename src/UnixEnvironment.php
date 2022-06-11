@@ -112,10 +112,10 @@ final class UnixEnvironment implements EnvironmentInterface
     private function getCwd(): string
     {
         $cwd = getcwd();
-        if (!$cwd) {
-            throw new RuntimeException('Unable to determine current working directory');
+        if (\is_string($cwd)) {
+            return $cwd;
         }
-        return $cwd;
+        throw new RuntimeException('Unable to determine current working directory');
     }
 
     /**

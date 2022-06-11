@@ -12,6 +12,7 @@ namespace ptlis\ShellCommand\Test\Unit;
 
 use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
+use RuntimeException;
 
 /**
  * @covers \ptlis\ShellCommand\UnixEnvironment
@@ -36,5 +37,29 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
             '\'--foo=bar\'',
             $environment->escapeShellArg('--foo=bar')
         );
+    }
+
+    public function testGetCwdSuccess(): void
+    {
+        $environment = new UnixEnvironment();
+
+        $this->assertSame(
+            (string)\getcwd(),
+            $environment->getNormalizedCwd()
+        );
+    }
+
+    public function testGetCwdError(): void
+    {
+        global $mockGetcwd;
+        $mockGetcwd = true;
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Unable to determine current working directory');
+
+        $environment = new UnixEnvironment();
+        $environment->getNormalizedCwd();
+
+        $mockGetcwd = false;
     }
 }

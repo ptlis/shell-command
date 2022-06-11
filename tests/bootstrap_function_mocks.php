@@ -89,4 +89,24 @@ namespace ptlis\ShellCommand {
             return \is_executable($path);
         }
     }
+
+    /**
+     * Mock the is_executable to allow faked directories to appear real.
+     */
+    $mockGetcwd = false;
+    $mockGetcwdRetval = true;
+    /**
+     * @return bool|string
+     */
+    function getcwd()
+    {
+        global $mockGetcwd;
+        global $mockGetcwdRetval;
+
+        if ($mockGetcwd) {
+            return $mockGetcwdRetval;
+        } else {
+            return \getcwd();
+        }
+    }
 }
