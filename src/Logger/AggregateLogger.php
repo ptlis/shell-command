@@ -22,7 +22,7 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 final class AggregateLogger implements ProcessObserverInterface
 {
     /** @var array<ProcessObserverInterface> */
-    private array $loggerList;
+    private readonly array $loggerList;
 
     /**
      * @param array<ProcessObserverInterface> $loggerList

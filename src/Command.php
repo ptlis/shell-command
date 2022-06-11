@@ -22,16 +22,16 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class Command implements CommandInterface
 {
-    private EnvironmentInterface $environment;
-    private string $command;
+    private readonly EnvironmentInterface $environment;
+    private readonly string $command;
     /** @var array<CommandArgumentInterface> */
-    private array $argumentList;
-    private int $timeout;
-    private int $pollTimeout;
-    private string $cwd;
+    private readonly array $argumentList;
+    private readonly int $timeout;
+    private readonly int $pollTimeout;
+    private readonly string $cwd;
     /** @var array<string> */
-    private array $envVariableList;
-    private ProcessObserverInterface $processObserver;
+    private readonly array $envVariableList;
+    private readonly ProcessObserverInterface $processObserver;
 
     /**
      * @param array<CommandArgumentInterface> $argumentList

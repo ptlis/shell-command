@@ -20,14 +20,14 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class MockCommand implements CommandInterface
 {
-    private string $command;
+    private readonly string $command;
     /** @var array<string> */
-    private array $argumentList;
+    private readonly array $argumentList;
     /** @var array<string> */
-    private array $rawArgumentList;
-    private ProcessOutputInterface $result;
-    private int $runningTime;
-    private int $pid;
+    private readonly array $rawArgumentList;
+    private readonly ProcessOutputInterface $result;
+    private readonly int $runningTime;
+    private readonly int $pid;
 
     /**
      * @param array<string> $argumentList

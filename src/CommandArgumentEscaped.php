@@ -18,8 +18,8 @@ use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
  */
 final class CommandArgumentEscaped implements CommandArgumentInterface
 {
-    private string $argument;
-    private EnvironmentInterface $environment;
+    private readonly string $argument;
+    private readonly EnvironmentInterface $environment;
 
     public function __construct(string $argument, EnvironmentInterface $environment)
     {

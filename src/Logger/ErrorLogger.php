@@ -22,9 +22,8 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ErrorLogger extends NullProcessObserver
 {
-    private LoggerInterface $logger;
-    private string $logLevel;
-
+    private readonly LoggerInterface $logger;
+    private readonly string $logLevel;
 
     public function __construct(
         LoggerInterface $logger,

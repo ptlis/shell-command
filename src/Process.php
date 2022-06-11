@@ -26,13 +26,13 @@ use React\Promise\PromiseInterface;
  */
 final class Process implements ProcessInterface
 {
-    private EnvironmentInterface $environment;
-    private string $cwdOverride;
+    private readonly EnvironmentInterface $environment;
+    private readonly string $cwdOverride;
     /** @var array<string, string> */
-    private array $envVarList;
-    private ProcessObserverInterface $observer;
-    private int $timeout;
-    private int $pollTimeout;
+    private readonly array $envVarList;
+    private readonly ProcessObserverInterface $observer;
+    private readonly int $timeout;
+    private readonly int $pollTimeout;
     private float $startTime;
     private ?int $exitCode = null;
     private string $fullStdOut = '';
@@ -41,7 +41,7 @@ final class Process implements ProcessInterface
     private array $pipeList = [];
     /** @var resource */
     private $process;
-    private int $pid;
+    private readonly int $pid;
     private ?ProcessOutputInterface $output = null;
 
     /**
