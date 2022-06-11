@@ -34,7 +34,7 @@ class AllLoggerTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -52,7 +52,7 @@ class AllLoggerTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 4523,
                         'command' => './tests/commands/unix/test_binary',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],
@@ -86,7 +86,7 @@ class AllLoggerTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -104,7 +104,7 @@ class AllLoggerTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 9241,
                         'command' => './tests/commands/unix/sleep_binary 0.1',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],

@@ -17,6 +17,11 @@ use PHPUnit\Framework\TestCase;
 
 class PtlisShellCommandTestcase extends TestCase
 {
+    /**
+     * @param array<mixed> $expectedLogList
+     * @param array<mixed> $actualLogList
+     * @return void
+     */
     public function assertHasLogs(array $expectedLogList, array $actualLogList): void
     {
         foreach ($expectedLogList as $index => $expectedLog) {

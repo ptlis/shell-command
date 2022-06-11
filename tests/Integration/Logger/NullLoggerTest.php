@@ -32,7 +32,7 @@ class NullLoggerTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -55,7 +55,7 @@ class NullLoggerTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,

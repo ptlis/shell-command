@@ -13,6 +13,15 @@ namespace ptlis\ShellCommand {
      */
     $mockProcOpen = false;
     $mockProcOpenRetval = false;
+    /**
+     * @param string $cmd
+     * @param array<mixed> $descriptorspec
+     * @param array<int, resource> $pipes
+     * @param string $cwd
+     * @param array<string, string>|null $env
+     * @param array<mixed> $other_options
+     * @return false|resource
+     */
     function proc_open(
         $cmd,
         array $descriptorspec,
@@ -38,6 +47,11 @@ namespace ptlis\ShellCommand {
     $mockProcTerminate = false;
     $mockProcTerminateRetval = false;
     $mockProcTerminateCalled = false;
+    /**
+     * @param resource $process
+     * @param int $signal
+     * @return bool
+     */
     function proc_terminate($process, $signal)
     {
         global $mockProcTerminate;
@@ -60,6 +74,10 @@ namespace ptlis\ShellCommand {
      */
     $mockIsExecutable = false;
     $mockIsExecutableRetval = true;
+    /**
+     * @param string $path
+     * @return bool
+     */
     function is_executable($path)
     {
         global $mockIsExecutable;

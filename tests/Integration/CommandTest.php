@@ -35,7 +35,7 @@ class CommandTest extends PtlisShellCommandTestcase
             [
                 new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $this->assertEquals(
@@ -44,7 +44,7 @@ class CommandTest extends PtlisShellCommandTestcase
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 '',
                 './tests/commands/unix/test_binary \'if=/dev/sha1 of=/dev/sdb2\'',
-                getcwd()
+                (new UnixEnvironment())->getNormalizedCwd()
             ),
             $command->runSynchronous()
         );
@@ -52,11 +52,11 @@ class CommandTest extends PtlisShellCommandTestcase
 
     public function testRunFromHome(): void
     {
-        $originalPath = getenv('PATH');
+        $originalPath = \getenv('PATH');
 
-        $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
+        $pathToCommand = \realpath(getcwd() . '/tests/commands/unix');
 
-        putenv('HOME=' . $pathToCommand);
+        \putenv('HOME=' . $pathToCommand);
 
         $path = '~/test_binary';
 
@@ -68,7 +68,7 @@ class CommandTest extends PtlisShellCommandTestcase
             [
                 new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $this->assertEquals(
@@ -77,22 +77,21 @@ class CommandTest extends PtlisShellCommandTestcase
                 'Test command' . PHP_EOL . 'if=/dev/sha1 of=/dev/sdb2' . PHP_EOL,
                 '',
                 '~/test_binary \'if=/dev/sha1 of=/dev/sdb2\'',
-                getcwd()
+                (new UnixEnvironment())->getNormalizedCwd()
             ),
             $command->runSynchronous()
         );
 
-        putenv('PATH=' . $originalPath);
+        \putenv('PATH=' . $originalPath);
     }
 
     public function testRunHomeCwd(): void
     {
-        $originalPath = getenv('PATH');
+        $originalPath = \getenv('PATH');
 
-        $fakeHomePath = realpath(getcwd() . '/tests/commands/unix');
+        $fakeHomePath = \realpath(getcwd() . '/tests/commands/unix');
 
-
-        putenv('HOME=' . $fakeHomePath);
+        \putenv('HOME=' . $fakeHomePath);
 
         $path = '~/sleep_binary 0.1';
 
@@ -127,7 +126,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $this->assertEquals(
@@ -136,7 +135,7 @@ class CommandTest extends PtlisShellCommandTestcase
                 '',
                 '',
                 './tests/commands/unix/sleep_binary 0.1',
-                getcwd()
+                (new UnixEnvironment())->getNormalizedCwd()
             ),
             $command->runSynchronous()
         );
@@ -151,7 +150,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [
                 'TEST_VAR' => 'VALUE'
             ]
@@ -163,7 +162,7 @@ class CommandTest extends PtlisShellCommandTestcase
                 'VALUE' . PHP_EOL,
                 '',
                 'TEST_VAR=\'VALUE\' ./tests/commands/unix/echo_env_binary',
-                getcwd()
+                (new UnixEnvironment())->getNormalizedCwd()
             ),
             $command->runSynchronous()
         );
@@ -178,7 +177,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $this->assertEquals(
@@ -187,7 +186,7 @@ class CommandTest extends PtlisShellCommandTestcase
                 '',
                 'Fatal Error' . PHP_EOL,
                 './tests/commands/unix/error_binary',
-                getcwd()
+                (new UnixEnvironment())->getNormalizedCwd()
             ),
             $command->runSynchronous()
         );
@@ -204,7 +203,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $promise = $command->runAsynchronous()->getPromise($eventLoop);
@@ -238,7 +237,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $promise = $command->runAsynchronous()->getPromise($eventLoop);
@@ -272,7 +271,7 @@ class CommandTest extends PtlisShellCommandTestcase
             new NullProcessObserver(),
             $path,
             [],
-            getcwd()
+            (new UnixEnvironment())->getNormalizedCwd()
         );
 
         $promise = $command->runAsynchronous()->getPromise($eventLoop);

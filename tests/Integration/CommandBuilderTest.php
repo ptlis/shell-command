@@ -22,7 +22,7 @@ class CommandBuilderTest extends PtlisShellCommandTestcase
     public function testInvalidCommand(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Invalid command "foobar" provided to ptlis\ShellCommand\CommandBuilder.');
+        $this->expectExceptionMessage('Invalid command "foobar" provided to ' . CommandBuilder::class . '.');
 
         $builder = new CommandBuilder(new UnixEnvironment());
 
@@ -36,7 +36,7 @@ class CommandBuilderTest extends PtlisShellCommandTestcase
         $builder = new CommandBuilder();
 
         $command = $builder
-            ->setCwd(realpath(__DIR__ . '/../commands/unix/'))
+            ->setCwd((string)\realpath(__DIR__ . '/../commands/unix/'))
             ->setCommand('./test_binary')
             ->buildCommand();
 

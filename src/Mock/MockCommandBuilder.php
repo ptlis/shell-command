@@ -14,7 +14,6 @@ use ptlis\ShellCommand\Interfaces\CommandBuilderInterface;
 use ptlis\ShellCommand\Interfaces\CommandInterface;
 use ptlis\ShellCommand\Interfaces\ProcessObserverInterface;
 use ptlis\ShellCommand\ProcessOutput;
-use ptlis\ShellCommand\UnixEnvironment;
 use RuntimeException;
 
 /**
@@ -71,7 +70,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         $this->observerList = $observerList;
     }
 
-    public function setCommand(string $command): CommandBuilderInterface
+    public function setCommand(string $command): MockCommandBuilder
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -81,7 +80,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addArgument(string $argument, bool $conditionalResult = true): CommandBuilderInterface
+    public function addArgument(string $argument, bool $conditionalResult = true): MockCommandBuilder
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -96,7 +95,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addArguments(array $argumentList, bool $conditionalResult = true): CommandBuilderInterface
+    public function addArguments(array $argumentList, bool $conditionalResult = true): MockCommandBuilder
     {
         $newBuilder = clone $this;
 
@@ -110,7 +109,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): CommandBuilderInterface
+    public function addRawArgument(string $rawArgument, bool $conditionalResult = true): MockCommandBuilder
     {
         $newBuilder = clone $this;
 
@@ -125,7 +124,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): CommandBuilderInterface
+    public function addRawArguments(array $rawArgumentList, bool $conditionalResult = true): MockCommandBuilder
     {
         $newBuilder = clone $this;
 
@@ -139,7 +138,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function setTimeout(int $timeout): CommandBuilderInterface
+    public function setTimeout(int $timeout): MockCommandBuilder
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -149,7 +148,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function setPollTimeout(int $pollTimeout): CommandBuilderInterface
+    public function setPollTimeout(int $pollTimeout): MockCommandBuilder
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -159,7 +158,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function setCwd(string $cwd): CommandBuilderInterface
+    public function setCwd(string $cwd): MockCommandBuilder
     {
         $newBuilder = clone $this;
         $newBuilder->builtCommandList = &$this->builtCommandList;
@@ -177,7 +176,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $this->builtCommandList;
     }
 
-    public function addProcessObserver(ProcessObserverInterface $observer): CommandBuilderInterface
+    public function addProcessObserver(ProcessObserverInterface $observer): MockCommandBuilder
     {
         $observerList = $this->observerList;
         $observerList[] = $observer;
@@ -194,7 +193,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         string $key,
         string $value,
         bool $conditionalResult = true
-    ): CommandBuilderInterface {
+    ): MockCommandBuilder {
         $newBuilder = clone $this;
 
         if ($conditionalResult) {
@@ -208,7 +207,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         return $newBuilder;
     }
 
-    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): CommandBuilderInterface
+    public function addEnvironmentVariables(array $envVars, bool $conditionalResult = true): MockCommandBuilder
     {
         $newBuilder = clone $this;
 
@@ -254,7 +253,7 @@ final class MockCommandBuilder implements CommandBuilderInterface
         string $stdErr,
         string $command,
         string $workingDirectory
-    ): CommandBuilderInterface {
+    ): MockCommandBuilder {
         $mockResultList = $this->mockResultList;
         $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr, $command, $workingDirectory);
 

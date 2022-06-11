@@ -42,8 +42,8 @@ class ProcessTest extends PtlisShellCommandTestcase
     public function testRunProcess(): void
     {
         $command = './tests/commands/unix/test_binary';
-
-        $process = new Process(new UnixEnvironment(), $command, getcwd(), ['FOO' => 'bar']);
+        $environment = new UnixEnvironment();
+        $process = new Process($environment, $command, $environment->getNormalizedCwd(), ['FOO' => 'bar']);
         $process->wait();
 
         $this->assertEquals(
@@ -63,7 +63,7 @@ class ProcessTest extends PtlisShellCommandTestcase
 
         $eventLoop = Factory::create();
 
-        $promise = (new Process(new UnixEnvironment(), $command, getcwd()))
+        $promise = (new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd()))
             ->getPromise($eventLoop);
 
         $successCalled = false;
@@ -89,7 +89,7 @@ class ProcessTest extends PtlisShellCommandTestcase
 
         $eventLoop = Factory::create();
 
-        $promise = (new Process(new UnixEnvironment(), $command, getcwd()))
+        $promise = (new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd()))
             ->getPromise($eventLoop);
 
         $successCalled = false;
@@ -113,7 +113,7 @@ class ProcessTest extends PtlisShellCommandTestcase
     {
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
         $process->wait(function ($stdOut, $stdErr) {
         });
 
@@ -127,7 +127,7 @@ class ProcessTest extends PtlisShellCommandTestcase
     {
         $command = './tests/commands/unix/error_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
 
         $fullStdOut = '';
         $fullStdErr = '';
@@ -151,14 +151,14 @@ class ProcessTest extends PtlisShellCommandTestcase
     {
         $command = './tests/commands/unix/sleep_binary 0.1';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
 
         $this->assertNotNull(
             $process->getPid()
         );
     }
 
-    public function testStopRunning()
+    public function testStopRunning(): void
     {
         $command = './tests/commands/unix/sleep_binary 0.1';
 
@@ -167,7 +167,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -184,7 +184,7 @@ class ProcessTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 555,
                         'command' => './tests/commands/unix/sleep_binary 0.1',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],
@@ -224,7 +224,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -241,7 +241,7 @@ class ProcessTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 9999,
                         'command' => './tests/commands/unix/sleep_binary 2',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],
@@ -275,7 +275,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             500000,
             1000,
@@ -292,7 +292,7 @@ class ProcessTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 1234,
                         'command' => './tests/commands/unix/sleep_binary 1',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],
@@ -327,7 +327,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             500000,
             1000,
@@ -347,7 +347,7 @@ class ProcessTest extends PtlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        new Process(new UnixEnvironment(), $command, getcwd());
+        new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
     }
 
     public function testProcTerminateFail(): void
@@ -360,7 +360,7 @@ class ProcessTest extends PtlisShellCommandTestcase
 
         $command = './tests/commands/unix/test_binary';
 
-        $process = new Process(new UnixEnvironment(), $command, getcwd());
+        $process = new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
         $process->stop();
     }
 
@@ -371,7 +371,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -394,7 +394,7 @@ class ProcessTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,

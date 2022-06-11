@@ -22,7 +22,10 @@ use ptlis\ShellCommand\UnixEnvironment;
  */
 class CommandBuilderTest extends PtlisShellCommandTestcase
 {
-    private function readPrivateAttribute($object, string $property)
+    /**
+     * @return mixed
+     */
+    private function readPrivateAttribute(object $object, string $property)
     {
         $reflectionObject = new \ReflectionClass(get_class($object));
         $property = $reflectionObject->getProperty($property);

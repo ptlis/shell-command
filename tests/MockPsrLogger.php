@@ -19,19 +19,19 @@ use Psr\Log\LogLevel;
 class MockPsrLogger implements LoggerInterface
 {
     /**
-     * @var array Logs created.
+     * @var array<mixed> Logs created.
      */
-    private $logs = [];
+    private array $logs = [];
 
     /**
      * @var int Fake process ID to use when logging
      */
-    private $fakePid;
+    private int $fakePid;
 
     /**
      * @param int $fakePid Fake process ID to use when logging
      */
-    public function __construct($fakePid = 999)
+    public function __construct(int $fakePid = 999)
     {
         $this->fakePid = $fakePid;
     }
@@ -40,7 +40,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $context['pid'] = $this->fakePid;
         $this->log(
@@ -53,7 +53,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $this->log(
             LogLevel::ALERT,
@@ -65,7 +65,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $this->log(
             LogLevel::CRITICAL,
@@ -77,7 +77,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $this->log(
             LogLevel::ERROR,
@@ -89,7 +89,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $this->log(
             LogLevel::WARNING,
@@ -101,7 +101,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         $this->log(
             LogLevel::NOTICE,
@@ -113,7 +113,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         $this->log(
             LogLevel::INFO,
@@ -125,7 +125,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         $this->log(
             LogLevel::DEBUG,
@@ -137,7 +137,7 @@ class MockPsrLogger implements LoggerInterface
     /**
      * {@inheritDoc}
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if (array_key_exists('stderr', $context) && !strlen($context['stderr'])) {
             return;
@@ -159,9 +159,9 @@ class MockPsrLogger implements LoggerInterface
     /**
      * Get logged data.
      *
-     * @return array
+     * @return array<mixed>
      */
-    public function getLogs()
+    public function getLogs(): array
     {
         return $this->logs;
     }

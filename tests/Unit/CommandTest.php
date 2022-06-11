@@ -34,7 +34,7 @@ class CommandTest extends TestCase
             [
                 new CommandArgumentEscaped('-s bar', $environment)
             ],
-            getcwd()
+            $environment->getNormalizedCwd()
         );
 
         $this->assertSame(
@@ -55,7 +55,7 @@ class CommandTest extends TestCase
             [
                 new CommandArgumentEscaped('--filter=hide-empty', $environment)
             ],
-            getcwd()
+            $environment->getNormalizedCwd()
         );
 
         $this->assertSame(
@@ -77,7 +77,7 @@ class CommandTest extends TestCase
                 new CommandArgumentEscaped('my_files/', $environment)
 
             ],
-            getcwd()
+            $environment->getNormalizedCwd()
         );
 
         $this->assertSame(
@@ -98,7 +98,7 @@ class CommandTest extends TestCase
             [
                 new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            getcwd()
+            $environment->getNormalizedCwd()
         );
 
         $this->assertSame(
@@ -119,7 +119,7 @@ class CommandTest extends TestCase
             [
                 new CommandArgumentEscaped('if=/dev/sha1 of=/dev/sdb2', $environment)
             ],
-            getcwd(),
+            $environment->getNormalizedCwd(),
             ['MY_VAR' => 'VALUE']
         );
 
@@ -144,7 +144,7 @@ class CommandTest extends TestCase
                 new CommandArgumentEscaped('--baz', $environment),
                 new CommandArgumentRaw('--bat')
             ],
-            getcwd()
+            $environment->getNormalizedCwd()
         );
 
         $this->assertSame(

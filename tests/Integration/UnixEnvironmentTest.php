@@ -58,7 +58,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
-        putenv('PATH=/foo/bar:/baz/bat:' . $pathToCommand);
+        \putenv('PATH=/foo/bar:/baz/bat:' . $pathToCommand);
 
         $env = new UnixEnvironment();
 
@@ -66,7 +66,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
 
         $this->assertSame(true, $valid);
 
-        putenv('PATH=' . $originalPath);
+        \putenv('PATH=' . $originalPath);
     }
 
     public function testFromHome(): void
@@ -75,7 +75,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
 
         $pathToCommand = realpath(getcwd() . '/tests/commands/unix');
 
-        putenv('HOME=' . $pathToCommand);
+        \putenv('HOME=' . $pathToCommand);
 
         $env = new UnixEnvironment();
 
@@ -83,7 +83,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
 
         $this->assertSame(true, $valid);
 
-        putenv('PATH=' . $originalPath);
+        \putenv('PATH=' . $originalPath);
     }
 
     public function testNotFound(): void
@@ -100,7 +100,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
     public function testCwdOverride(): void
     {
         $command = './commands/unix/test_binary';
-        $cwd = getcwd() . DIRECTORY_SEPARATOR . 'tests';
+        $cwd = \getcwd() . DIRECTORY_SEPARATOR . 'tests';
 
         $env = new UnixEnvironment();
 
@@ -112,7 +112,7 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
     public function testPathOverride(): void
     {
         $paths = [
-            realpath(getcwd() . '/tests/commands/unix')
+            (string)\realpath(\getcwd() . '/tests/commands/unix')
         ];
 
         $env = new UnixEnvironment($paths);
@@ -152,7 +152,9 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
         $mockProcTerminateCalled = false;
 
         $environment = new UnixEnvironment();
-        $environment->sendSignal(null, ProcessInterface::SIGTERM);
+        /** @var resource $resource */
+        $resource = null;
+        $environment->sendSignal($resource, ProcessInterface::SIGTERM);
 
         $this->assertTrue($mockProcTerminateCalled);
     }
@@ -168,7 +170,9 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
         $mockProcTerminateRetval = true;
 
         $environment = new UnixEnvironment();
-        $environment->sendSignal(null, ProcessInterface::SIGKILL);
+        /** @var resource $resource */
+        $resource = null;
+        $environment->sendSignal($resource, ProcessInterface::SIGKILL);
 
         $this->assertTrue($mockProcTerminateCalled);
     }
@@ -184,7 +188,9 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
         $mockProcTerminateRetval = true;
 
         $environment = new UnixEnvironment();
-        $environment->sendSignal(null, 'FOOBAR');
+        /** @var resource $resource */
+        $resource = null;
+        $environment->sendSignal($resource, 'FOOBAR');
     }
 
     public function testSignalError(): void
@@ -198,6 +204,8 @@ class UnixEnvironmentTest extends PtlisShellCommandTestcase
         $mockProcTerminateRetval = false;
 
         $environment = new UnixEnvironment();
-        $environment->sendSignal(null, ProcessInterface::SIGTERM);
+        /** @var resource $resource */
+        $resource = null;
+        $environment->sendSignal($resource, ProcessInterface::SIGTERM);
     }
 }

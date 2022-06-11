@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
+use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\AggregateLogger;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
@@ -37,7 +38,7 @@ class AggregateLoggerTest extends PtlisShellCommandTestcase
         $process = new Process(
             new UnixEnvironment(),
             $command,
-            getcwd(),
+            (new UnixEnvironment())->getNormalizedCwd(),
             [],
             -1,
             1000,
@@ -47,7 +48,7 @@ class AggregateLoggerTest extends PtlisShellCommandTestcase
             ])
         );
 
-        $process->sendSignal(Process::SIGTERM);
+        $process->sendSignal(ProcessInterface::SIGTERM);
         $process->wait();
 
         $this->assertHasLogs(
@@ -58,7 +59,7 @@ class AggregateLoggerTest extends PtlisShellCommandTestcase
                     'context' => [
                         'pid' => 1234,
                         'command' => './tests/commands/unix/sleep_binary 0.1',
-                        'cwd' => getcwd(),
+                        'cwd' => (new UnixEnvironment())->getNormalizedCwd(),
                         'env_vars' => []
                     ]
                 ],
