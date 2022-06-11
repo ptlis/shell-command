@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -8,6 +8,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Interfaces;
 
@@ -24,7 +26,7 @@ interface ProcessObserverInterface
      * @param string $cwd The current working directory that the process was created in.
      * @param string[] $environmentVariables Array of environment variables passed to the process.
      */
-    public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void ;
+    public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void;
 
     /**
      * The process has had it's status polled.

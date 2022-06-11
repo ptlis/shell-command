@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Test\Integration;
 
@@ -14,7 +16,7 @@ use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Logger\AllLogger;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Test\MockPsrLogger;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\Process;
 use React\EventLoop\Factory;
@@ -22,7 +24,7 @@ use React\EventLoop\Factory;
 /**
  * @covers \ptlis\ShellCommand\Process
  */
-class ProcessTest extends ptlisShellCommandTestcase
+class ProcessTest extends PtlisShellCommandTestcase
 {
     public function tearDown(): void
     {
@@ -112,8 +114,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         $command = './tests/commands/unix/test_binary';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
-        $process->wait(function($stdOut, $stdErr) {
-
+        $process->wait(function ($stdOut, $stdErr) {
         });
 
         $this->assertEquals(
@@ -130,7 +131,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
         $fullStdOut = '';
         $fullStdErr = '';
-        $output = $process->wait(function($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
+        $output = $process->wait(function ($stdOut, $stdErr) use (&$fullStdOut, &$fullStdErr) {
             $fullStdOut .= $stdOut;
             $fullStdErr .= $stdErr;
         });
@@ -355,7 +356,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         $mockProcTerminate = true;
 
         $this->expectException(CommandExecutionException::class);
-        $this->expectExceptionMessage('Call to proc_terminate with signal "' . ProcessInterface::SIGTERM . '" failed for unknown reason.');
+        $this->expectExceptionMessage('Call to proc_terminate with signal "SIGTERM" failed for unknown reason.');
 
         $command = './tests/commands/unix/test_binary';
 

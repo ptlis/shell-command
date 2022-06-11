@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -9,17 +9,19 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Process;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * @covers \ptlis\ShellCommand\Logger\NullProcessObserver
  */
-class NullLoggerTest extends ptlisShellCommandTestcase
+class NullLoggerTest extends PtlisShellCommandTestcase
 {
     public function testCalled(): void
     {

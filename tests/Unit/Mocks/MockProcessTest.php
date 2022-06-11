@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -6,18 +6,20 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Unit\Mocks;
 
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Mock\MockProcess;
 use ptlis\ShellCommand\ProcessOutput;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use React\EventLoop\Factory;
 
 /**
  * @covers \ptlis\ShellCommand\Mock\MockProcess
  */
-class MockProcessTest extends ptlisShellCommandTestcase
+class MockProcessTest extends PtlisShellCommandTestcase
 {
     public function testIsRunning(): void
     {
@@ -31,7 +33,7 @@ class MockProcessTest extends ptlisShellCommandTestcase
         $callbackCalled = false;
 
         $process = new MockProcess('test-command', new ProcessOutput(0, '', '', 'test-command', '.'), 100);
-        $process->wait(function() use (&$callbackCalled) {
+        $process->wait(function () use (&$callbackCalled) {
             $callbackCalled = true;
         });
 
@@ -94,24 +96,41 @@ class MockProcessTest extends ptlisShellCommandTestcase
 
     public function testReadStdErr(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'), 1000, 9999);
+        $process = new MockProcess(
+            'test-command',
+            new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'),
+            1000,
+            9999
+        );
         $this->assertEquals('foo bar baz', $process->readOutput(ProcessInterface::STDERR));
     }
 
     public function testWriteInput(): void
     {
-        $process = new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'), 1000, 9999);
+        $process = new MockProcess(
+            'test-command',
+            new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'),
+            1000,
+            9999
+        );
         $process->writeInput('Hello stdin w/ newline');
-        $process->writeInput('Hello stdin w/o newline', ProcessInterface::STDIN,false);
-        $this->assertEquals([ProcessInterface::STDIN => ["Hello stdin w/ newline\n","Hello stdin w/o newline"]], $process->getInputs());
+        $process->writeInput('Hello stdin w/o newline', ProcessInterface::STDIN, false);
+        $this->assertEquals(
+            [ProcessInterface::STDIN => ["Hello stdin w/ newline\n","Hello stdin w/o newline"]],
+            $process->getInputs()
+        );
     }
 
     public function testRunWithPromiseSuccess(): void
     {
         $eventLoop = Factory::create();
 
-        $promise = (new MockProcess('test-command', new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'), 1000, 9999))
-            ->getPromise($eventLoop);
+        $promise = (new MockProcess(
+            'test-command',
+            new ProcessOutput(0, '', 'foo bar baz', 'test-command', '.'),
+            1000,
+            9999
+        ))->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;
@@ -134,8 +153,12 @@ class MockProcessTest extends ptlisShellCommandTestcase
     {
         $eventLoop = Factory::create();
 
-        $promise = (new MockProcess('test-command', new ProcessOutput(1, 'ohno!', 'foo bar baz', 'test-command', '.'), 1000, 9999))
-            ->getPromise($eventLoop);
+        $promise = (new MockProcess(
+            'test-command',
+            new ProcessOutput(1, 'ohno!', 'foo bar baz', 'test-command', '.'),
+            1000,
+            9999
+        ))->getPromise($eventLoop);
 
         $successCalled = false;
         $failureCalled = false;

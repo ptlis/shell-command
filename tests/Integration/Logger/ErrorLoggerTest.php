@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Integration\Logger;
 
 use Psr\Log\LogLevel;
 use ptlis\ShellCommand\Logger\ErrorLogger;
 use ptlis\ShellCommand\Test\MockPsrLogger;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 use ptlis\ShellCommand\Process;
 
 /**
  * @covers \ptlis\ShellCommand\Logger\ErrorLogger
  */
-class ErrorLoggerTest extends ptlisShellCommandTestcase
+class ErrorLoggerTest extends PtlisShellCommandTestcase
 {
     public function testCalled(): void
     {

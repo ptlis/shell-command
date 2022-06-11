@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test;
 
 use PHPUnit\Framework\TestCase;
 
-class ptlisShellCommandTestcase extends TestCase
+class PtlisShellCommandTestcase extends TestCase
 {
     public function assertHasLogs(array $expectedLogList, array $actualLogList): void
     {
         foreach ($expectedLogList as $index => $expectedLog) {
-
             $hasMatch = false;
 
             foreach ($actualLogList as $actualLog) {

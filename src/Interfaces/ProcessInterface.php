@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Interfaces;
 
@@ -17,14 +19,14 @@ use React\Promise\Promise;
 interface ProcessInterface
 {
     /** Signal used to request that the process terminates. */
-    const SIGTERM = 'SIGTERM';
+    public const SIGTERM = 'SIGTERM';
 
     /** Signal used to force the process to terminate. */
-    const SIGKILL = 'SIGKILL';
+    public const SIGKILL = 'SIGKILL';
 
-    const STDIN = 0;
-    const STDOUT = 1;
-    const STDERR = 2;
+    public const STDIN = 0;
+    public const STDOUT = 1;
+    public const STDERR = 2;
 
     /**
      * Returns true if the process is still running.
@@ -36,8 +38,8 @@ interface ProcessInterface
     /**
      * Blocks execution until the command has finished executing.
      *
-     * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout and
-     *  stderr.
+     * @param \Closure|null $callback Execute when the wait time has elapsed, is provided the latest contents of stdout
+     *  and stderr.
      * @return ProcessOutputInterface
      */
     public function wait(\Closure $callback = null): ProcessOutputInterface;
@@ -63,13 +65,14 @@ interface ProcessInterface
      * Write something to the specified stream.
      *
      * @param string $input
-     *
-     * @param int    $streamId defaults to ProcessInterface::STDIN
-     *
-     * @param bool $appendNewline true (default) appends a new line ("\n") to the end;
-     *                            false - nothing is appended
+     * @param int $streamId defaults to ProcessInterface::STDIN
+     * @param bool $appendNewline true (default) appends a new line ("\n") to the end; false - nothing is appended
      */
-    public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void;
+    public function writeInput(
+        string $input,
+        int $streamId = ProcessInterface::STDIN,
+        bool $appendNewline = true
+    ): void;
 
     /**
      * Send a signal to the running process.

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -6,19 +6,21 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Unit\Mocks;
 
 use ptlis\ShellCommand\Logger\NullProcessObserver;
 use ptlis\ShellCommand\Mock\MockCommand;
 use ptlis\ShellCommand\Mock\MockCommandBuilder;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * @covers \ptlis\ShellCommand\Mock\MockCommandBuilder
  */
-class MockCommandBuilderTest extends ptlisShellCommandTestcase
+class MockCommandBuilderTest extends PtlisShellCommandTestcase
 {
     public function testMockCommandBuilderOne(): void
     {
@@ -323,7 +325,9 @@ class MockCommandBuilderTest extends ptlisShellCommandTestcase
     public function testInvalidBinary(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.');
+        $this->expectExceptionMessage(
+            'No command was provided to "ptlis\ShellCommand\Mock\MockCommandBuilder", unable to build command.'
+        );
         $builder = new MockCommandBuilder();
 
         $builder->buildCommand();

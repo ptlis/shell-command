@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Mock;
 
@@ -260,8 +262,13 @@ final class MockCommandBuilder implements CommandBuilderInterface
      *
      * @return $this
      */
-    public function addMockResult(int $exitCode, string $stdOut, string $stdErr, string $command, string $workingDirectory): CommandBuilderInterface
-    {
+    public function addMockResult(
+        int $exitCode,
+        string $stdOut,
+        string $stdErr,
+        string $command,
+        string $workingDirectory
+    ): CommandBuilderInterface {
         $mockResultList = $this->mockResultList;
         $mockResultList[] = new ProcessOutput($exitCode, $stdOut, $stdErr, $command, $workingDirectory);
 

@@ -1,23 +1,31 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * We're abusing the fact that redeclaring global functions in a namespace will override those functions when called
  * without being fully-qualified.
  */
-namespace ptlis\ShellCommand {
 
+declare(strict_types=1);
+
+namespace ptlis\ShellCommand {
     /**
      * Mock proc_open failing.
      */
     $mockProcOpen = false;
     $mockProcOpenRetval = false;
-    function proc_open($cmd, array $descriptorspec, array &$pipes, $cwd = null, array $env = null, array $other_options = []) {
+    function proc_open(
+        $cmd,
+        array $descriptorspec,
+        array &$pipes,
+        $cwd = null,
+        array $env = null,
+        array $other_options = []
+    ) {
         global $mockProcOpen;
         global $mockProcOpenRetval;
 
         if ($mockProcOpen) {
             return $mockProcOpenRetval;
-
         } else {
             return \proc_open($cmd, $descriptorspec, $pipes, $cwd, $env, $other_options);
         }
@@ -30,7 +38,8 @@ namespace ptlis\ShellCommand {
     $mockProcTerminate = false;
     $mockProcTerminateRetval = false;
     $mockProcTerminateCalled = false;
-    function proc_terminate($process, $signal) {
+    function proc_terminate($process, $signal)
+    {
         global $mockProcTerminate;
         global $mockProcTerminateRetval;
         global $mockProcTerminateCalled;
@@ -40,7 +49,6 @@ namespace ptlis\ShellCommand {
             $mockProcTerminateCalled = true;
 
             return $mockProcTerminateRetval;
-
         } else {
             return \proc_terminate($process, $signal);
         }
@@ -52,13 +60,13 @@ namespace ptlis\ShellCommand {
      */
     $mockIsExecutable = false;
     $mockIsExecutableRetval = true;
-    function is_executable($path) {
+    function is_executable($path)
+    {
         global $mockIsExecutable;
         global $mockIsExecutableRetval;
 
         if ($mockIsExecutable) {
             return $mockIsExecutableRetval;
-
         } else {
             return \is_executable($path);
         }

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Mock;
 
@@ -141,7 +143,13 @@ class MockProcess implements ProcessInterface
                 // Process has terminated
                 if (!$this->isRunning()) {
                     $eventLoop->cancelTimer($timer);
-                    $output = new ProcessOutput($this->result->getExitCode(), $fullStdOut, $fullStdErr, $this->command, '.');
+                    $output = new ProcessOutput(
+                        $this->result->getExitCode(),
+                        $fullStdOut,
+                        $fullStdErr,
+                        $this->command,
+                        '.'
+                    );
 
                     // Resolve or reject promise
                     if (0 === $output->getExitCode()) {

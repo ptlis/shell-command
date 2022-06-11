@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -6,16 +6,18 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Integration;
 
 use ptlis\ShellCommand\CommandBuilder;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\UnixEnvironment;
 
 /**
  * @covers \ptlis\ShellCommand\CommandBuilder
  */
-class CommandBuilderTest extends ptlisShellCommandTestcase
+class CommandBuilderTest extends PtlisShellCommandTestcase
 {
     public function testInvalidCommand(): void
     {

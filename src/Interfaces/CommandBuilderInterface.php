@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Interfaces;
 
@@ -114,7 +116,11 @@ interface CommandBuilderInterface
      *
      * @return $this
      */
-    public function addEnvironmentVariable(string $key, string $value, bool $conditionalResult = true): CommandBuilderInterface;
+    public function addEnvironmentVariable(
+        string $key,
+        string $value,
+        bool $conditionalResult = true
+    ): CommandBuilderInterface;
 
     /**
      * Add an array of environment variables for use when running the command

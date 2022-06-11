@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -6,11 +6,13 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Integration;
 
 use ptlis\ShellCommand\CommandArgumentEscaped;
 use ptlis\ShellCommand\Logger\NullProcessObserver;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\Command;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
@@ -19,7 +21,7 @@ use React\EventLoop\Factory;
 /**
  * @covers \ptlis\ShellCommand\Command
  */
-class CommandTest extends ptlisShellCommandTestcase
+class CommandTest extends PtlisShellCommandTestcase
 {
     public function testRun(): void
     {
@@ -211,10 +213,10 @@ class CommandTest extends ptlisShellCommandTestcase
         $failureCalled = false;
 
         $promise->then(
-            function() use (&$successCalled) {
+            function () use (&$successCalled) {
                 $successCalled = true;
             },
-            function() use (&$failureCalled) {
+            function () use (&$failureCalled) {
                 $failureCalled = true;
             }
         );
@@ -245,10 +247,10 @@ class CommandTest extends ptlisShellCommandTestcase
         $failureCalled = false;
 
         $promise->then(
-            function() use (&$successCalled) {
+            function () use (&$successCalled) {
                 $successCalled = true;
             },
-            function() use (&$failureCalled) {
+            function () use (&$failureCalled) {
                 $failureCalled = true;
             }
         );
@@ -279,10 +281,10 @@ class CommandTest extends ptlisShellCommandTestcase
         $failureCalled = false;
 
         $promise->then(
-            function() use (&$successCalled) {
+            function () use (&$successCalled) {
                 $successCalled = true;
             },
-            function() use (&$failureCalled) {
+            function () use (&$failureCalled) {
                 $failureCalled = true;
             }
         );

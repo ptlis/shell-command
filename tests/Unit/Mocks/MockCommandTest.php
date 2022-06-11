@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
@@ -6,10 +6,12 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
+declare(strict_types=1);
+
 namespace ptlis\ShellCommand\Test\Unit\Mocks;
 
 use ptlis\ShellCommand\Mock\MockCommand;
-use ptlis\ShellCommand\Test\ptlisShellCommandTestcase;
+use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\ProcessOutput;
 use ptlis\ShellCommand\UnixEnvironment;
 use React\EventLoop\Factory;
@@ -17,7 +19,7 @@ use React\EventLoop\Factory;
 /**
  * @covers \ptlis\ShellCommand\Mock\MockCommand
  */
-class MockCommandTest extends ptlisShellCommandTestcase
+class MockCommandTest extends PtlisShellCommandTestcase
 {
     public function testRunSynchronous(): void
     {
@@ -63,14 +65,14 @@ class MockCommandTest extends ptlisShellCommandTestcase
 
         $promise
             ->then(
-                function(ProcessOutput $result) use (&$successCalled) {
+                function (ProcessOutput $result) use (&$successCalled) {
                     $successCalled = true;
                     $this->assertEquals(
                         new ProcessOutput(0, 'hello world', '', 'binary \'foo\' --test=\'123\'', '.'),
                         $result
                     );
                 },
-                function(ProcessOutput $result) use (&$failureCalled) {
+                function (ProcessOutput $result) use (&$failureCalled) {
                     $failureCalled = true;
                 }
             );
@@ -109,10 +111,10 @@ class MockCommandTest extends ptlisShellCommandTestcase
 
         $promise
             ->then(
-                function(ProcessOutput $result) use (&$successCalled) {
+                function (ProcessOutput $result) use (&$successCalled) {
                     $successCalled = true;
                 },
-                function(ProcessOutput $result) use (&$failureCalled) {
+                function (ProcessOutput $result) use (&$failureCalled) {
                     $failureCalled = true;
                     $this->assertEquals(
                         new ProcessOutput(1, 'error', '', '', '.'),

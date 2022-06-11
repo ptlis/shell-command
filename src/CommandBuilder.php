@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand;
 
@@ -234,7 +236,7 @@ final class CommandBuilder implements CommandBuilderInterface
 
         if (is_null($environment)) {
             throw new \RuntimeException(
-                'Unable to find Environment for OS "' . $operatingSystem . '".'.
+                'Unable to find Environment for OS "' . $operatingSystem . '".' .
                 'Try explicitly providing an Environment when instantiating the builder.'
             );
         }

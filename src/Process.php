@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * @copyright (c) 2015-present brian ridley
  * @author brian ridley <ptlis@ptlis.net>
  * @license http://opensource.org/licenses/MIT MIT
  */
+
+declare(strict_types=1);
 
 namespace ptlis\ShellCommand;
 
@@ -180,7 +182,7 @@ final class Process implements ProcessInterface
     public function writeInput(string $input, int $streamId = ProcessInterface::STDIN, bool $appendNewline = true): void
     {
         fwrite($this->pipeList[$streamId], $input);
-        if($appendNewline){
+        if ($appendNewline) {
             fwrite($this->pipeList[$streamId], "\n");
         }
     }
