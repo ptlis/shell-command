@@ -21,53 +21,26 @@ use RuntimeException;
  */
 final class MockCommandBuilder implements CommandBuilderInterface
 {
-    private string $command;
-    /** @var array<string> */
-    private array $argumentList;
-    /** @var array<string> */
-    private array $rawArgumentList;
-    private int $timeout;
-    private int $pollTimeout;
-    private string $cwd;
-    /** @var array<ProcessObserverInterface> */
-    private array $observerList;
-    /** @var array<string, string> */
-    private array $envVariableList;
-    /** @var array<ProcessOutput> */
-    private array $mockResultList;
-    /** @var array<MockCommand> */
-    private array $builtCommandList = [];
-
     /**
      * @param array<ProcessOutput> $mockResultList
-     * @param array<string> $argumentsList
+     * @param array<string> $argumentList
      * @param array<string, string> $envVariableList
      * @param array<MockCommand> $builtCommandList
      * @param array<string> $rawArgumentList
      * @param array<ProcessObserverInterface> $observerList
      */
     public function __construct(
-        array $mockResultList = [],
-        string $command = '',
-        array $argumentsList = [],
-        int $pollTimeout = 1000,
-        int $timeout = -1,
-        string $cwd = '',
-        array $envVariableList = [],
-        array &$builtCommandList = [],
-        array $rawArgumentList = [],
-        array $observerList = []
+        private array $mockResultList = [],
+        private string $command = '',
+        private array $argumentList = [],
+        private int $pollTimeout = 1000,
+        private int $timeout = -1,
+        private string $cwd = '',
+        private array $envVariableList = [],
+        private array &$builtCommandList = [],
+        private array $rawArgumentList = [],
+        private array $observerList = []
     ) {
-        $this->mockResultList = $mockResultList;
-        $this->command = $command;
-        $this->argumentList = $argumentsList;
-        $this->timeout = $timeout;
-        $this->pollTimeout = $pollTimeout;
-        $this->cwd = $cwd;
-        $this->envVariableList = $envVariableList;
-        $this->builtCommandList = &$builtCommandList;
-        $this->rawArgumentList = $rawArgumentList;
-        $this->observerList = $observerList;
     }
 
     public function setCommand(string $command): MockCommandBuilder

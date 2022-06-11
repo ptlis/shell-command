@@ -17,24 +17,13 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ProcessOutput implements ProcessOutputInterface
 {
-    public readonly int $exitCode;
-    public readonly string $stdOut;
-    public readonly string $stdErr;
-    public readonly string $command;
-    public readonly string $workingDirectory;
-
     public function __construct(
-        int $exitCode,
-        string $stdOut,
-        string $stdErr,
-        string $command,
-        string $workingDirectory
+        public readonly int $exitCode,
+        public readonly string $stdOut,
+        public readonly string $stdErr,
+        public readonly string $command,
+        public readonly string $workingDirectory
     ) {
-        $this->exitCode = $exitCode;
-        $this->stdOut = $stdOut;
-        $this->stdErr = $stdErr;
-        $this->command = $command;
-        $this->workingDirectory = $workingDirectory;
     }
 
     public function getStdOut(): string

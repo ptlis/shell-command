@@ -26,14 +26,8 @@ use React\Promise\PromiseInterface;
  */
 final class Process implements ProcessInterface
 {
-    private readonly EnvironmentInterface $environment;
-    private readonly string $cwdOverride;
-    /** @var array<string, string> */
-    private readonly array $envVarList;
     private readonly ProcessObserverInterface $observer;
-    private readonly int $timeout;
-    private readonly int $pollTimeout;
-    private float $startTime;
+    private readonly float $startTime;
     private ?int $exitCode = null;
     private string $fullStdOut = '';
     private string $fullStdErr = '';
@@ -48,20 +42,15 @@ final class Process implements ProcessInterface
      * @param array<string, string> $envVarList
      */
     public function __construct(
-        EnvironmentInterface $environment,
+        private readonly EnvironmentInterface $environment,
         string $command,
-        string $cwdOverride,
-        array $envVarList = [],
-        int $timeout = -1,
-        int $pollTimeout = 1000,
+        private readonly string $cwdOverride,
+        private readonly array $envVarList = [],
+        private readonly int $timeout = -1,
+        private readonly int $pollTimeout = 1000,
         ProcessObserverInterface $observer = null
     ) {
-        $this->environment = $environment;
-        $this->cwdOverride = $cwdOverride;
-        $this->envVarList = $envVarList;
         $this->observer = $observer ?? new NullProcessObserver();
-        $this->timeout = $timeout;
-        $this->pollTimeout = $pollTimeout;
 
         // Attempt to launch process
         $process = proc_open(

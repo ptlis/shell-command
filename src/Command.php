@@ -22,38 +22,22 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class Command implements CommandInterface
 {
-    private readonly EnvironmentInterface $environment;
-    private readonly string $command;
-    /** @var array<CommandArgumentInterface> */
-    private readonly array $argumentList;
-    private readonly int $timeout;
-    private readonly int $pollTimeout;
     private readonly string $cwd;
-    /** @var array<string> */
-    private readonly array $envVariableList;
-    private readonly ProcessObserverInterface $processObserver;
 
     /**
      * @param array<CommandArgumentInterface> $argumentList
      * @param array<string, string> $envVariableList
      */
     public function __construct(
-        EnvironmentInterface $environment,
-        ProcessObserverInterface $processObserver,
-        string $command,
-        array $argumentList,
+        private readonly EnvironmentInterface $environment,
+        private readonly ProcessObserverInterface $processObserver,
+        private readonly string $command,
+        private readonly array $argumentList,
         string $cwd,
-        array $envVariableList = [],
-        int $timeout = -1,
-        int $pollTimeout = 1000000
+        private readonly array $envVariableList = [],
+        private readonly int $timeout = -1,
+        private readonly int $pollTimeout = 1000000
     ) {
-        $this->environment = $environment;
-        $this->processObserver = $processObserver;
-        $this->command = $command;
-        $this->argumentList = $argumentList;
-        $this->timeout = $timeout;
-        $this->envVariableList = $envVariableList;
-        $this->pollTimeout = $pollTimeout;
         $this->cwd = $this->environment->getNormalizedCwd($cwd);
     }
 

@@ -22,27 +22,19 @@ use RuntimeException;
 /**
  * Mock running process. Waits for the specified time before completing.
  */
-class MockProcess implements ProcessInterface
+final class MockProcess implements ProcessInterface
 {
-    private string $command;
-    private int $runFor;
-    private ProcessOutputInterface $result;
-    private int $pid;
     private bool $stopped = false;
-    private float $startTime;
+    private readonly float $startTime;
     /** @var array<int, array<string>> */
     private array $inputs = [];
 
     public function __construct(
-        string $command,
-        ProcessOutputInterface $result,
-        int $runFor = 1000,
-        int $pid = 123
+        private readonly string $command,
+        private readonly ProcessOutputInterface $result,
+        private readonly int $runFor = 1000,
+        private readonly int $pid = 123
     ) {
-        $this->command = $command;
-        $this->runFor = $runFor;
-        $this->result = $result;
-        $this->pid = $pid;
         $this->startTime = \microtime(true);
     }
 

@@ -17,11 +17,8 @@ use ptlis\ShellCommand\Interfaces\CommandArgumentInterface;
  */
 final class CommandArgumentRaw implements CommandArgumentInterface
 {
-    private readonly string $argument;
-
-    public function __construct(string $argument)
+    public function __construct(private readonly string $argument)
     {
-        $this->argument = $argument;
     }
 
     public function encode(): string

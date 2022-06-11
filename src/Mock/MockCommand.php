@@ -20,33 +20,18 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class MockCommand implements CommandInterface
 {
-    private readonly string $command;
-    /** @var array<string> */
-    private readonly array $argumentList;
-    /** @var array<string> */
-    private readonly array $rawArgumentList;
-    private readonly ProcessOutputInterface $result;
-    private readonly int $runningTime;
-    private readonly int $pid;
-
     /**
      * @param array<string> $argumentList
      * @param array<string> $rawArgumentList
      */
     public function __construct(
-        string $command,
-        array $argumentList,
-        array $rawArgumentList,
-        ProcessOutputInterface $result,
-        int $runningTime = 314,
-        int $pid = 31415
+        private readonly string $command,
+        private readonly array $argumentList,
+        private readonly array $rawArgumentList,
+        private readonly ProcessOutputInterface $result,
+        private readonly int $runningTime = 314,
+        private readonly int $pid = 31415
     ) {
-        $this->command = $command;
-        $this->argumentList = $argumentList;
-        $this->rawArgumentList = $rawArgumentList;
-        $this->result = $result;
-        $this->runningTime = $runningTime;
-        $this->pid = $pid;
     }
 
     public function runSynchronous(): ProcessOutputInterface

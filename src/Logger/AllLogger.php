@@ -23,15 +23,10 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AllLogger implements ProcessObserverInterface
 {
-    private readonly LoggerInterface $logger;
-    private readonly string $logLevel;
-
     public function __construct(
-        LoggerInterface $logger,
-        string $logLevel = LogLevel::DEBUG
+        private readonly LoggerInterface $logger,
+        private readonly string $logLevel = LogLevel::DEBUG
     ) {
-        $this->logger = $logger;
-        $this->logLevel = $logLevel;
     }
 
     public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void

@@ -22,15 +22,10 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class ErrorLogger extends NullProcessObserver
 {
-    private readonly LoggerInterface $logger;
-    private readonly string $logLevel;
-
     public function __construct(
-        LoggerInterface $logger,
-        string $logLevel = LogLevel::ERROR
+        private readonly LoggerInterface $logger,
+        private readonly string $logLevel = LogLevel::ERROR
     ) {
-        $this->logger = $logger;
-        $this->logLevel = $logLevel;
     }
 
     public function stdErrRead(int $pid, string $stdErr): void

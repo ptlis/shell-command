@@ -21,15 +21,11 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
  */
 final class AggregateLogger implements ProcessObserverInterface
 {
-    /** @var array<ProcessObserverInterface> */
-    private readonly array $loggerList;
-
     /**
      * @param array<ProcessObserverInterface> $loggerList
      */
-    public function __construct(array $loggerList)
+    public function __construct(private readonly array $loggerList)
     {
-        $this->loggerList = $loggerList;
     }
 
     public function processCreated(int $pid, string $command, string $cwd, array $environmentVariables): void
