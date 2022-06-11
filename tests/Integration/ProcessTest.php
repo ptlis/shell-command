@@ -148,7 +148,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testGetPid(): void
     {
-        $command = './tests/commands/unix/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 0.1';
 
         $process = new Process(new UnixEnvironment(), $command, getcwd());
 
@@ -159,7 +159,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testStopRunning()
     {
-        $command = './tests/commands/unix/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 0.1';
 
         $logger = new MockPsrLogger(555);
 
@@ -182,7 +182,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 555,
-                        'command' => './tests/commands/unix/sleep_binary',
+                        'command' => './tests/commands/unix/sleep_binary 0.1',
                         'cwd' => getcwd(),
                         'env_vars' => []
                     ]
@@ -216,7 +216,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         global $mockProcTerminateRetval;
         $mockProcTerminateRetval = true;
 
-        $command = './tests/commands/unix/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 2';
 
         $logger = new MockPsrLogger(9999);
 
@@ -239,7 +239,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 9999,
-                        'command' => './tests/commands/unix/sleep_binary',
+                        'command' => './tests/commands/unix/sleep_binary 2',
                         'cwd' => getcwd(),
                         'env_vars' => []
                     ]
@@ -267,7 +267,7 @@ class ProcessTest extends ptlisShellCommandTestcase
 
     public function testTimeoutLongRunning(): void
     {
-        $command = './tests/commands/unix/long_sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 1';
 
         $logger = new MockPsrLogger(1234);
 
@@ -290,7 +290,7 @@ class ProcessTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 1234,
-                        'command' => './tests/commands/unix/long_sleep_binary',
+                        'command' => './tests/commands/unix/sleep_binary 1',
                         'cwd' => getcwd(),
                         'env_vars' => []
                     ]
@@ -321,7 +321,7 @@ class ProcessTest extends ptlisShellCommandTestcase
         $this->expectException(CommandExecutionException::class);
         $this->expectExceptionMessage('Unknown signal "wibble" provided');
 
-        $command = './tests/commands/unix/long_sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 1';
 
         $process = new Process(
             new UnixEnvironment(),

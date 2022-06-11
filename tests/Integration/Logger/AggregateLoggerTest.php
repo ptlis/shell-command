@@ -27,7 +27,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
 {
     public function testAggregateLogger(): void
     {
-        $command = './tests/commands/unix/long_sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 0.1';
 
         $mockLogger = new MockPsrLogger(1234);
         $allLogger = new AllLogger($mockLogger);
@@ -55,7 +55,7 @@ class AggregateLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 1234,
-                        'command' => './tests/commands/unix/long_sleep_binary',
+                        'command' => './tests/commands/unix/sleep_binary 0.1',
                         'cwd' => getcwd(),
                         'env_vars' => []
                     ]

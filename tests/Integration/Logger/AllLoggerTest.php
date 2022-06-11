@@ -77,7 +77,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
 
     public function testSendSignal(): void
     {
-        $command = './tests/commands/unix/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 0.1';
 
         $mockLogger = new MockPsrLogger(9241);
 
@@ -101,7 +101,7 @@ class AllLoggerTest extends ptlisShellCommandTestcase
                     'message' => 'Process created',
                     'context' => [
                         'pid' => 9241,
-                        'command' => './tests/commands/unix/sleep_binary',
+                        'command' => './tests/commands/unix/sleep_binary 0.1',
                         'cwd' => getcwd(),
                         'env_vars' => []
                     ]

@@ -92,7 +92,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
         putenv('HOME=' . $fakeHomePath);
 
-        $path = '~/sleep_binary';
+        $path = '~/sleep_binary 0.1';
 
         $command = new Command(
             new UnixEnvironment(),
@@ -107,7 +107,7 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 '',
                 '',
-                '~/sleep_binary',
+                '~/sleep_binary 0.1',
                 $fakeHomePath . '/'
             ),
             $command->runSynchronous()
@@ -118,7 +118,7 @@ class CommandTest extends ptlisShellCommandTestcase
 
     public function testRunWithSleep(): void
     {
-        $path = './tests/commands/unix/sleep_binary';
+        $path = './tests/commands/unix/sleep_binary 0.1';
 
         $command = new Command(
             new UnixEnvironment(),
@@ -133,7 +133,7 @@ class CommandTest extends ptlisShellCommandTestcase
                 0,
                 '',
                 '',
-                './tests/commands/unix/sleep_binary',
+                './tests/commands/unix/sleep_binary 0.1',
                 getcwd()
             ),
             $command->runSynchronous()
@@ -229,7 +229,7 @@ class CommandTest extends ptlisShellCommandTestcase
     {
         $eventLoop = Factory::create();
 
-        $path = './tests/commands/unix/sleep_binary';
+        $path = './tests/commands/unix/sleep_binary 0.1';
 
         $command = new Command(
             new UnixEnvironment(),

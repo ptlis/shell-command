@@ -1,3 +1,3 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-sleep 2s
+sleep $1

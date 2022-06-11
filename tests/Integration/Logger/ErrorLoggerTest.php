@@ -110,7 +110,7 @@ class ErrorLoggerTest extends ptlisShellCommandTestcase
 
     public function testSendSignal(): void
     {
-        $command = './tests/commands/unix/sleep_binary';
+        $command = './tests/commands/unix/sleep_binary 0.1';
 
         $mockLogger = new MockPsrLogger(1111);
 
