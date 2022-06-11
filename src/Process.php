@@ -90,7 +90,6 @@ final class Process implements ProcessInterface
 
         // Notify observer of process creation.
         $this->observer->processCreated($this->pid, $command, $cwdOverride, $envVarList);
-
     }
 
     public function isRunning(): bool

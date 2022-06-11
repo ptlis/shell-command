@@ -14,7 +14,6 @@ use ptlis\ShellCommand\Exceptions\CommandExecutionException;
 use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use RuntimeException;
-use function substr;
 
 /**
  * Implementation of a UNIX environment.
@@ -124,7 +123,7 @@ final class UnixEnvironment implements EnvironmentInterface
      */
     private function expandHomeDirectory(string $path): string
     {
-        return \getenv('HOME') . DIRECTORY_SEPARATOR . substr($path, 2, \strlen($path));
+        return \getenv('HOME') . DIRECTORY_SEPARATOR . \substr($path, 2, \strlen($path));
     }
 
     /**
@@ -165,7 +164,7 @@ final class UnixEnvironment implements EnvironmentInterface
     {
         $valid = false;
         if (\str_starts_with($relativePath, './')) {
-            $tmpPath = $cwd . DIRECTORY_SEPARATOR . substr($relativePath, 2, strlen($relativePath));
+            $tmpPath = $cwd . DIRECTORY_SEPARATOR . \substr($relativePath, 2, strlen($relativePath));
 
             $valid = $this->isValidFullPath($tmpPath);
         }
