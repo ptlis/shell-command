@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ptlis\ShellCommand\Mock;
 
 use ptlis\ShellCommand\Interfaces\CommandInterface;
-use ptlis\ShellCommand\Interfaces\EnvironmentInterface;
 use ptlis\ShellCommand\Interfaces\ProcessInterface;
 use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 

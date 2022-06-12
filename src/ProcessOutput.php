@@ -18,11 +18,11 @@ use ptlis\ShellCommand\Interfaces\ProcessOutputInterface;
 final class ProcessOutput implements ProcessOutputInterface
 {
     public function __construct(
-        public readonly int $exitCode,
-        public readonly string $stdOut,
-        public readonly string $stdErr,
-        public readonly string $command,
-        public readonly string $workingDirectory
+        private readonly int $exitCode,
+        private readonly string $stdOut,
+        private readonly string $stdErr,
+        private readonly string $command,
+        private readonly string $workingDirectory
     ) {
     }
 

@@ -130,7 +130,7 @@ final class UnixEnvironment implements EnvironmentInterface
      * Returns true if the path is relative to the users home directory.
      *
      * The home directory receives special attention due to the fact that chdir (and pals) don't expand '~' to the users
-     *  home directory - this is a function of the shell on UNIX systems so we must replicate the behaviour here.
+     *  home directory - this is a function of the shell on UNIX systems, so we must replicate the behaviour here.
      */
     private function isValidHomeDirectory(string $path): bool
     {
