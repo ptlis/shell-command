@@ -41,7 +41,7 @@ There were several goals that inspired the creation of this package:
 From the terminal:
 
 ```shell
-    $ composer require ptlis/shell-command
+$ composer require ptlis/shell-command
 ```
 
 
@@ -53,28 +53,27 @@ From the terminal:
 The package ships with a command builder, providing a simple and safe method to build commands. 
 
 ```php
-    use ptlis\ShellCommand\CommandBuilder;
-    
-    $builder = new CommandBuilder();
+use ptlis\ShellCommand\CommandBuilder;
+
+$builder = new CommandBuilder();
 ```
 
 The builder will attempt to determine your environment when constructed, you can override this by specifying an environment as the first argument:
 
 ```php
+use ptlis\ShellCommand\CommandBuilder;
+use ptlis\ShellCommand\UnixEnvironment;
 
-    use ptlis\ShellCommand\CommandBuilder;
-    use ptlis\ShellCommand\UnixEnvironment;
-    
-    $builder = new CommandBuilder(new UnixEnvironment());
+$builder = new CommandBuilder(new UnixEnvironment());
 ```
 
 **Note:** this builder is immutable - method calls must be chained and terminated with a call to ```buildCommand``` like so:
  
 ```php
-    $command = $builder
-        ->setCommand('foo')
-        ->addArgument('--bar=baz')
-        ->buildCommand()
+$command = $builder
+    ->setCommand('foo')
+    ->addArgument('--bar=baz')
+    ->buildCommand()
 ``` 
 
 
@@ -83,13 +82,13 @@ The builder will attempt to determine your environment when constructed, you can
 First we must provide the command to execute:
 
 ```php
-    $builder->setCommand('git')             // Executable in $PATH
-        
-    $builder->setCommand('./local/bin/git') // Relative to current working directory
-        
-    $builder->setCommand('/usr/bin/git')    // Fully qualified path
+$builder->setCommand('git')             // Executable in $PATH
     
-    $build->setCommand('~/.script.sh')      // Path relative to $HOME
+$builder->setCommand('./local/bin/git') // Relative to current working directory
+    
+$builder->setCommand('/usr/bin/git')    // Fully qualified path
+
+$build->setCommand('~/.script.sh')      // Path relative to $HOME
 ```
 
 If the command is not locatable a ```RuntimeException``` is thrown.
@@ -100,8 +99,8 @@ If the command is not locatable a ```RuntimeException``` is thrown.
 The timeout (in microseconds) sets how long the library will wait on a process before termination. Defaults to -1 which never forces termination.
 
 ```php
-    $builder
-        ->setTimeout(30 * 1000 * 1000)          // Wait 30 seconds
+$builder
+    ->setTimeout(30 * 1000 * 1000)          // Wait 30 seconds
 ```
 
 If the process execution time exceeds this value a SIGTERM will be sent; if the process then doesn't terminate after a further 1 second wait then a SIGKILL is sent.
@@ -112,8 +111,8 @@ If the process execution time exceeds this value a SIGTERM will be sent; if the 
 Set how long to wait (in microseconds) between polling the status of processes. Defaults to 1,000,000 (1 second).
 
 ```php
-    $builder
-        ->setPollTimeout(30 * 1000 * 1000)          // Wait 30 seconds
+$builder
+    ->setPollTimeout(30 * 1000 * 1000)          // Wait 30 seconds
 
 ```
 
@@ -123,8 +122,8 @@ Set how long to wait (in microseconds) between polling the status of processes. 
 You can set the working directory for a command:
 
 ```php
-    $builder
-        ->setCwd('/path/to/working/directory/')
+$builder
+    ->setCwd('/path/to/working/directory/')
 ```
 
 
@@ -133,37 +132,37 @@ You can set the working directory for a command:
 Add arguments to invoke the command with (all arguments are escaped):
 
 ```php
-    $builder
-        ->addArgument('--foo=bar')
+$builder
+    ->addArgument('--foo=bar')
 ```
 
 Conditionally add, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addArgument('--foo=bar', $myVar === 5)
+$builder
+    ->addArgument('--foo=bar', $myVar === 5)
 ```
 
 Add several arguments:
 
 ```php
-    $builder
-        ->addArguments([
-            '--foo=bar',
-            '-xzcf',
-            'if=/dev/sda of=/dev/sdb'
-        ])
+$builder
+    ->addArguments([
+        '--foo=bar',
+        '-xzcf',
+        'if=/dev/sda of=/dev/sdb'
+    ])
 ```
 
 Conditionally add, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addArguments([
-            '--foo=bar',
-            '-xzcf',
-            'if=/dev/sda of=/dev/sdb'
-        ], $myVar === 5)
+$builder
+    ->addArguments([
+        '--foo=bar',
+        '-xzcf',
+        'if=/dev/sda of=/dev/sdb'
+    ], $myVar === 5)
 ```
 
 **Note:** Escaped and raw arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
@@ -176,36 +175,36 @@ Conditionally add, depending on the result of an expression:
 Arguments can also be applied without escaping:
 
 ```php
-    $builder
-        ->addRawArgument("--foo='bar'")
+$builder
+    ->addRawArgument("--foo='bar'")
 ```
 
 Conditionally, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addRawArgument('--foo=bar', $myVar === 5)
+$builder
+    ->addRawArgument('--foo=bar', $myVar === 5)
 ```
 
 Add several raw arguments:
 
 ```php
-    $builder
-        ->addRawArguments([
-            "--foo='bar'",
-            '-xzcf',
-        ])
+$builder
+    ->addRawArguments([
+        "--foo='bar'",
+        '-xzcf',
+    ])
 ```
 
 Conditionally, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addRawArguments([
-            '--foo=bar',
-            '-xzcf',
-            'if=/dev/sda of=/dev/sdb'
-        ], $myVar === 5)
+$builder
+    ->addRawArguments([
+        '--foo=bar',
+        '-xzcf',
+        'if=/dev/sda of=/dev/sdb'
+    ], $myVar === 5)
 ```
 
 **Note:** Escaped and raw arguments are added to the command in the order they're added to the builder. This accommodates commands that are sensitive to the order of arguments.
@@ -216,35 +215,35 @@ Conditionally, depending on the result of an expression:
 Environment variables can be set when running a command:
 
 ```php
-    $builder
-        ->addEnvironmentVariable('TEST_VARIABLE', '123')
+$builder
+    ->addEnvironmentVariable('TEST_VARIABLE', '123')
 ```
 
 Conditionally, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addEnvironmentVariable('TEST_VARIABLE', '123', $myVar === 5)
+$builder
+    ->addEnvironmentVariable('TEST_VARIABLE', '123', $myVar === 5)
 ```
 
 Add several environment variables:
 
 ```php
-    $builder
-        ->addEnvironmentVariables([
-            'TEST_VARIABLE' => '123',
-            'FOO' => 'bar'
-        ])
+$builder
+    ->addEnvironmentVariables([
+        'TEST_VARIABLE' => '123',
+        'FOO' => 'bar'
+    ])
 ```
 
 Conditionally, depending on the result of an expression:
 
 ```php
-    $builder
-        ->addEnvironmentVariables([
-            'TEST_VARIABLE' => '123',
-            'FOO' => 'bar'
-        ], $foo === 5)
+$builder
+    ->addEnvironmentVariables([
+        'TEST_VARIABLE' => '123',
+        'FOO' => 'bar'
+    ], $foo === 5)
 ```
 
 
@@ -254,13 +253,13 @@ Conditionally, depending on the result of an expression:
 Observers can be attached to spawned processes. In this case we add a simple logger:
 
 ```php
-    $builder
-        ->addProcessObserver(
-            new AllLogger(
-                new DiskLogger(),
-                LogLevel::DEBUG
-            )
+$builder
+    ->addProcessObserver(
+        new AllLogger(
+            new DiskLogger(),
+            LogLevel::DEBUG
         )
+    )
 ```
 
 
@@ -269,9 +268,9 @@ Observers can be attached to spawned processes. In this case we add a simple log
 One the builder has been configured, the command can be retrieved for execution:
 
 ```php
-    $command = $builder
-        // ...
-        ->buildCommand();
+$command = $builder
+    // ...
+    ->buildCommand();
 ```
 
 
@@ -281,8 +280,8 @@ One the builder has been configured, the command can be retrieved for execution:
 To run a command synchronously use the ```runSynchronous``` method. This returns an object implementing ```CommandResultInterface```, encoding the result of the command.
 
 ```php
-    $result = $command
-        ->runSynchronous(); 
+$result = $command
+    ->runSynchronous(); 
 ```
 
 When you need to re-run the same command multiple times you can simply invoke ```runSynchronous``` repeatedly; each call will run the command returning the result to your application.
@@ -290,13 +289,13 @@ When you need to re-run the same command multiple times you can simply invoke ``
 The exit code & output of the command are available as methods on this object:
 
 ```php
-    $result->getExitCode();         // 0 for success, anything else conventionally indicates an error
-    $result->getStdOut();           // The contents of stdout (as a string)
-    $result->getStdOutLines();      // The contents of stdout (as an array of lines)
-    $result->getStdErr();           // The contents of stderr (as a string)
-    $result->getStdErrLines();      // The contents of stderr (as an array of lines)
-    $result->getExecutedCommand();  // Get the executed command as a string, including environment variables
-    $result->getWorkingDirectory(); // Get the directory the command was executed in 
+$result->getExitCode();         // 0 for success, anything else conventionally indicates an error
+$result->getStdOut();           // The contents of stdout (as a string)
+$result->getStdOutLines();      // The contents of stdout (as an array of lines)
+$result->getStdErr();           // The contents of stderr (as a string)
+$result->getStdErrLines();      // The contents of stderr (as an array of lines)
+$result->getExecutedCommand();  // Get the executed command as a string, including environment variables
+$result->getWorkingDirectory(); // Get the directory the command was executed in 
 ```
 
 
@@ -312,7 +311,7 @@ Commands can also be executed asynchronously, allowing your program to continue 
 The ```runAsynchronous``` method returns an object implementing the ```ProcessInterface``` which provides methods to monitor the state of a process.
 
 ```php
-    $process = $command->runAsynchronous();
+$process = $command->runAsynchronous();
 ```
 
 As with the synchronouse API, when you need to re-run the same command multiple times you can simply invoke ```runAsynchronous``` repeatedly; each call will run the command returning the object representing the process to your application.
@@ -324,51 +323,51 @@ As with the synchronouse API, when you need to re-run the same command multiple 
 Check whether the process has completed:
 
 ```php
-    if (!$process->isRunning()) {
-        echo 'done' . PHP_EOL;
-    }
+if (!$process->isRunning()) {
+    echo 'done' . PHP_EOL;
+}
 ```
 
 Force the process to stop:
 
 ```php
-    $process->stop();
+$process->stop();
 ```
 
 Wait for the process to stop (this blocks execution of your script, effectively making this synchronous):
 
 ```php
-    $process->wait();
+$process->wait();
 ```
 
 Get the process id (throws a ```\RuntimeException``` if the process has ended):
 
 ```php
-    $process->getPid();
+$process->getPid();
 ```
 
 Read output from a stream:
 
 ```php
-    $stdOut = $process->readStream(ProcessInterface::STDOUT);
+$stdOut = $process->readStream(ProcessInterface::STDOUT);
 ```
 
 Provide input (e.g. via STDIN):
 
 ```php
-    $process->writeInput('Data to pass to the running process via STDIN');
+$process->writeInput('Data to pass to the running process via STDIN');
 ```
 
 Get the exit code (throws a ```\RuntimeException``` if the process is still running):
 
 ```php
-    $exitCode = $process->getExitCode();
+$exitCode = $process->getExitCode();
 ```
 
 Send a signal (SIGTERM or SIGKILL) to the process:
 
 ```php
-    $process->sendSignal(ProcessInterface::SIGTERM);
+$process->sendSignal(ProcessInterface::SIGTERM);
 ```
 
 Get the string representation of the running command:
@@ -385,9 +384,9 @@ Monitoring of shell command execution can be wrapped in a [ReactPHP Promise](htt
 Building promise to execute a command can be done by calling the ```getPromise``` method from a ```Process``` instance. This returns an instance of ```\React\Promise\Promise```:
 
 ```php
-    $eventLoop = \React\EventLoop\Factory::create();
+$eventLoop = \React\EventLoop\Factory::create();
 
-    $promise = $command->runAsynchonous()->getPromise($eventLoop);
+$promise = $command->runAsynchonous()->getPromise($eventLoop);
 ```
 
 The [ReactPHP EventLoop](https://github.com/reactphp/event-loop) component is used to periodically poll the running process to see if it has terminated yet; once it has the promise is either resolved or rejected depending on the exit code of the executed command.
@@ -395,7 +394,7 @@ The [ReactPHP EventLoop](https://github.com/reactphp/event-loop) component is us
 The effect of this implementation is that once you've created your promises, chains and aggregates you must invoke ```EventLoop::run```:
 
 ```php
-    $eventLoop->run();
+$eventLoop->run();
 ```
 
 This will block further execution until the promises are resolved/rejected.
@@ -419,4 +418,4 @@ You can contribute by submitting an Issue to the [issue tracker](https://github.
 
 ## Known limitations
 
-* Currently supports UNIX environments only.
+* Supports UNIX environments only.
