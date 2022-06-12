@@ -11,8 +11,7 @@ There were several goals that inspired the creation of this package:
 
 
 
-[![Build Status](https://api.travis-ci.com/ptlis/shell-command.svg?branch=master)](https://app.travis-ci.com/github/ptlis/shell-command)
-[![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
+[![Build Status](https://api.travis-ci.com/ptlis/shell-command.svg?branch=master)](https://app.travis-ci.com/github/ptlis/shell-command) [![codecov](https://codecov.io/gh/ptlis/shell-command/branch/master/graph/badge.svg?token=tJsLb61LV2)](https://codecov.io/gh/ptlis/shell-command) [![Latest Stable Version](https://poser.pugx.org/ptlis/shell-command/v/stable.png)](https://packagist.org/packages/ptlis/shell-command)
 
   * [Install](#install)
   * [Usage](#usage)
