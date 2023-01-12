@@ -26,6 +26,8 @@ use React\Promise\PromiseInterface;
  */
 final class Process implements ProcessInterface
 {
+    use TriggerDeprecationTrait;
+
     private readonly ProcessObserverInterface $observer;
     private readonly float $startTime;
     private ?int $exitCode = null;
@@ -35,7 +37,8 @@ final class Process implements ProcessInterface
     private array $pipeList = [];
     /** @var resource */
     private $process;
-    private readonly int $pid;
+    public readonly int $pid;
+    public readonly string $command;
     private ?ProcessOutputInterface $output = null;
 
     /**
@@ -69,7 +72,9 @@ final class Process implements ProcessInterface
         }
 
         $this->process = $process;
-        $this->pid = $this->getStatus()['pid'];
+        $status = $this->getStatus();
+        $this->pid = $status['pid'];
+        $this->command = $status['command'];
         $this->startTime = \microtime(true);
 
         // Mark pipe streams as non-blocking
@@ -151,15 +156,22 @@ final class Process implements ProcessInterface
         }
     }
 
+    /**
+     * @deprecated Replaced with direct access to the pid property.
+     */
     public function getPid(): int
     {
+        $this->triggerDeprecationWarning(__METHOD__, 'pid');
         return $this->pid;
     }
 
+    /**
+     * @deprecated Replaced with direct access to the command property.
+     */
     public function getCommand(): string
     {
-        $status = $this->getStatus();
-        return $status['command'];
+        $this->triggerDeprecationWarning(__METHOD__, 'command');
+        return $this->command;
     }
 
     public function getPromise(LoopInterface $eventLoop): PromiseInterface
@@ -263,7 +275,7 @@ final class Process implements ProcessInterface
                 (int)$this->exitCode,
                 $this->fullStdOut,
                 $this->fullStdErr,
-                $envVarString . $this->getCommand(),
+                $envVarString . $this->command,
                 $this->cwdOverride
             );
             $this->observer->processExited($this->pid, $this->output);

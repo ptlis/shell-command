@@ -16,6 +16,7 @@ use ptlis\ShellCommand\Test\MockPsrLogger;
 use ptlis\ShellCommand\Test\PtlisShellCommandTestcase;
 use ptlis\ShellCommand\CommandBuilder;
 use ptlis\ShellCommand\UnixEnvironment;
+use ReflectionMethod;
 
 /**
  * @covers \ptlis\ShellCommand\CommandBuilder
@@ -29,15 +30,15 @@ class CommandBuilderTest extends PtlisShellCommandTestcase
     {
         $reflectionObject = new \ReflectionClass(get_class($object));
         $property = $reflectionObject->getProperty($property);
-        $property->setAccessible(true);
         return $property->getValue($object);
     }
 
     public function testDetectEnvironmentSuccess(): void
     {
+        $method = new ReflectionMethod(CommandBuilder::class, 'getEnvironment');
         $builder = new CommandBuilder();
 
-        $environment = $builder->getEnvironment('Linux');
+        $environment = $method->invoke($builder, 'Linux');
 
         $this->assertEquals(
             new UnixEnvironment(),
@@ -51,8 +52,9 @@ class CommandBuilderTest extends PtlisShellCommandTestcase
         $this->expectExceptionMessage('Unable to find Environment for OS "foobar".');
 
         $builder = new CommandBuilder();
+        $method = new ReflectionMethod(CommandBuilder::class, 'getEnvironment');
 
-        $builder->getEnvironment('foobar');
+        $method->invoke($builder, 'foobar');
     }
 
     public function testBasic(): void

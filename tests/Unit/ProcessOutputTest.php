@@ -22,45 +22,38 @@ class ProcessOutputTest extends PtlisShellCommandTestcase
     {
         $shellResult = new ProcessOutput(
             0,
-            'great success!',
-            '',
+            'great success!' . PHP_EOL . 'All is well',
+            'some error message' . PHP_EOL . 'Another line',
             'foo --bar',
             '.'
         );
 
-        $this->assertSame(
+        $this->assertSame(0, $shellResult->exitCode);
+        $this->assertSame('great success!' . PHP_EOL . 'All is well', $shellResult->stdOut);
+        $this->assertSame(['great success!', 'All is well'], $shellResult->stdOutLines);
+        $this->assertSame('some error message' . PHP_EOL . 'Another line', $shellResult->stdErr);
+        $this->assertSame(['some error message', 'Another line'], $shellResult->stdErrLines);
+        $this->assertSame('foo --bar', $shellResult->command);
+        $this->assertSame('.', $shellResult->workingDirectory);
+    }
+
+    public function testDeprecatedMethods(): void
+    {
+        $shellResult = new ProcessOutput(
             0,
-            $shellResult->getExitCode()
-        );
-
-        $this->assertSame(
-            'great success!',
-            $shellResult->getStdOut()
-        );
-
-        $this->assertSame(
-            ['great success!'],
-            $shellResult->getStdOutLines()
-        );
-
-        $this->assertSame(
-            '',
-            $shellResult->getStdErr()
-        );
-
-        $this->assertSame(
-            [],
-            $shellResult->getStdErrLines()
-        );
-
-        $this->assertSame(
+            'great success!' . PHP_EOL . 'All is well',
+            'some error message' . PHP_EOL . 'Another line',
             'foo --bar',
-            $shellResult->getExecutedCommand()
+            '.'
         );
 
-        $this->assertSame(
-            '.',
-            $shellResult->getWorkingDirectory()
-        );
+        $this->assertSame($shellResult->exitCode, $shellResult->getExitCode());
+        $this->assertSame($shellResult->stdOut, $shellResult->getStdOut());
+        $this->assertSame($shellResult->stdOutLines, $shellResult->getStdOutLines());
+        $this->assertSame($shellResult->stdErr, $shellResult->getStdErr());
+        $this->assertSame($shellResult->stdErrLines, $shellResult->getStdErrLines());
+        $this->assertSame($shellResult->command, $shellResult->getExecutedCommand());
+        $this->assertSame($shellResult->workingDirectory, $shellResult->getWorkingDirectory());
+        $this->expectDeprecationNotice();
     }
 }

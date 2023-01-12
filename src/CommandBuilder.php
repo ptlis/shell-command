@@ -201,7 +201,7 @@ final class CommandBuilder implements CommandBuilderInterface
     /**
      * Build the correct Environment instance for the provided operating system.
      */
-    public function getEnvironment(string $operatingSystem): EnvironmentInterface
+    private function getEnvironment(string $operatingSystem): EnvironmentInterface
     {
         $environmentList = [
             new UnixEnvironment()

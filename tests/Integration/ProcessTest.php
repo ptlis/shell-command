@@ -51,10 +51,7 @@ class ProcessTest extends PtlisShellCommandTestcase
             $process->isRunning()
         );
 
-        $this->assertEquals(
-            './tests/commands/unix/test_binary',
-            $process->getCommand()
-        );
+        $this->assertEquals('./tests/commands/unix/test_binary', $process->command);
     }
 
     public function testRunWithPromiseSuccess(): void
@@ -153,9 +150,7 @@ class ProcessTest extends PtlisShellCommandTestcase
 
         $process = new Process(new UnixEnvironment(), $command, (new UnixEnvironment())->getNormalizedCwd());
 
-        $this->assertNotNull(
-            $process->getPid()
-        );
+        $this->assertNotNull($process->pid);
     }
 
     public function testStopRunning(): void
@@ -410,5 +405,16 @@ class ProcessTest extends PtlisShellCommandTestcase
                 "Hello world\n",
                 $output
             );
+    }
+
+    public function testDeprecatedMethods(): void
+    {
+        $command = './tests/commands/unix/test_binary';
+        $environment = new UnixEnvironment();
+        $process = new Process($environment, $command, $environment->getNormalizedCwd(), ['FOO' => 'bar']);
+
+        $this->assertEquals($process->pid, $process->getPid());
+        $this->assertEquals($process->command, $process->getCommand());
+        $this->expectDeprecationNotice();
     }
 }

@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace ptlis\ShellCommand\Test;
 
-use PHPUnit\Framework\TestCase;
-
-class PtlisShellCommandTestcase extends TestCase
+class PtlisShellCommandTestcase extends ExpectDeprecationTestCase
 {
     /**
      * @param array<mixed> $expectedLogList
